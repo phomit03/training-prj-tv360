@@ -34,14 +34,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User save(UserRegistrationDto registrationDto) {
-        User user = new User(
-                             registrationDto.getUsername(),
-                             passwordEncoder.encode(registrationDto.getPassword()),
-                             registrationDto.getFullName(),
-                             registrationDto.getPhone(),
-                             registrationDto.getEmail(),
-                             Arrays.asList(new Role("ROLE_USER"))
-        );
+        User user = new User();
+        user.setUsername(registrationDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        user.setFullName(registrationDto.getFullName());
+        user.setPhone(registrationDto.getPhone());
+        user.setEmail(registrationDto.getEmail());
+        user.setStatus(1);
+        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
         return userRepository.save(user);
     }
 
