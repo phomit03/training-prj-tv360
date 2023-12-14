@@ -1,4 +1,4 @@
-package com.example.tv360.Controller;
+package com.example.tv360.Controller.auth;
 
 import com.example.tv360.Service.UserService;
 import com.example.tv360.DTO.UserRegistrationDto;

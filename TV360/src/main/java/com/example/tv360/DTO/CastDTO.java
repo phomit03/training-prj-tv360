@@ -1,5 +1,6 @@
 package com.example.tv360.DTO;
 
+import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +14,18 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 public class CastDTO {
+    @MapToDTO
     private Long id;
+    @MapToDTO
     private String fullName;
+    @MapToDTO
     private Integer type;
+    @MapToDTO
     private Integer status;
+    @MapToDTO
     private Timestamp createdAt;
+    @MapToDTO
     private Timestamp updatedAt;
+    @MapToDTO
     private Set<FilmCastDTO> film_cast;
 }

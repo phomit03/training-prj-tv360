@@ -1,5 +1,6 @@
 package com.example.tv360.DTO;
 
+import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,16 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class CategoryDTO {
+    @MapToDTO
     private Long id;
+    @MapToDTO
     private String name;
+    @MapToDTO
     private Integer type;
+    @MapToDTO
     private Integer status;
+    @MapToDTO
     private Timestamp createdAt;
+    @MapToDTO
     private Timestamp updatedAt;
 }
