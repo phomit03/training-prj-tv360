@@ -26,6 +26,6 @@ public class CastDTO {
     private Timestamp createdAt;
     @MapToDTO
     private Timestamp updatedAt;
-
-    private Set<Film_CastDTO> film_cast;
+    @MapToDTO
+    private Set<FilmCastDTO> film_cast;
 }

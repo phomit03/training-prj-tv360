@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Table(name = "category")
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +35,6 @@ public class Category {
     @Column(name = "created_at", updatable = false)
     @MapToDTO
     private Timestamp createdAt;
-
 
     @UpdateTimestamp
     @Column(name = "updated_at")

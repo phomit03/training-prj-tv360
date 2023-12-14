@@ -14,14 +14,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "film_cast")
-public class Film_Cast {
+public class FilmCast {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "media_id", referencedColumnName = "id")
-    private Media mediaId;
+    private Media mediaId;          //type: series_movie, movie
 
     @ManyToOne
     @JoinColumn(name = "cast_id", referencedColumnName = "id")

@@ -1,10 +1,8 @@
 package com.example.tv360.Controller.admin;
 
-import com.example.tv360.DTO.CastDTO;
+
 import com.example.tv360.DTO.CategoryDTO;
-import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Repository.CategoryRepository;
-import com.example.tv360.Service.CastService;
 import com.example.tv360.Service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,23 +25,23 @@ public class CategoryController {
     }
 
     @GetMapping("/category/create")
-    public String showCreateCast(Model model){
-        model.addAttribute("castDTO", new CastDTO());
-        return "admin_cast_create";
+    public String showCreateCategory(Model model){
+        model.addAttribute("categoryDTO", new CategoryDTO());
+        return "admin_category_create";
     }
 
     @PostMapping("/category/create/save")
-    public String createCast(@ModelAttribute CastDTO castDTO){
+    public String createCategory(@ModelAttribute CategoryDTO categoryDTO){
         try {
-            categoryService.createCategory(castDTO);
+            categoryService.createCategory(categoryDTO);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "redirect:/admin/cast";
+        return "redirect:/admin/category";
     }
 
     @GetMapping("/category/update/{id}")
-    public String showUpdateCast(@PathVariable Long id, Model model){
+    public String showUpdateCategory(@PathVariable Long id, Model model){
         CategoryDTO categoryDTO = categoryService.getCategoryById(id);
         if (categoryDTO == null){
             return "redirect:/admin/category";
@@ -54,22 +52,22 @@ public class CategoryController {
     }
 
     @PostMapping("/category/update/{id}")
-    public String updateCast(@PathVariable Long id, @ModelAttribute("castDTO") CastDTO castDTO, RedirectAttributes attributes){
+    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, RedirectAttributes attributes){
         try {
-            categoryService.updateCategory(castDTO);
+            categoryService.updateCategory(categoryDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/cast";
+        return "redirect:/admin/category";
     }
 
-    @GetMapping("/cast/delete/{id}")
-    public ResponseEntity<String> deleteCast(@PathVariable Long id){
+    @GetMapping("/category/delete/{id}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id){
         try {
-            castService.softDeleteCast(id);
-            return ResponseEntity.ok("Delete cast successfully");
+            categoryService.softDeleteCategory(id);
+            return ResponseEntity.ok("Delete category successfully");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {

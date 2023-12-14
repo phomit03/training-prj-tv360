@@ -7,17 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CategoryDTO {
+public class FilmCastDTO {
     @MapToDTO
     private Long id;
     @MapToDTO
-    private String name;
+    private MediaDTO mediaId;
     @MapToDTO
-    private Integer type;
+    private CastDTO castId;
     @MapToDTO
     private Integer status;
     @MapToDTO

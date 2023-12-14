@@ -56,9 +56,14 @@ public class Media {
     @MapToDTO
     private Timestamp updatedAt;
 
-    // KHOA CHUNG GIAN
+    // KHOA TRUNG GIAN
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
-    private Set<Film_Cast> film_casts;
+    private Set<FilmCast> filmCasts;
 
+    @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
+    private Set<MediaCategory> mediaCategories;
+
+    @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
+    private Set<MediaItem> mediaItems;
 
 }

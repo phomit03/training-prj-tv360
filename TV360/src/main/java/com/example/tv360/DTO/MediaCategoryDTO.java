@@ -7,17 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class CategoryDTO {
+@NoArgsConstructor
+public class MediaCategoryDTO {
     @MapToDTO
     private Long id;
     @MapToDTO
-    private String name;
+    private MediaDTO mediaId;
     @MapToDTO
-    private Integer type;
+    private CategoryDTO categoryId;
     @MapToDTO
     private Integer status;
     @MapToDTO

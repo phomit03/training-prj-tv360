@@ -40,5 +40,9 @@ public class MediaDTO {
     @MapToDTO
     private Timestamp updatedAt;
     @MapToDTO
-    private Set<Film_CastDTO> film_casts;
+    private Set<FilmCastDTO> filmCasts;
+    @MapToDTO
+    private Set<MediaCategoryDTO> mediaCategories;
+    @MapToDTO
+    private Set<MediaItemDTO> mediaItems;
 }
