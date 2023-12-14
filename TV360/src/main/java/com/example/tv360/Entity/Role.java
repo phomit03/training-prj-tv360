@@ -21,6 +21,8 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @MapToDTO
     private Long id;
+
+    @MapToDTO
     private String name;
 
     public Role(String name) {

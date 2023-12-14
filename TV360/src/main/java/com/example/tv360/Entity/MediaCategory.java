@@ -24,20 +24,25 @@ public class MediaCategory {
 
     @ManyToOne
     @JoinColumn(name = "media_id", referencedColumnName = "id")
+    @MapToDTO
     private Media mediaId;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @MapToDTO
     private Category categoryId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
+    @MapToDTO
     private Integer status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @MapToDTO
     private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
+    @MapToDTO
     private Timestamp updatedAt;
 }

@@ -64,12 +64,15 @@ public class Media {
     private Timestamp updatedAt;
 
     // KHOA TRUNG GIAN
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<FilmCast> filmCasts;
 
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<MediaCategory> mediaCategories;
 
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<MediaItem> mediaItems;
 

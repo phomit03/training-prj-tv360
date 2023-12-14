@@ -22,30 +22,39 @@ public class User {
     @MapToDTO
     private Long id;
 
+    @MapToDTO
     private String username;
 
+    @MapToDTO
     private String password;
 
     @Column(name = "full_name", nullable = true)
+    @MapToDTO
     private String fullName;
 
     @Column(name = "email", nullable = true)
+    @MapToDTO
     private String email;
 
     @Column(name = "phone", nullable = true)
+    @MapToDTO
     private String phone;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
+    @MapToDTO
     private Integer status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @MapToDTO
     private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
+    @MapToDTO
     private Timestamp updatedAt;
 
+    @MapToDTO
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
