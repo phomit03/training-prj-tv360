@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin_fragments::head"></head>
+
+<body>
+<!-- navbar Start -->
+<div th:replace="admin_fragments::navbar"></div>
+<!-- navbar End -->
+
+<div id="layoutSidenav">
+    <!-- menu Start -->
+    <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
+    <!-- menu End -->
+
+    <div id="layoutSidenav_content">
+      <!-- Content Start -->
+      <main>
+        <div class="container-fluid px-4">
+          <h1 class="mt-4 title-admin">Categories</h1>
+          <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                List of categories
+
+              <a th:href="@{/admin/category/create}">
+                <button type="button" class="btn btn-primary" style="float: right">+ category</button>
+              </a>
+
+            </div>
+            <div class="card-body">
+              <table id="datatablesSimple">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody th:if="${categories != null and #lists.size(categories) > 0}">
+                  <tr th:each="category, iterStat : ${categories}" th:class="'category-' + ${category.id}">
+                    <td th:text="${category.id}"></td>
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${category.name}"></td>
+                    <td th:text="${(category.type == 1 ) ? 'film' : 'video'}"></td>
+                    <td>
+                      <span style="color: green">
+                        <th:block th:if="${category.status == 1}">
+                          active
+                        </th:block>
+                      </span>
+                      <span style="color: red">
+                        <th:block th:if="${category.status == 0}">
+                          in-active
+                        </th:block>
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn">
+                        <a th:href="@{/admin/category/update/{id} (id=${category.getId()})}">
+                          <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </button>
+                      <button class="btn">
+                        <a th:data-id="${category.id}"
+                           class="delete-btn">
+                          <i class="fas fa-trash"></i>
+                        </a>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Content End -->
+
+      <!-- footer Start -->
+      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+      <!-- footer End -->
+    </div>
+</div>
+
+
+<div th:replace="admin_fragments::script"></div>
+
+</body>
+
+</html>

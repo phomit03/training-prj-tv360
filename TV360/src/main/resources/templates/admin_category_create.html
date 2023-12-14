@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin_fragments::head"></head>
+
+<body>
+<!-- navbar Start -->
+<div th:replace="admin_fragments::navbar"></div>
+<!-- navbar End -->
+
+<div id="layoutSidenav">
+    <!-- menu Start -->
+    <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
+    <!-- menu End -->
+
+    <div id="layoutSidenav_content">
+      <!-- Content Start -->
+      <main>
+        <div class="container-fluid px-4">
+          <h1 class="mt-4 title-admin">Create Category</h1>
+          <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Create a new category
+
+                <a th:href="@{/admin/categories}" type="button" class="btn btn-primary" style="float: right">back list <</a>
+            </div>
+            <div class="card-body">
+              <form th:action="@{/admin/category/create/save}" th:object="${categoryDTO}" method="post">
+                <div class="form-floating mb-3">
+                  <input class="form-control" id="inputEmail" name="name" type="text" placeholder="name category" />
+                  <label for="inputEmail">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class="form-control" id="exampleSelect" name="type" style="padding-top: 0.625rem;">
+                        <option value="" selected>-- choose type --</option>
+                        <option value="1">film</option>
+                        <option value="2">video</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                  <button type="submit" class="btn btn-success">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Content End -->
+
+      <!-- footer Start -->
+      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+      <!-- footer End -->
+    </div>
+</div>
+
+
+<div th:replace="admin_fragments::script"></div>
+
+</body>
+
+</html>

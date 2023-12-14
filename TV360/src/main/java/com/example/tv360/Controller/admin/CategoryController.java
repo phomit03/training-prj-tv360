@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,6 +24,15 @@ public class CategoryController {
     public CategoryController(CategoryService categoryService, CategoryRepository categoryRepository) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
+    }
+
+    @GetMapping("/categories")
+    public String getAllProducts(Model model) {
+        model.addAttribute("title", "Categories");
+
+        List<CategoryDTO> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+        return "admin_category";
     }
 
     @GetMapping("/category/create")
@@ -37,7 +48,7 @@ public class CategoryController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "redirect:/admin/category";
+        return "redirect:/admin/categories";
     }
 
     @GetMapping("/category/update/{id}")
@@ -60,7 +71,7 @@ public class CategoryController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/category";
+        return "redirect:/admin/categories";
     }
 
     @GetMapping("/category/delete/{id}")
