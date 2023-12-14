@@ -17,9 +17,9 @@ import java.util.Set;
 @Entity
 @Table(name = "cast")
 public class Cast {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
 
     @MapToDTO
@@ -43,6 +43,7 @@ public class Cast {
     @MapToDTO
     private Timestamp updatedAt;
 
+    @MapToDTO
     @OneToMany(mappedBy = "castId", cascade = CascadeType.ALL)
     private Set<FilmCast> filmCast;
 }

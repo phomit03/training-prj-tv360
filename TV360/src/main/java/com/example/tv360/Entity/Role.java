@@ -1,5 +1,6 @@
 package com.example.tv360.Entity;
 
+import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,12 @@ import javax.persistence.Table;
 @Data
 @Table(name = "role")
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
+
+    @MapToDTO
     private String name;
 
     public Role(String name) {

@@ -19,17 +19,24 @@ import java.util.Set;
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
+
     @MapToDTO
     private String thumbnail;
+
     @MapToDTO
     private String title;
+
     @MapToDTO
     private String description;
+
     @MapToDTO
     private String evaluate;
+
     @MapToDTO
     private String duration;
+
     @MapToDTO
     private String quality;
 
@@ -57,12 +64,15 @@ public class Media {
     private Timestamp updatedAt;
 
     // KHOA TRUNG GIAN
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<FilmCast> filmCasts;
 
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<MediaCategory> mediaCategories;
 
+    @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<MediaItem> mediaItems;
 
