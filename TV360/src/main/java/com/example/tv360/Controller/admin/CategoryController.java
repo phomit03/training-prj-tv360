@@ -28,12 +28,14 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String getAllProducts(Model model) {
-        model.addAttribute("title", "Categories");
 
+        model.addAttribute("title", "Categories");
         List<CategoryDTO> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         return "admin_category";
     }
+
+
 
     @GetMapping("/category/create")
     public String showCreateCategory(Model model){

@@ -13,16 +13,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FilmCastDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private MediaDTO mediaId;
-    @MapToDTO
     private CastDTO castId;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
 }

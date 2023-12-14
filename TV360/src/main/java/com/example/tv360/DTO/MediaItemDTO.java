@@ -13,18 +13,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MediaItemDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private MediaDTO mediaId;
-    @MapToDTO
     private MediaDetailDTO itemId;
-    @MapToDTO
     private String position;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
 }

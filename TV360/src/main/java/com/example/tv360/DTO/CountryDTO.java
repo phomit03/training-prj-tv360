@@ -13,14 +13,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private String name;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
 }

@@ -14,18 +14,11 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 public class MediaDetailDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private String mediaUrl;
-    @MapToDTO
     private Integer type;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
-    @MapToDTO
     private Set<MediaItemDTO> mediaItems;
 }

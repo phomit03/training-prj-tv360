@@ -14,16 +14,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 public class MediaCategoryDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private MediaDTO mediaId;
-    @MapToDTO
     private CategoryDTO categoryId;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
 }
