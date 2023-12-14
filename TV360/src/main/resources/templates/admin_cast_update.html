@@ -17,34 +17,34 @@
       <!-- Content Start -->
       <main>
         <div class="container-fluid px-4">
-          <h1 class="mt-4 title-admin">Update Category</h1>
+          <h1 class="mt-4 title-admin">Update Cast</h1>
           <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                Update category data
+                Update cast data
 
-                <a th:href="@{/admin/categories}" type="button" class="btn btn-primary" style="float: right">back list <</a>
+                <a th:href="@{/admin/cast}" type="button" class="btn btn-primary" style="float: right">back list <</a>
             </div>
             <div class="card-body">
-              <form th:action="@{/admin/category/update/{id} (id = ${categoryDTO.id})}" th:object="${categoryDTO}" method="post">
+              <form th:action="@{/admin/cast/update/{id} (id = ${castDTO.id})}" th:object="${castDTO}" method="post">
                 <div class="form-floating mb-3">
-                  <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="name category"/>
-                  <label>Name</label>
+                  <input class="form-control" th:field="*{fullName}" name="name" type="text" placeholder="name category"/>
+                  <label>Full Name</label>
                 </div>
                 <div class="form-floating mb-3">
                     <select class="form-control" id="type" name="type" aria-label="type"
                             th:field="*{type}" required>
                         <option value="" selected>-- choose option --</option>
-                        <option value="1" th:selected="${categoryDTO.type == 1}">film</option>
-                        <option value="2" th:selected="${categoryDTO.type == 2}">video</option>
+                        <option value="1" th:selected="${castDTO.type == 1}">director</option>
+                        <option value="2" th:selected="${castDTO.type == 2}">actor</option>
                     </select>
                     <label>Type</label>
                 </div>
                 <div class="form-floating mb-3">
                   <select class="form-control" name="status" th:field="*{status}">
                           <option value="" selected>-- choose type --</option>
-                          <option value="0" th:selected="${categoryDTO.status == 0}">in-active</option>
-                          <option value="1" th:selected="${categoryDTO.status == 1}">active</option>
+                          <option value="0" th:selected="${castDTO.status == 0}">in-active</option>
+                          <option value="1" th:selected="${castDTO.status == 1}">active</option>
                   </select>
                   <label>Status</label>
                 </div>

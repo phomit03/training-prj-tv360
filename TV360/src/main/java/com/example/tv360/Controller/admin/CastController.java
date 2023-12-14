@@ -1,6 +1,7 @@
 package com.example.tv360.Controller.admin;
 
 import com.example.tv360.DTO.CastDTO;
+import com.example.tv360.DTO.CategoryDTO;
 import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Service.CastService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,6 +25,15 @@ public class CastController {
         this.castRepository = castRepository;
     }
 
+    @GetMapping("/cast")
+    public String getAllCasts(Model model) {
+
+        model.addAttribute("title", "Cast");
+        List<CastDTO> casts = castService.getAllCasts();
+        model.addAttribute("casts", casts);
+        return "admin_cast";
+    }
+
     @GetMapping("/cast/create")
     public String showCreateCast(Model model){
         model.addAttribute("castDTO", new CastDTO());
@@ -30,11 +41,13 @@ public class CastController {
     }
 
     @PostMapping("/cast/create/save")
-    public String createCast(@ModelAttribute CastDTO castDTO){
+    public String createCast(@ModelAttribute CastDTO castDTO, RedirectAttributes redirectAttributes) {
         try {
             castService.createCast(castDTO);
+            redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/cast";
     }

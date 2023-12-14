@@ -34,8 +34,6 @@ public class CategoryController {
         return "admin_category";
     }
 
-
-
     @GetMapping("/category/create")
     public String showCreateCategory(Model model){
         model.addAttribute("categoryDTO", new CategoryDTO());
@@ -43,11 +41,13 @@ public class CategoryController {
     }
 
     @PostMapping("/category/create/save")
-    public String createCategory(@ModelAttribute CategoryDTO categoryDTO){
+    public String createCategory(@ModelAttribute CategoryDTO categoryDTO, RedirectAttributes redirectAttributes) {
         try {
             categoryService.createCategory(categoryDTO);
+            redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/categories";
     }

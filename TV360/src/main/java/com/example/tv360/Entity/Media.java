@@ -40,10 +40,8 @@ public class Media {
     @MapToDTO
     private String quality;
 
-    @OneToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
-    private Country country;
+    private String country_id;
 
     @Column(name = "type")
     @MapToDTO
@@ -75,5 +73,10 @@ public class Media {
     @MapToDTO
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<MediaItem> mediaItems;
+
+    @OneToOne
+    @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private Country country;
 
 }

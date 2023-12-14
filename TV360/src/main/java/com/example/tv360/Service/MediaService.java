@@ -46,6 +46,7 @@ public class MediaService {
         media.setEvaluate(mediaDTO.getEvaluate());
         media.setDuration(mediaDTO.getDuration());
         media.setQuality(mediaDTO.getQuality());
+        media.setCountry_id(mediaDTO.getCountry_id());
         media.setType(mediaDTO.getType());
         media.setStatus(1);
         return mediaRepository.save(media);
@@ -61,6 +62,7 @@ public class MediaService {
             media.setEvaluate(mediaDTO.getEvaluate());
             media.setDuration(mediaDTO.getDuration());
             media.setQuality(mediaDTO.getQuality());
+            media.setCountry_id(mediaDTO.getCountry_id());
             media.setType(mediaDTO.getType());
             media.setStatus(mediaDTO.getStatus());
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

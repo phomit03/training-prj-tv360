@@ -37,7 +37,7 @@ public class CastService {
 
     public Cast createCast(CastDTO castDTO) throws IOException{
         Cast cast = new Cast();
-        cast.setFullName(cast.getFullName());
+        cast.setFullName(castDTO.getFullName());
         cast.setType(castDTO.getType());
         cast.setStatus(1);
         return castRepository.save(cast);

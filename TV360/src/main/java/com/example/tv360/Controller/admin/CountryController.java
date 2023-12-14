@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,6 +25,15 @@ public class CountryController {
     public CountryController(CountryService countryService, CountryRepository countryRepository) {
         this.countryService = countryService;
         this.countryRepository = countryRepository;
+    }
+
+    @GetMapping("/country")
+    public String getAllCountries(Model model) {
+
+        model.addAttribute("title", "Country");
+        List<CountryDTO> countries = countryService.getAllCountries();
+        model.addAttribute("countries", countries);
+        return "admin_country";
     }
 
     @GetMapping("/country/create")

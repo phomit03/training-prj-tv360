@@ -1,6 +1,7 @@
 package com.example.tv360.DTO;
 
 
+import com.example.tv360.Entity.Country;
 import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class MediaDTO {
     private String evaluate;
     private String duration;
     private String quality;
-    private CountryDTO country; // Assuming you have a CountryDTO class
+    private String country_id;
     private Integer type;
     private Integer status;
     private Timestamp createdAt;
@@ -30,4 +31,6 @@ public class MediaDTO {
     private Set<FilmCastDTO> filmCasts;
     private Set<MediaCategoryDTO> mediaCategories;
     private Set<MediaItemDTO> mediaItems;
+    private Country country;
+
 }
