@@ -8,21 +8,23 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
-public class Category {
+@Table(name = "media_detail")
+public class MediaDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(name = "media_url")
+    private String mediaUrl;
 
     @Column(name = "type")
-    private Integer type;
+    private Integer type;   //type: vod, film
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     private Integer status;
@@ -34,4 +36,8 @@ public class Category {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    // KHOA TRUNG GIAN
+    @OneToMany(mappedBy = "itemId", cascade = CascadeType.ALL)
+    private Set<MediaItem> mediaItems;
 }

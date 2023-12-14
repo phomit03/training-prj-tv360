@@ -38,5 +38,5 @@ public class Cast {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "castId", cascade = CascadeType.ALL)
-    private Set<Film_Cast> film_cast;
+    private Set<FilmCast> filmCast;
 }

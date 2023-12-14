@@ -11,8 +11,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Film_CastDTO {
-
+public class FilmCastDTO {
     private Long id;
     private MediaDTO mediaId;
     private CastDTO castId;

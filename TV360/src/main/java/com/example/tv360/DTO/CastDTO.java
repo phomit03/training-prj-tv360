@@ -13,12 +13,11 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 public class CastDTO {
-
     private Long id;
     private String fullName;
     private Integer type;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Set<Film_CastDTO> film_cast;
+    private Set<FilmCastDTO> film_cast;
 }

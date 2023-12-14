@@ -10,19 +10,24 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
-public class Category {
+@Table(name = "media_item")
+public class MediaItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
+    private Media mediaId;
 
-    @Column(name = "type")
-    private Integer type;
+    @ManyToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    private MediaDetail itemId;     //type: film
+
+    private String position;    //episode
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     private Integer status;

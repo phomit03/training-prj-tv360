@@ -8,21 +8,25 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
-public class Category {
+@Table(name = "media_category")
+public class MediaCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
+    private Media mediaId;
 
-    @Column(name = "type")
-    private Integer type;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category categoryId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     private Integer status;

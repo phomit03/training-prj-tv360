@@ -6,14 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CategoryDTO {
+public class MediaItemDTO {
     private Long id;
-    private String name;
-    private Integer type;
+    private MediaDTO mediaId;
+    private MediaDetailDTO itemId;
+    private String position;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;

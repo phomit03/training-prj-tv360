@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "country")
 public class Country {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,5 +31,4 @@ public class Country {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
 }

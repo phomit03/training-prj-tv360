@@ -1,6 +1,5 @@
 package com.example.tv360.DTO;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,20 +9,15 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Data
-@Builder
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class MediaDTO {
+public class MediaDetailDTO {
     private Long id;
-    private String thumbnail;
-    private String title;
-    private String description;
-    private CountryDTO country; // Assuming you have a CountryDTO class
+    private String mediaUrl;
     private Integer type;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Set<FilmCastDTO> filmCasts;
-    private Set<MediaCategoryDTO> mediaCategories;
     private Set<MediaItemDTO> mediaItems;
 }

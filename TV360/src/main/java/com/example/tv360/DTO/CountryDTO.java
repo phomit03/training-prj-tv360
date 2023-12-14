@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryDTO {
-
     private Long id;
     private String name;
     private Integer status;
