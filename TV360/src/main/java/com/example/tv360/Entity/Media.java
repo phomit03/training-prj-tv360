@@ -1,5 +1,6 @@
 package com.example.tv360.Entity;
 
+import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,32 +20,42 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @MapToDTO
     private String thumbnail;
-
+    @MapToDTO
     private String title;
-
+    @MapToDTO
     private String description;
+    @MapToDTO
+    private String evaluate;
+    @MapToDTO
+    private String duration;
+    @MapToDTO
+    private String quality;
 
     @OneToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
     private Country country;
 
     @Column(name = "type")
+    @MapToDTO
     private Integer type;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
+    @MapToDTO
     private Integer status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @MapToDTO
     private Timestamp createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
+    @MapToDTO
     private Timestamp updatedAt;
 
-    // KHOA CHUNG GIAN
     // KHOA CHUNG GIAN
     @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
     private Set<Film_Cast> film_casts;

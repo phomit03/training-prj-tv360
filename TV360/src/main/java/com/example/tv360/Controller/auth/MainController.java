@@ -1,4 +1,4 @@
-package com.example.tv360.Controller;
+package com.example.tv360.Controller.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
