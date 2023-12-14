@@ -1,5 +1,6 @@
 package com.example.tv360.Entity;
 
+import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class MediaDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
 
     @Column(name = "media_url")

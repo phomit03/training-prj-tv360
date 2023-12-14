@@ -19,17 +19,24 @@ import java.util.Set;
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
+
     @MapToDTO
     private String thumbnail;
+
     @MapToDTO
     private String title;
+
     @MapToDTO
     private String description;
+
     @MapToDTO
     private String evaluate;
+
     @MapToDTO
     private String duration;
+
     @MapToDTO
     private String quality;
 

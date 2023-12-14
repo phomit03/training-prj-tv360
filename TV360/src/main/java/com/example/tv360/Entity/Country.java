@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @MapToDTO
     private Long id;
 
     @MapToDTO

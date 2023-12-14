@@ -12,16 +12,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class CategoryDTO {
-    @MapToDTO
     private Long id;
-    @MapToDTO
     private String name;
-    @MapToDTO
     private Integer type;
-    @MapToDTO
     private Integer status;
-    @MapToDTO
     private Timestamp createdAt;
-    @MapToDTO
     private Timestamp updatedAt;
 }
