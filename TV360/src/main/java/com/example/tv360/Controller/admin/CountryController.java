@@ -27,7 +27,7 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
-    @GetMapping("/country")
+    @GetMapping("/countries")
     public String getAllCountries(Model model) {
 
         model.addAttribute("title", "Country");
@@ -49,7 +49,7 @@ public class CountryController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "redirect:/admin/country";
+        return "redirect:/admin/countries";
     }
 
     @GetMapping("/country/update/{id}")
@@ -72,7 +72,7 @@ public class CountryController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/country";
+        return "redirect:/admin/countries";
     }
 
     @GetMapping("/country/delete/{id}")

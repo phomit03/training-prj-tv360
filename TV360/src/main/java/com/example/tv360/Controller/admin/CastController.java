@@ -25,7 +25,7 @@ public class CastController {
         this.castRepository = castRepository;
     }
 
-    @GetMapping("/cast")
+    @GetMapping("/casts")
     public String getAllCasts(Model model) {
 
         model.addAttribute("title", "Cast");
@@ -49,7 +49,7 @@ public class CastController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/cast";
+        return "redirect:/admin/casts";
     }
 
     @GetMapping("/cast/update/{id}")
@@ -72,7 +72,7 @@ public class CastController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/cast";
+        return "redirect:/admin/casts";
     }
 
     @GetMapping("/cast/delete/{id}")

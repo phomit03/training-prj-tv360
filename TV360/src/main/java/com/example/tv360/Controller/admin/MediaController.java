@@ -29,7 +29,7 @@ public class MediaController {
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/media")
+    @GetMapping("/medias")
     public String getAllMedia(Model model) {
         model.addAttribute("title", "Media");
         List<MediaDTO> media = mediaService.getAllMedias();
@@ -54,7 +54,7 @@ public class MediaController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media";
+        return "redirect:/admin/medias";
     }
 
     @GetMapping("/media/update/{id}")
@@ -77,7 +77,7 @@ public class MediaController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/media";
+        return "redirect:/admin/medias";
     }
 
     @GetMapping("/media/delete/{id}")
