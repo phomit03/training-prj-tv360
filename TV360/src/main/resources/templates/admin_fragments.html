@@ -83,6 +83,12 @@
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
             Media Details
           </a>
+
+          <a th:href="@{/admin/mediacategories}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/mediacategories') ? 'active' : ''}">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            Media Categories
+          </a>
+
         </div>
       </div>
       <div class="sb-sidenav-footer">

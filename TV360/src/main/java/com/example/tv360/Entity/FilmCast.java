@@ -21,15 +21,11 @@ public class FilmCast {
     @MapToDTO
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
     @MapToDTO
-    private Media mediaId;          //type: series_movie, movie
+    private String media_id;
 
-    @ManyToOne
-    @JoinColumn(name = "cast_id", referencedColumnName = "id")
     @MapToDTO
-    private Cast castId;
+    private String cast_id;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
@@ -44,4 +40,14 @@ public class FilmCast {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private Media media;          //type: series_movie, movie
+
+    @ManyToOne
+    @JoinColumn(name = "cast_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private Cast cast;
 }

@@ -63,15 +63,15 @@ public class Media {
 
     // KHOA TRUNG GIAN
     @MapToDTO
-    @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
     private Set<FilmCast> filmCasts;
 
     @MapToDTO
-    @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
     private Set<MediaCategory> mediaCategories;
 
     @MapToDTO
-    @OneToMany(mappedBy = "mediaId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
     private Set<MediaItem> mediaItems;
 
     @OneToOne

@@ -45,7 +45,7 @@ public class MediaDetail {
     private Timestamp updatedAt;
 
     // KHOA TRUNG GIAN
-    @OneToMany(mappedBy = "itemId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item_id", cascade = CascadeType.ALL)
     @MapToDTO
     private Set<MediaItem> mediaItems;
 }
