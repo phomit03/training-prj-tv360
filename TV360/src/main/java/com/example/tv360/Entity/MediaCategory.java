@@ -42,12 +42,12 @@ public class MediaCategory {
     @MapToDTO
     private Timestamp updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
     private Media media;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
     private Category category;

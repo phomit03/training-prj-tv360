@@ -27,7 +27,6 @@ public class CastController {
 
     @GetMapping("/casts")
     public String getAllCasts(Model model) {
-
         model.addAttribute("title", "Cast");
         List<CastDTO> casts = castService.getAllCasts();
         model.addAttribute("casts", casts);

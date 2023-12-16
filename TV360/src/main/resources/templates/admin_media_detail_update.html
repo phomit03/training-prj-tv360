@@ -14,56 +14,58 @@
     <!-- menu End -->
 
     <div id="layoutSidenav_content">
-      <!-- Content Start -->
-      <main>
-        <div class="container-fluid px-4">
-          <h1 class="mt-4 title-admin">Update Media Detail</h1>
-          <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Update media detail data
+        <!-- Content Start -->
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4 title-admin">Update Media Detail</h1>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Update media detail data
 
-                <a th:href="@{/admin/mediadetails}" type="button" class="btn btn-primary" style="float: right">back list <</a>
+                        <a th:href="@{/admin/mediadetails}" type="button" class="btn btn-primary"
+                           style="float: right">back list <</a>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/mediadetail/update/{id} (id = ${mediaDetailDTO.id})}"
+                              th:object="${mediaDetailDTO}" method="post">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{mediaUrl}" name="mediaUrl" type="text"
+                                       placeholder="Link Film" required/>
+                                <label>Media Url</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="type" name="type" aria-label="type"
+                                        th:field="*{type}" required>
+                                    <option value="" selected>-- choose option --</option>
+                                    <option value="1" th:selected="${mediaDetailDTO.type == 1}">vod</option>
+                                    <option value="2" th:selected="${mediaDetailDTO.type == 2}">film</option>
+                                </select>
+                                <label>Type</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="status" th:field="*{status}" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="0" th:selected="${mediaDetailDTO.status == 0}">in-active</option>
+                                    <option value="1" th:selected="${mediaDetailDTO.status == 1}">active</option>
+                                </select>
+                                <label>Status</label>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-              <form th:action="@{/admin/mediadetail/update/{id} (id = ${mediaDetailDTO.id})}" th:object="${mediaDetailDTO}" method="post">
-                <div class="form-floating mb-3">
-                  <input class="form-control" th:field="*{mediaUrl}" name="mediaUrl" type="text" placeholder="Link Film"/>
-                  <label>Media Url</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <select class="form-control" id="type" name="type" aria-label="type"
-                            th:field="*{type}" required>
-                        <option value="" selected>-- choose option --</option>
-                        <option value="1" th:selected="${mediaDetailDTO.type == 1}">vod</option>
-                        <option value="2" th:selected="${mediaDetailDTO.type == 2}">film</option>
-                    </select>
-                    <label>Type</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <select class="form-control" name="status" th:field="*{status}">
-                          <option value="" selected>-- choose type --</option>
-                          <option value="0" th:selected="${mediaDetailDTO.status == 0}">in-active</option>
-                          <option value="1" th:selected="${mediaDetailDTO.status == 1}">active</option>
-                  </select>
-                  <label>Status</label>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                  <button type="submit" class="btn btn-success">Update</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-      <!-- Content End -->
+        </main>
+        <!-- Content End -->
 
-      <!-- footer Start -->
-      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-      <!-- footer End -->
+        <!-- footer Start -->
+        <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+        <!-- footer End -->
     </div>
 </div>
-
 
 <div th:replace="admin_fragments::script"></div>
 

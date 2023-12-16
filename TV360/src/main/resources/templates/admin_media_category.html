@@ -9,85 +9,85 @@
 <!-- navbar End -->
 
 <div id="layoutSidenav">
-    <!-- menu Start -->
-    <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
-    <!-- menu End -->
+  <!-- menu Start -->
+  <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
+  <!-- menu End -->
 
-    <div id="layoutSidenav_content">
-      <!-- Content Start -->
-      <main>
-        <div class="container-fluid px-4">
-          <h1 class="mt-4 title-admin">Media Categories</h1>
-          <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                List of media categories
+  <div id="layoutSidenav_content">
+    <!-- Content Start -->
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-4 title-admin">Media Categories</h1>
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            List of media categories
 
-              <a th:href="@{/admin/mediacategory/create}">
-                <button type="button" class="btn btn-primary" style="float: right">+ media category</button>
-              </a>
+            <a th:href="@{/admin/mediacategory/create}">
+              <button type="button" class="btn btn-primary" style="float: right">+ Media Category</button>
+            </a>
 
-            </div>
-            <div class="card-body">
-              <table id="datatablesSimple">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Type Media</th>
-                    <th>Name Category</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody th:if="${mcDTO != null and #lists.size(mcDTO) > 0}">
-                <tr th:each="mc, iterStat : ${mcDTO}" th:class="'mediacategory-' + ${mc.id}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${mc.media.type}"></td>
-                    <td th:text="${mc.category.name}"></td>
-                    <td>
+          </div>
+          <div class="card-body">
+            <table id="datatablesSimple">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Type Media</th>
+                <th>Name Category</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody th:if="${mediaCategories != null and #lists.size(mediaCategories) > 0}">
+              <tr th:each="mediaCategory, iterStat : ${mediaCategories}" th:class="'mediacategory-' + ${mediaCategory.id}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${mediaCategory.media.type}"></td>
+                <td th:text="${mediaCategory.category.name}"></td>
+                <td>
                       <span style="color: green">
-                        <th:block th:if="${mc.status == 1}">
+                        <th:block th:if="${mediaCategory.status == 1}">
                           active
                         </th:block>
                       </span>
-                      <span style="color: red">
-                        <th:block th:if="${mc.status == 0}">
+                  <span style="color: red">
+                        <th:block th:if="${mediaCategory.status == 0}">
                           in-active
                         </th:block>
                       </span>
-                    </td>
-                    <td>
-                      <button class="btn">
-                        <a th:href="@{/admin/mediacategory/update/{id} (id=${mc.id})}">
-                          <i class="fas fa-pencil-alt"></i>
-                        </a>
-                      </button>
-                      <button class="btn">
-                        <a th:data-id="${mc.id}" class="delete-btn">
-                          <i class="fas fa-trash"></i>
-                        </a>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                </td>
+                <td>
+                  <button class="btn">
+                    <a th:href="@{/admin/mediacategory/update/{id} (id=${mediaCategory.id})}">
+                      <i class="fas fa-pencil-alt"></i>
+                    </a>
+                  </button>
+                  <th:block th:if="${mediaCategory.status == 1}">
+                    <button type="button" th:data-id="${mediaCategory.id}" class="btn delete-btn">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </th:block>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </main>
-      <!-- Content End -->
+      </div>
+    </main>
+    <!-- Content End -->
 
-      <!-- footer Start -->
-      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-      <!-- footer End -->
-    </div>
+    <!-- footer Start -->
+    <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+    <!-- footer End -->
+  </div>
 </div>
 
-
-<div th:replace="admin_fragments::script">
-  <script>
+<script>
+  $(document).ready(function () {
     $('.delete-btn').click(function () {
-      var id = $(this).attr('data-id');
+      console.log(123)
+      var id = $(this).data('id');
       var newRow = $('.mediacategory-' + id);
       Swal.fire({
         title: 'Are you sure you want to delete this item?',
@@ -104,18 +104,21 @@
             success: function () {
               newRow.remove();
               Swal.fire(
-                  'Success',
-                  'Delete success',
-                  'success'
-              );
+                      'Success',
+                      'Delete success',
+                      'success'
+              ).then(() => {
+                location.reload();
+              });
             }
           })
         }
       })
     })
-  </script>
-</div>
+  })
+</script>
 
+<div th:replace="admin_fragments::script"></div>
 </body>
 
 </html>

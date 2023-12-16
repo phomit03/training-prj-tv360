@@ -1,14 +1,12 @@
 package com.example.tv360.Controller.admin;
 
+import com.example.tv360.DTO.CategoryDTO;
 import com.example.tv360.DTO.CountryDTO;
 import com.example.tv360.DTO.MediaCategoryDTO;
 import com.example.tv360.DTO.MediaDTO;
 import com.example.tv360.Repository.MediaCategoryRepository;
 import com.example.tv360.Repository.MediaRepository;
-import com.example.tv360.Service.CountryService;
-import com.example.tv360.Service.MediaCategoryService;
-import com.example.tv360.Service.MediaDetailService;
-import com.example.tv360.Service.MediaService;
+import com.example.tv360.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +23,25 @@ import java.util.List;
 public class MediaCategoryController {
     private final MediaCategoryService mediaCategoryService;
     private final MediaService mediaService;
-    private final CountryService countryService;
+    private final CategoryService categoryService;
     private final MediaCategoryRepository mediaCategoryRepository;
     @Autowired
-    public MediaCategoryController(MediaCategoryService mediaCategoryService, MediaService mediaService, CountryService countryService, MediaCategoryRepository mediaCategoryRepository) {
+    public MediaCategoryController(MediaCategoryService mediaCategoryService, MediaService mediaService, CategoryService categoryService, MediaCategoryRepository mediaCategoryRepository) {
         this.mediaCategoryService = mediaCategoryService;
         this.mediaService = mediaService;
-        this.countryService = countryService;
+        this.categoryService = categoryService;
         this.mediaCategoryRepository = mediaCategoryRepository;
     }
 
     @GetMapping("/mediacategories")
     public String getAllMediaCategories(Model model) {
         model.addAttribute("title", "Media Category");
-        List<MediaCategoryDTO> mcDTO = mediaCategoryService.getAllMediaCategories();
-        model.addAttribute("mcDTO", mcDTO);
+        List<MediaCategoryDTO> mediaCategories = mediaCategoryService.getAllMediaCategories();
+        model.addAttribute("mediaCategories", mediaCategories);
+//        List<MediaDTO> media = mediaService.getAllMedias();
+//        List<CategoryDTO> categories = categoryService.getAllCategories();
+//        model.addAttribute("media1", media);
+//        model.addAttribute("categories", categories);
         return "admin_media_category";
     }
 
@@ -47,9 +49,9 @@ public class MediaCategoryController {
     public String showCreateMediaCategory(Model model){
         model.addAttribute("mcDTO", new MediaCategoryDTO());
         List<MediaDTO> media = mediaService.getAllMedias();
-        List<CountryDTO> countries = countryService.getAllCountries();
-        model.addAttribute("media", media);
-        model.addAttribute("countries", countries);
+        List<CategoryDTO> categories = categoryService.getAllCategories();
+        model.addAttribute("media1", media);
+        model.addAttribute("categories", categories);
         return "admin_media_category_create";
     }
 

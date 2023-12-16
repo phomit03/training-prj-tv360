@@ -31,7 +31,7 @@ public class MediaCategoryService {
 
     public List<MediaCategoryDTO> getAllMediaCategories(){
         List<MediaCategory> mediaCategories = mediaCategoryRepository.findAll();
-        return mediaCategories.stream().map(mediaCategories1 -> modelToDtoConverter.convertToDto(mediaCategories1, MediaCategoryDTO.class)).collect(Collectors.toList());
+        return mediaCategories.stream().map(mc -> modelToDtoConverter.convertToDto(mc, MediaCategoryDTO.class)).collect(Collectors.toList());
     }
 
     public MediaCategoryDTO getMediaCategoryById(Long id) {
