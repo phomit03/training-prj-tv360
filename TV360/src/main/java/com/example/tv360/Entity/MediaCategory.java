@@ -22,15 +22,11 @@ public class MediaCategory {
     @MapToDTO
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
     @MapToDTO
-    private Media mediaId;
+    private String media_id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
     @MapToDTO
-    private Category categoryId;
+    private String category_id;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
@@ -45,4 +41,15 @@ public class MediaCategory {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private Media media;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private Category category;
 }
+

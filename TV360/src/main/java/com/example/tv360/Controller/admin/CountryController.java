@@ -29,7 +29,6 @@ public class CountryController {
 
     @GetMapping("/countries")
     public String getAllCountries(Model model) {
-
         model.addAttribute("title", "Country");
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);

@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,15 +22,11 @@ public class MediaItem {
     @MapToDTO
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
     @MapToDTO
-    private Media mediaId;
+    private String media_id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
     @MapToDTO
-    private MediaDetail itemId;     //type: film
+    private String item_id;
 
     @MapToDTO
     private String position;    //episode
@@ -47,4 +44,15 @@ public class MediaItem {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Media media;
+
+    @ManyToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @MapToDTO
+    private MediaDetail item;     //type: film
+
+
 }

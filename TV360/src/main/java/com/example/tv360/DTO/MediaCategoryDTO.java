@@ -15,9 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class MediaCategoryDTO {
     private Long id;
-    private MediaDTO mediaId;
-    private CategoryDTO categoryId;
+    private String media_id;
+    private String category_id;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private MediaDTO media;
+    private CategoryDTO category;
 }
