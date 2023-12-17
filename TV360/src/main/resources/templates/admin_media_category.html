@@ -23,7 +23,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of media categories
 
-              <a th:href="@{/admin/mediacategory/create}">
+              <a th:href="@{/admin/media/category/create}">
                 <button type="button" class="btn btn-primary" style="float: right">+ media category</button>
               </a>
 
@@ -39,8 +39,8 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody th:if="${mcDTO != null and #lists.size(mcDTO) > 0}">
-                <tr th:each="mc, iterStat : ${mcDTO}" th:class="'mediacategory-' + ${mc.id}">
+                <tbody th:if="${mediaCategories != null and #lists.size(mediaCategories) > 0}">
+                <tr th:each="mc, iterStat : ${mediaCategories}" th:class="'media/category-' + ${mc.id}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${mc.media.type}"></td>
                     <td th:text="${mc.category.name}"></td>
@@ -58,7 +58,7 @@
                     </td>
                     <td>
                       <button class="btn">
-                        <a th:href="@{/admin/mediacategory/update/{id} (id=${mc.id})}">
+                        <a th:href="@{/admin/media/category/update/{id} (id=${mc.id})}">
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>
@@ -88,7 +88,7 @@
   <script>
     $('.delete-btn').click(function () {
       var id = $(this).attr('data-id');
-      var newRow = $('.mediacategory-' + id);
+      var newRow = $('.media/category-' + id);
       Swal.fire({
         title: 'Are you sure you want to delete this item?',
         text: "You won't be able to revert this!",
@@ -100,7 +100,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
-            url: "/admin/mediacategory/delete/" + id,
+            url: "/admin/media/category/delete/" + id,
             success: function () {
               newRow.remove();
               Swal.fire(

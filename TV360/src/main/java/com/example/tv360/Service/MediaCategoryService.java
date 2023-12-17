@@ -2,6 +2,7 @@ package com.example.tv360.Service;
 
 import com.example.tv360.DTO.CastDTO;
 import com.example.tv360.DTO.MediaCategoryDTO;
+import com.example.tv360.DTO.MediaDetailDTO;
 import com.example.tv360.Entity.Cast;
 import com.example.tv360.Entity.Media;
 import com.example.tv360.Entity.MediaCategory;
@@ -29,9 +30,9 @@ public class MediaCategoryService {
         this.modelToDtoConverter = modelToDtoConverter;
     }
 
-    public List<MediaCategoryDTO> getAllMediaCategories(){
+    public List<MediaCategory> getAllMediaCategories(){
         List<MediaCategory> mediaCategories = mediaCategoryRepository.findAll();
-        return mediaCategories.stream().map(mediaCategories1 -> modelToDtoConverter.convertToDto(mediaCategories1, MediaCategoryDTO.class)).collect(Collectors.toList());
+        return mediaCategories; //mediaCategories.stream().map(mediaCategories1 -> modelToDtoConverter.convertToDto(mediaCategories1, MediaCategoryDTO.class)).collect(Collectors.toList());
     }
 
     public MediaCategoryDTO getMediaCategoryById(Long id) {
