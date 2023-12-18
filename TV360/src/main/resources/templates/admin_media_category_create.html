@@ -22,7 +22,6 @@
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Create a new media category
-
                         <a th:href="@{/admin/mediacategories}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
@@ -30,19 +29,22 @@
                         <form th:action="@{/admin/mediacategory/create/save}" th:object="${mcDTO}"
                               method="post">
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="mediaId" th:field="*{media_id}" required>
+                                <select class="form-control" id="mediaId" th:field="*{media_id}">
                                     <option value="" selected>-- choose media --</option>
-                                    <option th:each="media : ${media1}" th:value="${media.id}"
-                                            th:text="${media.type}"></option>
+                                    <option th:each="media : ${media1}" th:value="${media.id}" th:if="${media.status == 1}">
+                                        <span th:if="${media.type eq 1}">Movie Series</span>
+                                        <span th:if="${media.type eq 2}">Movie</span>
+                                        <span th:if="${media.type eq 3}">Video</span>
+                                    </option>
                                 </select>
                                 <label for="mediaId">Media</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="categoryId" th:field="*{category_id}" required>
-                                    <option value="" selected>-- choose category --</option>
-                                    <option th:each="cate : ${categories}" th:value="${cate.id}"
-                                            th:text="${cate.name}"></option>
+                                <select class="form-control" id="categoryId" th:field="*{category_id}">
+                                    <option value="" selected>-- choose media --</option>
+                                    <option th:each="cate : ${categories}" th:value="${cate.id}" th:if="${cate.status == 1}" th:text="${cate.name}">
+                                    </option>
                                 </select>
                                 <label for="categoryId">Category</label>
                             </div>

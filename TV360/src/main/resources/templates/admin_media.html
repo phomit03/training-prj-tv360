@@ -47,7 +47,9 @@
                 <tbody th:if="${media1 != null and #lists.size(media1) > 0}">
                   <tr th:each="media, iterStat : ${media1}" th:class="'media-' + ${media.id}">
                     <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${media.thumbnail}"></td>
+                    <td>
+                      <img style="width: 70px; max-height: 100px" th:src="@{${media.thumbnail}}">
+                    </td>
                     <td th:text="${media.title}"></td>
                     <td th:text="${media.description}"></td>
                     <td th:text="${media.evaluate}">★</td>

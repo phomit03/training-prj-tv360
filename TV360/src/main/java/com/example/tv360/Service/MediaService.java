@@ -6,9 +6,11 @@ import com.example.tv360.Entity.Cast;
 import com.example.tv360.Entity.Media;
 import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Repository.MediaRepository;
+import com.example.tv360.Utils.Helper;
 import com.example.tv360.Utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -20,12 +22,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class MediaService {
+
+    private Helper helper;
     private final MediaRepository mediaRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter,Helper helper ) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.helper = helper;
     }
 
     public List<MediaDTO> getAllMedias(){
@@ -38,9 +43,12 @@ public class MediaService {
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
     }
 
-    public Media createMedia(MediaDTO mediaDTO) throws IOException {
+    public Media createMedia(MediaDTO mediaDTO, MultipartFile logo) throws IOException {
         Media media = new Media();
-        media.setThumbnail(mediaDTO.getThumbnail());
+        if (!logo.isEmpty()) {
+            String thumbnail = helper.uploadImage(logo);
+            media.setThumbnail(thumbnail);
+        }
         media.setTitle(mediaDTO.getTitle());
         media.setDescription(mediaDTO.getDescription());
         media.setEvaluate(mediaDTO.getEvaluate());
@@ -53,10 +61,13 @@ public class MediaService {
     }
 
 
-    public Media updateMedia(MediaDTO mediaDTO){
+    public Media updateMedia(MediaDTO mediaDTO,MultipartFile logo){
         try {
             Media media = mediaRepository.getById(mediaDTO.getId());
-            media.setThumbnail(mediaDTO.getThumbnail());
+            if (!logo.isEmpty()) {
+                String thumbnail = helper.uploadImage(logo);
+                media.setThumbnail(thumbnail);
+            }
             media.setTitle(mediaDTO.getTitle());
             media.setDescription(mediaDTO.getDescription());
             media.setEvaluate(mediaDTO.getEvaluate());

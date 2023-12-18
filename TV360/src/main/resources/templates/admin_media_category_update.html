@@ -4,6 +4,7 @@
 <head th:replace="admin_fragments::head"></head>
 
 <body>
+
 <!-- navbar Start -->
 <div th:replace="admin_fragments::navbar"></div>
 <!-- navbar End -->
@@ -17,42 +18,55 @@
         <!-- Content Start -->
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4 title-admin">Update Cast</h1>
+                <h1 class="mt-4 title-admin">Create Media Category</h1>
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Update cast data
-
-                        <a th:href="@{/admin/cast}" type="button" class="btn btn-primary"
+                        Create a new media category
+                        <a th:href="@{/admin/mediacategories}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/cast/update/{id} (id=${castDTO.id})}" th:object="${castDTO}"
-                              method="post">
+                        <form th:action="@{/admin/mediacategory/update/{id} (id=${mcDTO.id})}" th:object="${mcDTO}" method="post">
+                            <!-- Hidden input to store the old category name -->
+                            <input type="hidden" id="oldCategoryName" th:value="${mcDTO.category.name}" />
+
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{fullName}" name="name" type="text"
-                                       placeholder="name category" required/>
-                                <label>Full Name</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-control" id="type" name="type" aria-label="type"
-                                        th:field="*{type}" required>
-                                    <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${castDTO.type == 1}">director</option>
-                                    <option value="2" th:selected="${castDTO.type == 2}">actor</option>
+                                <select class="form-control" id="mediaId" th:field="*{media_id}">
+                                    <!-- ... (code for media options) ... -->
                                 </select>
-                                <label>Type</label>
+                                <label for="mediaId">Media</label>
                             </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-control" name="status" th:field="*{status}" required>
-                                    <option value="" selected>-- choose type --</option>
-                                    <option value="0" th:selected="${castDTO.status == 0}">in-active</option>
-                                    <option value="1" th:selected="${castDTO.status == 1}">active</option>
+
+                            <div class="form-floating mb-3 category-option movie-series">
+                                <select class="form-control" id="movieseries" th:field="*{category_id}">
+                                    <!-- ... (code for movie series categories) ... -->
                                 </select>
-                                <label>Status</label>
+                                <label for="movieseries">Category</label>
                             </div>
+
+                            <div class="form-floating mb-3 category-option movie">
+                                <select class="form-control" id="movie" th:field="*{category_id}">
+                                    <!-- ... (code for movie categories) ... -->
+                                </select>
+                                <label for="movie">Category</label>
+                            </div>
+
+                            <div class="form-floating mb-3 category-option video">
+                                <select class="form-control" id="video" th:field="*{category_id}">
+                                    <!-- ... (code for video categories) ... -->
+                                </select>
+                                <label for="video">Category</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="categoryName" th:field="*{category.name}"
+                                       placeholder="Enter category name">
+                                <label for="categoryName">Category Name</label>
+                            </div>
+
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                <button type="submit" class="btn btn-success">Update</button>
+                                <button type="submit" class="btn btn-success">Create</button>
                             </div>
                         </form>
                     </div>

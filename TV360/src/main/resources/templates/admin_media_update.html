@@ -23,17 +23,22 @@
                         <i class="fas fa-table me-1"></i>
                         Update media data
 
-                        <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/medias}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}"
-                              th:object="${mediaDTO}" method="post">
-                            <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{thumbnail}" name="thumbnail" type="text"
-                                       placeholder="Thumbnail" required />
-                                <label>Thumbnail</label>
+                              th:object="${mediaDTO}" method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3" style="height: 100px; display: flex; align-items: center">
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="file" id="thumbnail"
+                                           name="logo">
+                                </div>
+                                <div class="col-md-4">
+                                    <img style="width: 90px;" th:src="@{${mediaDTO.thumbnail}}">
+                                </div>
                             </div>
+
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{title}" name="title" type="text"
                                        placeholder="Title" required />

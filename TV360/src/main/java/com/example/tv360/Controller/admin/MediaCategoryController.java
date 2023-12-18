@@ -69,11 +69,14 @@ public class MediaCategoryController {
 
     @GetMapping("/mediacategory/update/{id}")
     public String showUpdateMediaCategory(@PathVariable Long id, Model model){
+        List<MediaDTO> media = mediaService.getAllMedias();
+        List<CategoryDTO> categories = categoryService.getAllCategories();
         MediaCategoryDTO mcDTO = mediaCategoryService.getMediaCategoryById(id);
         if (mcDTO == null){
             return "redirect:/admin/mediacategories";
         }
-
+        model.addAttribute("media1", media);
+        model.addAttribute("categories", categories);
         model.addAttribute("mcDTO", mcDTO);
         return "admin_media_category_update";
     }

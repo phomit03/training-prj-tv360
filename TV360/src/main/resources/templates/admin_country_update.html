@@ -27,8 +27,7 @@
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/country/update/{id} (id = ${countryDTO.id})}"
-                              th:object="${countryDTO}" method="post">
+                        <form th:action="@{/admin/country/update/{id} (id = ${countryDTO.id})}" th:object="${countryDTO}" method="post">
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{name}" name="name" type="text"
                                        placeholder="Name Country" required/>

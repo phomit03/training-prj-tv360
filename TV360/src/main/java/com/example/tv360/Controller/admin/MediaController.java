@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
@@ -46,9 +47,9 @@ public class MediaController {
     }
 
     @PostMapping("/media/create/save")
-    public String createMedia(@ModelAttribute MediaDTO mediaDTO, RedirectAttributes redirectAttributes) {
+    public String createMedia(@ModelAttribute MediaDTO mediaDTO, @RequestParam("logo") MultipartFile logo, RedirectAttributes redirectAttributes) {
         try {
-            mediaService.createMedia(mediaDTO);
+            mediaService.createMedia(mediaDTO, logo);
             redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();
@@ -69,9 +70,9 @@ public class MediaController {
     }
 
     @PostMapping("/media/update/{id}")
-    public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO, RedirectAttributes attributes){
+    public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO,@RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(mediaDTO);
+            mediaService.updateMedia(mediaDTO,logo);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
