@@ -1,8 +1,6 @@
 package com.example.tv360.Controller.admin;
 
-import com.example.tv360.DTO.CountryDTO;
-import com.example.tv360.DTO.MediaDTO;
-import com.example.tv360.Entity.Country;
+import com.example.tv360.DTO.*;
 import com.example.tv360.Repository.MediaRepository;
 import com.example.tv360.Service.CountryService;
 import com.example.tv360.Service.MediaService;
@@ -23,7 +21,7 @@ public class MediaController {
     private final CountryService countryService;
     private final MediaRepository mediaRepository;
 
-    public MediaController(MediaService mediaService,CountryService countryService ,MediaRepository mediaRepository) {
+    public MediaController(MediaService mediaService,CountryService countryService, MediaRepository mediaRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
         this.mediaRepository = mediaRepository;
@@ -60,6 +58,9 @@ public class MediaController {
     @GetMapping("/media/update/{id}")
     public String showUpdateMedia(@PathVariable Long id, Model model){
         MediaDTO mediaDTO = mediaService.getMediaById(id);
+        List<CountryDTO> countries = countryService.getAllCountries();
+        model.addAttribute("countries", countries);
+
         if (mediaDTO == null){
             return "redirect:/admin/media";
         }

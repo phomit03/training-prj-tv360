@@ -28,34 +28,40 @@
                     <div class="card-body">
                         <form th:action="@{/admin/media/create/save}" th:object="${mediaDTO}" method="post">
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Thumbnail" name="thumbnail" type="text" placeholder="Thumbnail"/>
+                                <input class="form-control" id="Thumbnail" name="thumbnail" type="text"
+                                       placeholder="Thumbnail" required />
                                 <label for="Thumbnail">Thumbnail</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Title" name="title" type="text" placeholder="Title"/>
+                                <input class="form-control" id="Title" name="title" type="text"
+                                       placeholder="Title" required />
                                 <label for="Title">Title</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Description" name="description" type="text" placeholder="Description"/>
+                                <input class="form-control" id="Description" name="description" type="text"
+                                       placeholder="Description" required />
                                 <label for="Description">Description</label>
                             </div>
 
-                            <div class="form-floating mb-3">
-                                <!-- Input field for Evaluate -->
-                                <input class="form-control" id="Evaluate" name="evaluate" type="number" min="1" max="5" placeholder="Evaluate"/>
+                            <!--<div class="form-floating mb-3">
+                                &lt;!&ndash; Input field for Evaluate &ndash;&gt;
+                                <input class="form-control" id="Evaluate" name="evaluate" type="number" min="1"
+                                       max="5" placeholder="Evaluate" required />
                                 <label for="Evaluate">Evaluate</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Duration" name="duration" type="text" placeholder="Duration"/>
+                                <input class="form-control" id="Duration" name="duration" type="text"
+                                       placeholder="Duration" required />
                                 <label for="Duration">Duration</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <!-- Select field for Quality -->
-                                <select class="form-select" id="Quality" name="quality">
+                                &lt;!&ndash; Select field for Quality &ndash;&gt;
+                                <select class="form-select" id="Quality" name="quality" required>
+                                    <option value="" selected>&#45;&#45; choose option &#45;&#45;</option>
                                     <option value="2D">2D</option>
                                     <option value="3D">3D</option>
                                     <option value="4K">4K</option>
@@ -63,18 +69,20 @@
                                     <option value="8K">8K</option>
                                 </select>
                                 <label for="Quality">Quality</label>
-                            </div>
+                            </div>-->
 
                             <div class="form-floating mb-3">
-                                    <select class="form-select" id="Country" name="country_id" th:field="*{country_id}" aria-label="Country Id" required>
-                                        <option value="" selected>-- choose option --</option>
-                                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
-                                    </select>
+                                <select class="form-select" id="Country" name="country_id" th:field="*{countryId}"
+                                        aria-label="Country Id" required>
+                                    <option value="" selected>-- choose option --</option>
+                                    <option th:each="country : ${countries}" th:value="${country.id}"
+                                            th:text="${country.name}"></option>
+                                </select>
                                 <label for="Country">Country</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="exampleSelect" name="type">
+                                <select class="form-control" id="exampleSelect" name="type" required>
                                     <option value="" selected>-- choose type --</option>
                                     <option value="1">Movie Series</option>
                                     <option value="2">Movie</option>
@@ -97,7 +105,6 @@
         <!-- footer End -->
     </div>
 </div>
-
 
 <div th:replace="admin_fragments::script"></div>
 

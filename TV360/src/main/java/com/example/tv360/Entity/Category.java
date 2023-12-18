@@ -42,8 +42,4 @@ public class Category {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
-
-    @MapToDTO
-    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL)
-    private Set<MediaCategory> mediaCategories;
 }

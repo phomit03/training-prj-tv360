@@ -14,87 +14,144 @@
     <!-- menu End -->
 
     <div id="layoutSidenav_content">
-      <!-- Content Start -->
-      <main>
-        <div class="container-fluid px-4">
-          <h1 class="mt-4 title-admin">Update Media</h1>
-          <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Update media data
+        <!-- Content Start -->
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4 title-admin">Update Media</h1>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Update media data
 
-                <a th:href="@{/admin/medias}" type="button" class="btn btn-primary" style="float: right">back list <</a>
+                        <a th:href="@{/admin/medias}" type="button" class="btn btn-primary"
+                           style="float: right">back list <</a>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}"
+                              th:object="${mediaDTO}" method="post">
+
+                            <!--<div class="form-floating mb-3">
+                                <button type="button" id="toggleTabButton" class="btn btn-primary">+ Source Url</button>
+                            </div>
+                            <div id="tabContent" style="display: none;"
+                                 th:if="${mediaDTO.type == 2 || mediaDTO.type == 3}">
+                                <form method="post">
+                                    <div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" type="text" name="mediaUrl" placeholder="Source" />
+                                            <label>Source</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" type="text" name="type" placeholder="Type" disabled/>
+                                            <label>Type</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0 mb-3">
+                                        <button type="submit" class="btn btn-success">add source</button>
+                                    </div>
+                                </form>
+                            </div>-->
+
+
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{thumbnail}" name="thumbnail" type="text"
+                                       placeholder="Thumbnail" required />
+                                <label>Thumbnail</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{title}" name="title" type="text"
+                                       placeholder="Title" required />
+                                <label>Title</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{description}" name="description"
+                                       type="text" placeholder="Description" required />
+                                <label>Description</label>
+                            </div>
+                            <!--<div class="form-floating mb-3">
+                                &lt;!&ndash; Input field for Evaluate &ndash;&gt;
+                                <input class="form-control" th:field="*{evaluate}" id="Evaluate" name="evaluate"
+                                       type="number" min="1" max="5" placeholder="Evaluate" required />
+                                <label for="Evaluate">Evaluate</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{duration}" name="duration" type="text"
+                                       placeholder="Duration" required />
+                                <label>Duration</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                &lt;!&ndash; Select field for Quality &ndash;&gt;
+                                <select class="form-select" id="Quality" name="quality"
+                                        th:field="*{quality}" required>
+                                    <option value="" selected>&#45;&#45; choose option &#45;&#45;</option>
+                                    <option value="2D">2D</option>
+                                    <option value="3D">3D</option>
+                                    <option value="4K">4K</option>
+                                    <option value="6K">6K</option>
+                                    <option value="8K">8K</option>
+                                </select>
+                                <label for="Quality">Quality</label>
+                            </div>-->
+
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="countryId" name="countryId" aria-label="type"
+                                        th:field="*{countryId}" required>
+                                    <option value="">-- choose option --</option>
+                                    <option th:selected="*{countryId == country.id}" th:each="country : ${countries}"
+                                            th:value="${country.id}" th:text="${country.name}"></option>
+                                </select>
+                                <label>Type</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="type" name="type" aria-label="type"
+                                        th:field="*{type}" required>
+                                    <option value="" selected>-- choose option --</option>
+                                    <option value="1" th:selected="${mediaDTO.type == 1}">Movie Series</option>
+                                    <option value="2" th:selected="${mediaDTO.type == 2}">Movie</option>
+                                    <option value="3" th:selected="${mediaDTO.type == 3}">Video</option>
+                                </select>
+                                <label>Type</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="status" th:field="*{status}" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="0" th:selected="${mediaDTO.status == 0}">in-active</option>
+                                    <option value="1" th:selected="${mediaDTO.status == 1}">active</option>
+                                </select>
+                                <label>Status</label>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-              <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}" th:object="${mediaDTO}" method="post">
-                <div class="form-floating mb-3">
-                  <input class="form-control" th:field="*{thumbnail}" name="thumbnail" type="text" placeholder="Thumbnail"/>
-                  <label>Thumbnail</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input class="form-control" th:field="*{title}" name="title" type="text" placeholder="Title"/>
-                  <label>Title</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input class="form-control" th:field="*{description}" name="description" type="text" placeholder="Description"/>
-                  <label>Description</label>
-                </div>
-                <div class="form-floating mb-3">
-                      <!-- Input field for Evaluate -->
-                      <input class="form-control" th:field="*{evaluate}" id="Evaluate" name="evaluate" type="number" min="1" max="5" placeholder="Evaluate"/>
-                      <label for="Evaluate">Evaluate</label>
-                  </div>
-                <div class="form-floating mb-3">
-                      <input class="form-control" th:field="*{duration}" name="duration" type="text" placeholder="Duration"/>
-                      <label>Duration</label>
-                  </div>
-                <div class="form-floating mb-3">
-                      <!-- Select field for Quality -->
-                      <select class="form-select" id="Quality" name="quality"
-                              th:field="*{quality}">
-                          <option value="2D">2D</option>
-                          <option value="3D">3D</option>
-                          <option value="4K">4K</option>
-                          <option value="6K">6K</option>
-                          <option value="8K">8K</option>
-                      </select>
-                      <label for="Quality">Quality</label>
-                  </div>
+        </main>
+        <!-- Content End -->
 
-                  <div class="form-floating mb-3">
-                    <select class="form-control" id="type" name="type" aria-label="type"
-                            th:field="*{type}" required>
-                        <option value="" selected>-- choose option --</option>
-                        <option value="1" th:selected="${mediaDTO.type == 1}">Movie Series</option>
-                        <option value="2" th:selected="${mediaDTO.type == 2}">Movie</option>
-                        <option value="2" th:selected="${mediaDTO.type == 3}">Video</option>
-                    </select>
-                    <label>Type</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <select class="form-control" name="status" th:field="*{status}">
-                          <option value="" selected>-- choose type --</option>
-                          <option value="0" th:selected="${mediaDTO.status == 0}">in-active</option>
-                          <option value="1" th:selected="${mediaDTO.status == 1}">active</option>
-                  </select>
-                  <label>Status</label>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                  <button type="submit" class="btn btn-success">Update</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-      <!-- Content End -->
-
-      <!-- footer Start -->
-      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-      <!-- footer End -->
+        <!-- footer Start -->
+        <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+        <!-- footer End -->
     </div>
 </div>
 
+
+
+
+<script>
+    // Thêm mã JavaScript để xử lý sự kiện click nút button và ẩn/hiện tab sổ xuống
+    document.getElementById("toggleTabButton").addEventListener("click", function () {
+        var tabContent = document.getElementById("tabContent");
+        if (tabContent.style.display === "none") {
+            tabContent.style.display = "block";
+        } else {
+            tabContent.style.display = "none";
+        }
+    });
+</script>
 
 <div th:replace="admin_fragments::script"></div>
 

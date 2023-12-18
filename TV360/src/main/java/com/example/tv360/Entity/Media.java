@@ -32,16 +32,8 @@ public class Media {
     private String description;
 
     @MapToDTO
-    private String evaluate;
-
-    @MapToDTO
-    private String duration;
-
-    @MapToDTO
-    private String quality;
-
-    @MapToDTO
-    private String country_id;
+    @Column(name = "country_id")
+    private Long countryId;
 
     @Column(name = "type")
     @MapToDTO
@@ -61,22 +53,8 @@ public class Media {
     @MapToDTO
     private Timestamp updatedAt;
 
-    // KHOA TRUNG GIAN
-    @MapToDTO
-    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
-    private Set<FilmCast> filmCasts;
-
-    @MapToDTO
-    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
-    private Set<MediaCategory> mediaCategories;
-
-    @MapToDTO
-    @OneToMany(mappedBy = "media_id", cascade = CascadeType.ALL)
-    private Set<MediaItem> mediaItems;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
     private Country country;
-
 }

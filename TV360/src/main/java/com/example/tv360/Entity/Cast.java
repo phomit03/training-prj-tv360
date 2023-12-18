@@ -42,8 +42,4 @@ public class Cast {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
-
-    @MapToDTO
-    @OneToMany(mappedBy = "cast_id", cascade = CascadeType.ALL)
-    private Set<FilmCast> filmCast;
 }

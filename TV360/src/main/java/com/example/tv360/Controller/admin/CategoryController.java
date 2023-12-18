@@ -27,7 +27,6 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String getAllProducts(Model model) {
-
         model.addAttribute("title", "Categories");
         List<CategoryDTO> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);

@@ -30,9 +30,9 @@ public class MediaCategoryService {
         this.modelToDtoConverter = modelToDtoConverter;
     }
 
-    public List<MediaCategory> getAllMediaCategories(){
+    public List<MediaCategoryDTO> getAllMediaCategories(){
         List<MediaCategory> mediaCategories = mediaCategoryRepository.findAll();
-        return mediaCategories; //mediaCategories.stream().map(mediaCategories1 -> modelToDtoConverter.convertToDto(mediaCategories1, MediaCategoryDTO.class)).collect(Collectors.toList());
+        return mediaCategories.stream().map(mc -> modelToDtoConverter.convertToDto(mc, MediaCategoryDTO.class)).collect(Collectors.toList());
     }
 
     public MediaCategoryDTO getMediaCategoryById(Long id) {
@@ -42,8 +42,8 @@ public class MediaCategoryService {
 
     public MediaCategory createMediaCategory(MediaCategoryDTO mediaCategoryDTO) throws IOException{
         MediaCategory mediaCategory = new MediaCategory();
-        mediaCategory.setMedia_id(mediaCategoryDTO.getMedia_id());
-        mediaCategory.setCategory_id(mediaCategoryDTO.getCategory_id());
+        mediaCategory.setMedia(mediaCategoryDTO.getMedia());
+        mediaCategory.setCategory(mediaCategoryDTO.getCategory());
         mediaCategory.setStatus(1);
         return mediaCategoryRepository.save(mediaCategory);
     }
@@ -51,8 +51,8 @@ public class MediaCategoryService {
     public MediaCategory updateMediaCategory(MediaCategoryDTO mediaCategoryDTO){
         try {
             MediaCategory mediaCategory = mediaCategoryRepository.getById(mediaCategoryDTO.getId());
-            mediaCategory.setMedia_id(mediaCategoryDTO.getMedia_id());
-            mediaCategory.setCategory_id(mediaCategoryDTO.getCategory_id());
+            mediaCategory.setMedia(mediaCategoryDTO.getMedia());
+            mediaCategory.setCategory(mediaCategoryDTO.getCategory());
             mediaCategory.setStatus(mediaCategoryDTO.getStatus());
             mediaCategory.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaCategoryRepository.save(mediaCategory);

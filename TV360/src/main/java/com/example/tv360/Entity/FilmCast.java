@@ -22,10 +22,12 @@ public class FilmCast {
     private Long id;
 
     @MapToDTO
-    private String media_id;
+    @Column(name = "media_id")
+    private Long mediaId;
 
     @MapToDTO
-    private String cast_id;
+    @Column(name = "cast_id")
+    private Long castId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO

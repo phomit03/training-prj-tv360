@@ -1,10 +1,7 @@
 package com.example.tv360.Service;
 
-import com.example.tv360.DTO.CastDTO;
 import com.example.tv360.DTO.MediaDTO;
-import com.example.tv360.Entity.Cast;
 import com.example.tv360.Entity.Media;
-import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Repository.MediaRepository;
 import com.example.tv360.Utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +40,10 @@ public class MediaService {
         media.setThumbnail(mediaDTO.getThumbnail());
         media.setTitle(mediaDTO.getTitle());
         media.setDescription(mediaDTO.getDescription());
-        media.setEvaluate(mediaDTO.getEvaluate());
-        media.setDuration(mediaDTO.getDuration());
-        media.setQuality(mediaDTO.getQuality());
-        media.setCountry_id(mediaDTO.getCountry_id());
         media.setType(mediaDTO.getType());
+        media.setCountryId(mediaDTO.getCountryId());
         media.setStatus(1);
+
         return mediaRepository.save(media);
     }
 
@@ -59,13 +54,11 @@ public class MediaService {
             media.setThumbnail(mediaDTO.getThumbnail());
             media.setTitle(mediaDTO.getTitle());
             media.setDescription(mediaDTO.getDescription());
-            media.setEvaluate(mediaDTO.getEvaluate());
-            media.setDuration(mediaDTO.getDuration());
-            media.setQuality(mediaDTO.getQuality());
-            media.setCountry_id(mediaDTO.getCountry_id());
+            media.setCountryId(mediaDTO.getCountryId());
             media.setType(mediaDTO.getType());
             media.setStatus(mediaDTO.getStatus());
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
             return mediaRepository.save(media);
         }
         catch (Exception e){
@@ -84,4 +77,5 @@ public class MediaService {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
     }
+
 }
