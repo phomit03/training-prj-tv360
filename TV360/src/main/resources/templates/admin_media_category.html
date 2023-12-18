@@ -33,7 +33,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Type Media</th>
+                    <th>Media</th>
                     <th>Name Category</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -42,7 +42,7 @@
                 <tbody th:if="${mediaCategories != null and #lists.size(mediaCategories) > 0}">
                   <tr th:each="mediaCategory, iterStat : ${mediaCategories}" th:class="'media-category-' + ${mediaCategory.id}">
                       <td th:text="${iterStat.index + 1}"></td>
-                      <td th:text="${mediaCategory.media.type}"></td>
+                      <td th:text="${mediaCategory.media.title}"></td>
                       <td th:text="${mediaCategory.category.name}"></td>
                       <td>
                         <span style="color: green">
