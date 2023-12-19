@@ -2,6 +2,7 @@ package com.example.tv360.Service;
 
 import com.example.tv360.DTO.CastDTO;
 import com.example.tv360.DTO.MediaCategoryDTO;
+import com.example.tv360.DTO.MediaDetailDTO;
 import com.example.tv360.Entity.Cast;
 import com.example.tv360.Entity.Media;
 import com.example.tv360.Entity.MediaCategory;
@@ -41,8 +42,8 @@ public class MediaCategoryService {
 
     public MediaCategory createMediaCategory(MediaCategoryDTO mediaCategoryDTO) throws IOException{
         MediaCategory mediaCategory = new MediaCategory();
-        mediaCategory.setMedia_id(mediaCategoryDTO.getMedia_id());
-        mediaCategory.setCategory_id(mediaCategoryDTO.getCategory_id());
+        mediaCategory.setMedia(mediaCategoryDTO.getMedia());
+        mediaCategory.setCategory(mediaCategoryDTO.getCategory());
         mediaCategory.setStatus(1);
         return mediaCategoryRepository.save(mediaCategory);
     }
@@ -50,8 +51,8 @@ public class MediaCategoryService {
     public MediaCategory updateMediaCategory(MediaCategoryDTO mediaCategoryDTO){
         try {
             MediaCategory mediaCategory = mediaCategoryRepository.getById(mediaCategoryDTO.getId());
-            mediaCategory.setMedia_id(mediaCategoryDTO.getMedia_id());
-            mediaCategory.setCategory_id(mediaCategoryDTO.getCategory_id());
+            mediaCategory.setMedia(mediaCategoryDTO.getMedia());
+            mediaCategory.setCategory(mediaCategoryDTO.getCategory());
             mediaCategory.setStatus(mediaCategoryDTO.getStatus());
             mediaCategory.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaCategoryRepository.save(mediaCategory);

@@ -20,6 +20,4 @@ public class CategoryDTO {
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Set<MediaCategoryDTO> mediaCategories;
-
 }

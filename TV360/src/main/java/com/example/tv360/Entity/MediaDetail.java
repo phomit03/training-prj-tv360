@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Data
@@ -22,13 +23,22 @@ public class MediaDetail {
     @MapToDTO
     private Long id;
 
-    @Column(name = "media_url")
+    @Column(name = "source_url")
     @MapToDTO
-    private String mediaUrl;
+    private String sourceUrl;
 
-    @Column(name = "type")
     @MapToDTO
-    private Integer type;   //type: vod, film
+    private Integer rate;
+
+    @MapToDTO
+    private String duration;
+
+    @MapToDTO
+    private String quality;
+
+    @MapToDTO
+    @Column(name = "media_id")
+    private Long mediaId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
@@ -44,8 +54,7 @@ public class MediaDetail {
     @MapToDTO
     private Timestamp updatedAt;
 
-    // KHOA TRUNG GIAN
-    @OneToMany(mappedBy = "item_id", cascade = CascadeType.ALL)
-    @MapToDTO
-    private Set<MediaItem> mediaItems;
+    @ManyToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Media media;
 }

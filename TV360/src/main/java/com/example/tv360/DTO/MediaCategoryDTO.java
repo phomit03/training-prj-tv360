@@ -1,5 +1,7 @@
 package com.example.tv360.DTO;
 
+import com.example.tv360.Entity.Category;
+import com.example.tv360.Entity.Media;
 import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +17,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class MediaCategoryDTO {
     private Long id;
-    private String media_id;
-    private String category_id;
+    private Long mediaId;
+    private Long categoryId;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private MediaDTO media;
-    private CategoryDTO category;
+    private Media media;
+    private Category category;
 }

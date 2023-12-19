@@ -1,5 +1,7 @@
 package com.example.tv360.DTO;
 
+import com.example.tv360.Entity.Cast;
+import com.example.tv360.Entity.Media;
 import com.example.tv360.Utils.MapToDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +16,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class FilmCastDTO {
     private Long id;
-    private MediaDTO mediaId;
-    private CastDTO castId;
+    private Long mediaId;
+    private Long castId;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private Media media;
+    private Cast cast;
 }

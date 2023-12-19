@@ -42,11 +42,13 @@ public class CountryController {
     }
 
     @PostMapping("/country/create/save")
-    public String createCountry(@ModelAttribute CountryDTO countryDTO){
+    public String createCountry(@ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
         try {
             countryService.createCountry(countryDTO);
+            redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/countries";
     }

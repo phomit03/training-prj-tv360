@@ -23,10 +23,12 @@ public class MediaCategory {
     private Long id;
 
     @MapToDTO
-    private String media_id;
+    @Column(name = "media_id")
+    private Long mediaId;
 
     @MapToDTO
-    private String category_id;
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO

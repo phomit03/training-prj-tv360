@@ -20,17 +20,10 @@ public class MediaDTO {
     private String thumbnail;
     private String title;
     private String description;
-    private String evaluate;
-    private String duration;
-    private String quality;
-    private String country_id;
     private Integer type;
+    private Long countryId;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Set<FilmCastDTO> filmCasts;
-    private Set<MediaCategoryDTO> mediaCategories;
-    private Set<MediaItemDTO> mediaItems;
     private Country country;
-
 }

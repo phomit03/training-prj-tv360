@@ -4,6 +4,7 @@ import com.example.tv360.DTO.CategoryDTO;
 import com.example.tv360.DTO.CountryDTO;
 import com.example.tv360.DTO.MediaCategoryDTO;
 import com.example.tv360.DTO.MediaDTO;
+import com.example.tv360.Entity.MediaCategory;
 import com.example.tv360.Repository.MediaCategoryRepository;
 import com.example.tv360.Repository.MediaRepository;
 import com.example.tv360.Service.*;
@@ -33,47 +34,43 @@ public class MediaCategoryController {
         this.mediaCategoryRepository = mediaCategoryRepository;
     }
 
-    @GetMapping("/mediacategories")
+    @GetMapping("/media-category")
     public String getAllMediaCategories(Model model) {
         model.addAttribute("title", "Media Category");
         List<MediaCategoryDTO> mediaCategories = mediaCategoryService.getAllMediaCategories();
         model.addAttribute("mediaCategories", mediaCategories);
-//        List<MediaDTO> media = mediaService.getAllMedias();
-//        List<CategoryDTO> categories = categoryService.getAllCategories();
-//        model.addAttribute("media1", media);
-//        model.addAttribute("categories", categories);
         return "admin_media_category";
     }
 
-    @GetMapping("/mediacategory/create")
+    @GetMapping("/media-category/create")
     public String showCreateMediaCategory(Model model){
         model.addAttribute("mcDTO", new MediaCategoryDTO());
-        List<MediaDTO> media = mediaService.getAllMedias();
+        List<MediaDTO> medias = mediaService.getAllMedias();
         List<CategoryDTO> categories = categoryService.getAllCategories();
-        model.addAttribute("media1", media);
+        model.addAttribute("medias", medias);
         model.addAttribute("categories", categories);
         return "admin_media_category_create";
     }
 
-    @PostMapping("/mediacategory/create/save")
+    @PostMapping("/media-category/create/save")
     public String createMediaCategory(@ModelAttribute MediaCategoryDTO mcDTO, RedirectAttributes redirectAttributes) {
         try {
             mediaCategoryService.createMediaCategory(mcDTO);
             redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/mediacategories";
+        return "redirect:/admin/media/category";
     }
 
-    @GetMapping("/mediacategory/update/{id}")
+    @GetMapping("/media-category/update/{id}")
     public String showUpdateMediaCategory(@PathVariable Long id, Model model){
         List<MediaDTO> media = mediaService.getAllMedias();
         List<CategoryDTO> categories = categoryService.getAllCategories();
         MediaCategoryDTO mcDTO = mediaCategoryService.getMediaCategoryById(id);
         if (mcDTO == null){
-            return "redirect:/admin/mediacategories";
+            return "redirect:/admin/media/category";
         }
         model.addAttribute("media1", media);
         model.addAttribute("categories", categories);
@@ -81,7 +78,7 @@ public class MediaCategoryController {
         return "admin_media_category_update";
     }
 
-    @PostMapping("/mediacategory/update/{id}")
+    @PostMapping("/media-category/update/{id}")
     public String updateMediaCategory(@PathVariable Long id, @ModelAttribute("mcDTO") MediaCategoryDTO mcDTO, RedirectAttributes attributes){
         try {
             mediaCategoryService.updateMediaCategory(mcDTO);
@@ -90,10 +87,10 @@ public class MediaCategoryController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/mediacategories";
+        return "redirect:/admin/media/category";
     }
 
-    @GetMapping("/mediacategory/delete/{id}")
+    @GetMapping("/media-category/delete/{id}")
     public ResponseEntity<String> deleteMediaCategory(@PathVariable Long id){
         try {
             mediaCategoryService.softDeleteMediaCategory(id);

@@ -20,5 +20,4 @@ public class CastDTO {
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Set<FilmCastDTO> film_cast;
 }

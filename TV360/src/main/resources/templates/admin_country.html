@@ -39,7 +39,7 @@
                   </tr>
                 </thead>
                 <tbody th:if="${countries != null and #lists.size(countries) > 0}">
-                  <tr th:each="country, iterStat : ${countries}" th:class="'cast-' + ${country.id}">
+                  <tr th:each="country, iterStat : ${countries}" th:class="'country-' + ${country.id}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${country.name}"></td>
                     <td>

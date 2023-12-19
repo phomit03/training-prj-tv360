@@ -49,8 +49,8 @@
                                        type="text" placeholder="Description" required />
                                 <label>Description</label>
                             </div>
-                            <div class="form-floating mb-3">
-                                <!-- Input field for Evaluate -->
+                            <!--<div class="form-floating mb-3">
+                                &lt;!&ndash; Input field for Evaluate &ndash;&gt;
                                 <input class="form-control" th:field="*{evaluate}" id="Evaluate" name="evaluate"
                                        type="number" min="1" max="5" placeholder="Evaluate" required />
                                 <label for="Evaluate">Evaluate</label>
@@ -61,7 +61,7 @@
                                 <label>Duration</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <!-- Select field for Quality -->
+                                &lt;!&ndash; Select field for Quality &ndash;&gt;
                                 <select class="form-select" id="Quality" name="quality"
                                         th:field="*{quality}" required>
                                     <option value="" selected>-- choose option --</option>
@@ -72,6 +72,16 @@
                                     <option value="8K">8K</option>
                                 </select>
                                 <label for="Quality">Quality</label>
+                            </div>-->
+
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="countryId" name="countryId" aria-label="type"
+                                        th:field="*{countryId}" required>
+                                    <option value="">-- choose option --</option>
+                                    <option th:selected="*{countryId == country.id}" th:each="country : ${countries}"
+                                            th:value="${country.id}" th:text="${country.name}"></option>
+                                </select>
+                                <label>Type</label>
                             </div>
 
                             <div class="form-floating mb-3">
