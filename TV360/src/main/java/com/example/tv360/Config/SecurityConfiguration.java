@@ -1,6 +1,6 @@
 package com.example.tv360.Config;
 
-import com.example.tv360.Service.UserService;
+import com.example.tv360.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
