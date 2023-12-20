@@ -27,6 +27,13 @@ public class MediaDetail {
     @MapToDTO
     private String sourceUrl;
 
+    @Column(name = "type_url")
+    @MapToDTO
+    private String typeUrl;
+
+    @MapToDTO
+    private Integer episode;
+
     @MapToDTO
     private Integer rate;
 
@@ -35,10 +42,6 @@ public class MediaDetail {
 
     @MapToDTO
     private String quality;
-
-    @MapToDTO
-    @Column(name = "media_id")
-    private Long mediaId;
 
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
@@ -55,6 +58,7 @@ public class MediaDetail {
     private Timestamp updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "media_id")
+    @MapToDTO
     private Media media;
 }

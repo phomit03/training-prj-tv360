@@ -1,6 +1,8 @@
 package com.example.tv360.Controller.admin;
 
 import com.example.tv360.DTO.*;
+import com.example.tv360.Entity.MediaDetail;
+import com.example.tv360.Repository.MediaDetailRepository;
 import com.example.tv360.Repository.MediaRepository;
 import com.example.tv360.Service.CountryService;
 import com.example.tv360.Service.MediaService;
@@ -21,18 +23,25 @@ public class MediaController {
     private final MediaService mediaService;
     private final CountryService countryService;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
 
-    public MediaController(MediaService mediaService,CountryService countryService, MediaRepository mediaRepository) {
+    public MediaController(MediaService mediaService, CountryService countryService, MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
         this.mediaRepository = mediaRepository;
+        this.mediaDetailRepository = mediaDetailRepository;
     }
 
-    @GetMapping("/medias")
-    public String getAllMedia(Model model) {
+    @GetMapping("/media")
+    public String getAllMedia(@PathVariable Long mediaId, Model model) {
         model.addAttribute("title", "Media");
+
         List<MediaDTO> media = mediaService.getAllMedias();
         model.addAttribute("media1", media);
+
+        MediaDetailDTO mediaDetails = mediaService.getMediaDetailsByMediaId(mediaId);
+        model.addAttribute("mediaDetails", mediaDetails);
+
         return "admin_media";
     }
 
@@ -53,12 +62,14 @@ public class MediaController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/medias";
+        return "redirect:/admin/media";
     }
 
     @GetMapping("/media/update/{id}")
     public String showUpdateMedia(@PathVariable Long id, Model model){
         MediaDTO mediaDTO = mediaService.getMediaById(id);
+        model.addAttribute("mediaDTO", mediaDTO);
+
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
@@ -66,20 +77,20 @@ public class MediaController {
             return "redirect:/admin/media";
         }
 
-        model.addAttribute("mediaDTO", mediaDTO);
         return "admin_media_update";
     }
 
     @PostMapping("/media/update/{id}")
-    public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO,@RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
+    public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO,
+                              @RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(mediaDTO,logo);
+            mediaService.updateMedia(mediaDTO, logo);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/medias";
+        return "redirect:/admin/media";
     }
 
     @GetMapping("/media/delete/{id}")

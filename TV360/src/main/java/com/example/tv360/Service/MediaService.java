@@ -1,7 +1,10 @@
 package com.example.tv360.Service;
 
 import com.example.tv360.DTO.MediaDTO;
+import com.example.tv360.DTO.MediaDetailDTO;
 import com.example.tv360.Entity.Media;
+import com.example.tv360.Entity.MediaDetail;
+import com.example.tv360.Repository.MediaDetailRepository;
 import com.example.tv360.Repository.MediaRepository;
 import com.example.tv360.Utils.Helper;
 import com.example.tv360.Utils.ModelToDtoConverter;
@@ -22,12 +25,14 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter,Helper helper ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper, MediaDetailRepository mediaDetailRepository) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
+        this.mediaDetailRepository = mediaDetailRepository;
     }
 
     public List<MediaDTO> getAllMedias(){
@@ -49,7 +54,7 @@ public class MediaService {
         media.setTitle(mediaDTO.getTitle());
         media.setDescription(mediaDTO.getDescription());
         media.setType(mediaDTO.getType());
-        media.setCountryId(mediaDTO.getCountryId());
+        media.setCountry(mediaDTO.getCountry());
         media.setStatus(1);
 
         return mediaRepository.save(media);
@@ -65,7 +70,7 @@ public class MediaService {
             }
             media.setTitle(mediaDTO.getTitle());
             media.setDescription(mediaDTO.getDescription());
-            media.setCountryId(mediaDTO.getCountryId());
+            media.setCountry(mediaDTO.getCountry());
             media.setType(mediaDTO.getType());
             media.setStatus(mediaDTO.getStatus());
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -89,4 +94,9 @@ public class MediaService {
         }
     }
 
+
+    public MediaDetailDTO getMediaDetailsByMediaId(Long mediaId) {
+        MediaDetail mediaDetails = mediaDetailRepository.findByMediaId(mediaId);
+        return modelToDtoConverter.convertToDto(mediaDetails, MediaDetailDTO.class);
+    }
 }

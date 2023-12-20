@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> {
-
+    MediaDetail findByMediaId(Long mediaId);
 }

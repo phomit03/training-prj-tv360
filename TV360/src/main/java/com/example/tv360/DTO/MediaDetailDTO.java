@@ -17,6 +17,8 @@ import java.util.Set;
 public class MediaDetailDTO {
     private Long id;
     private String sourceUrl;
+    private String typeUrl;
+    private Integer episode;
     private Integer rate;
     private String duration;
     private String quality;

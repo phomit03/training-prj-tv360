@@ -31,10 +31,6 @@ public class Media {
     @MapToDTO
     private String description;
 
-    @MapToDTO
-    @Column(name = "country_id")
-    private Long countryId;
-
     @Column(name = "type")
     @MapToDTO
     private Integer type;

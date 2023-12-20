@@ -1,11 +1,8 @@
 package com.example.tv360.Controller.admin;
 
-import com.example.tv360.DTO.CountryDTO;
 import com.example.tv360.DTO.MediaDTO;
 import com.example.tv360.DTO.MediaDetailDTO;
-import com.example.tv360.Entity.MediaDetail;
 import com.example.tv360.Repository.MediaRepository;
-import com.example.tv360.Service.CountryService;
 import com.example.tv360.Service.MediaDetailService;
 import com.example.tv360.Service.MediaService;
 import org.springframework.http.HttpStatus;
@@ -22,28 +19,33 @@ import java.util.List;
 @RequestMapping("/admin")
 public class MediaDetailController {
     private final MediaDetailService mediaDetailService;
+    private final MediaService mediaService;
     private final MediaRepository mediaRepository;
 
-    public MediaDetailController(MediaDetailService mediaDetailService, MediaRepository mediaRepository) {
+    public MediaDetailController(MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
         this.mediaDetailService = mediaDetailService;
+        this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/mediadetails")
+    @GetMapping("/media-details")
     public String getAllMediaDetails(Model model) {
         model.addAttribute("title", "Media Detail");
-        List<MediaDetailDTO> mediadetails = mediaDetailService.getAllMediaDetails();
-        model.addAttribute("mediadetails", mediadetails);
+        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
+        model.addAttribute("mediaDetails", mediaDetails);
         return "admin_media_detail";
     }
 
-    @GetMapping("/mediadetail/create")
+    @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
-        model.addAttribute("mediadetailDTO", new MediaDetailDTO());
-        return "admin_media_detail_create";
+        List<MediaDTO> mediaList = mediaService.getAllMedias();
+        model.addAttribute("mediaList", mediaList);
+
+        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
+        return "admin_media";
     }
 
-    @PostMapping("/mediadetail/create/save")
+    @PostMapping("/media-detail/create/save")
     public String createMediaDetail(@ModelAttribute MediaDetailDTO mediaDetailDTO, RedirectAttributes redirectAttributes) {
         try {
             mediaDetailService.createMediaDetail(mediaDetailDTO);
@@ -52,21 +54,21 @@ public class MediaDetailController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/mediadetails";
+        return "redirect:/admin/media";
     }
 
-    @GetMapping("/mediadetail/update/{id}")
+    @GetMapping("/media-detail/update/{id}")
     public String showUpdateMediaDetail(@PathVariable Long id, Model model){
         MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
         if (mediaDetailDTO == null){
-            return "redirect:/admin/mediadetails";
+            return "redirect:/admin/media-details";
         }
 
         model.addAttribute("mediaDetailDTO", mediaDetailDTO);
         return "admin_media_detail_update";
     }
 
-    @PostMapping("/mediadetail/update/{id}")
+    @PostMapping("/media-detail/update/{id}")
     public String updateMediaDetail(@PathVariable Long id, @ModelAttribute("mediaDetailDTO") MediaDetailDTO mediaDetailDTO, RedirectAttributes attributes){
         try {
             mediaDetailService.updateMediaDetail(mediaDetailDTO);
@@ -75,10 +77,10 @@ public class MediaDetailController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/mediadetails";
+        return "redirect:/admin/media-details";
     }
 
-    @GetMapping("/mediadetail/delete/{id}")
+    @GetMapping("/media-detail/delete/{id}")
     public ResponseEntity<String> deleteMediaDetail(@PathVariable Long id){
         try {
             mediaDetailService.softDeleteMediaDetail(id);

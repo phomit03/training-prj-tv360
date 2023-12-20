@@ -22,14 +22,6 @@ public class MediaCategory {
     @MapToDTO
     private Long id;
 
-    @MapToDTO
-    @Column(name = "media_id")
-    private Long mediaId;
-
-    @MapToDTO
-    @Column(name = "category_id")
-    private Long categoryId;
-
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
     private Integer status;
@@ -44,12 +36,12 @@ public class MediaCategory {
     @MapToDTO
     private Timestamp updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
     private Media media;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapToDTO
     private Category category;

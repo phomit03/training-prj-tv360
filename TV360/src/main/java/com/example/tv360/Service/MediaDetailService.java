@@ -44,7 +44,8 @@ public class MediaDetailService {
         mediaDetail.setRate(mediaDetailDTO.getRate());
         mediaDetail.setDuration(mediaDetailDTO.getDuration());
         mediaDetail.setQuality(mediaDetailDTO.getQuality());
-        mediaDetail.setMedia(mediaDetailDTO.getMedia());
+        mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
+        mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMediaId()).get());
         mediaDetail.setStatus(1);
 
         return mediaDetailRepository.save(mediaDetail);
@@ -57,6 +58,7 @@ public class MediaDetailService {
             mediaDetail.setRate(mediaDetailDTO.getRate());
             mediaDetail.setDuration(mediaDetailDTO.getDuration());
             mediaDetail.setQuality(mediaDetailDTO.getQuality());
+            mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
             mediaDetail.setMedia(mediaDetailDTO.getMedia());
             mediaDetail.setStatus(mediaDetailDTO.getStatus());
             mediaDetail.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

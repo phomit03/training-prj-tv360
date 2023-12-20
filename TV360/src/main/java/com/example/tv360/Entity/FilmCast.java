@@ -21,14 +21,6 @@ public class FilmCast {
     @MapToDTO
     private Long id;
 
-    @MapToDTO
-    @Column(name = "media_id")
-    private Long mediaId;
-
-    @MapToDTO
-    @Column(name = "cast_id")
-    private Long castId;
-
     @Column(name = "status", columnDefinition = "INT DEFAULT 1")
     @MapToDTO
     private Integer status;
