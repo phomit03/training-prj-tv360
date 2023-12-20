@@ -65,7 +65,7 @@ public class CastController {
     @PostMapping("/cast/update/{id}")
     public String updateCast(@PathVariable Long id, @ModelAttribute("castDTO") CastDTO castDTO, RedirectAttributes attributes){
         try {
-            castService.updateCast(castDTO);
+            castService.updateCast(id ,castDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

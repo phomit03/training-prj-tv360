@@ -7,6 +7,7 @@ import com.example.tv360.Entity.Category;
 import com.example.tv360.Entity.Country;
 import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Repository.CountryRepository;
+import com.example.tv360.Utils.DtoToModelConverter;
 import com.example.tv360.Utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,14 @@ import java.util.stream.Collectors;
 public class CountryService {
     private final CountryRepository countryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
+
     @Autowired
-    public CountryService(CountryRepository countryRepository, ModelToDtoConverter modelToDtoConverter ) {
+    public CountryService(CountryRepository countryRepository, ModelToDtoConverter modelToDtoConverter ,DtoToModelConverter dtoToModelConverter ) {
         this.countryRepository = countryRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.dtoToModelConverter = dtoToModelConverter;
+
     }
 
     public List<CountryDTO> getAllCountries(){
@@ -40,18 +45,17 @@ public class CountryService {
     }
 
     public Country createCountry(CountryDTO countryDTO) throws IOException {
-        Country country = new Country();
-        country.setName(countryDTO.getName());
+        Country country = dtoToModelConverter.convertToModel(countryDTO, Country.class);
         country.setStatus(1);
         return countryRepository.save(country);
     }
 
-    public Country updateCountry(CountryDTO countryDTO){
+    public Country updateCountry(Long id,CountryDTO countryDTO){
         try {
-            Country country = countryRepository.getById(countryDTO.getId());
-            country.setName(countryDTO.getName());
-            country.setStatus(countryDTO.getStatus());
+            Country country = countryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            Country updateCountry1 = dtoToModelConverter.convertToModel(countryDTO, Country.class);
             country.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            country = updateCountry1;
             return countryRepository.save(country);
         }
         catch (Exception e){

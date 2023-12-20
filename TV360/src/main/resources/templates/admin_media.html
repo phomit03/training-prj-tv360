@@ -36,6 +36,7 @@
                     <th>Thumbnail</th>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>National</th>
                     <th>Type</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -49,6 +50,7 @@
                     </td>
                     <td th:text="${media.title}"></td>
                     <td th:text="${media.description}"></td>
+                    <td th:text="${media.country.name}"></td>
                     <td th:text="${#strings.equalsIgnoreCase(media.type, '1') ? 'Movie Series' : (#strings.equalsIgnoreCase(media.type, '2') ? 'Movie' : 'Video')}"></td>
                     <td>
                       <span style="color: green">

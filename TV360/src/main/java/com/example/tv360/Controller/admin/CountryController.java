@@ -67,7 +67,7 @@ public class CountryController {
     @PostMapping("/country/update/{id}")
     public String updateCountry(@PathVariable Long id, @ModelAttribute("castDTO") CountryDTO countryDTO, RedirectAttributes attributes){
         try {
-            countryService.updateCountry(countryDTO);
+            countryService.updateCountry(id, countryDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

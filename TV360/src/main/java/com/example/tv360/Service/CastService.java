@@ -3,6 +3,7 @@ package com.example.tv360.Service;
 import com.example.tv360.DTO.CastDTO;
 import com.example.tv360.Entity.Cast;
 import com.example.tv360.Repository.CastRepository;
+import com.example.tv360.Utils.DtoToModelConverter;
 import com.example.tv360.Utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 public class CastService {
     private final CastRepository castRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
     @Autowired
-    public CastService(CastRepository castRepository,ModelToDtoConverter modelToDtoConverter ) {
+    public CastService(CastRepository castRepository,ModelToDtoConverter modelToDtoConverter,DtoToModelConverter dtoToModelConverter ) {
         this.castRepository = castRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.dtoToModelConverter = dtoToModelConverter;
     }
 
     public List<CastDTO> getAllCasts(){
@@ -36,20 +39,17 @@ public class CastService {
     }
 
     public Cast createCast(CastDTO castDTO) throws IOException{
-        Cast cast = new Cast();
-        cast.setFullName(castDTO.getFullName());
-        cast.setType(castDTO.getType());
+        Cast cast = dtoToModelConverter.convertToModel(castDTO, Cast.class);
         cast.setStatus(1);
         return castRepository.save(cast);
     }
 
-    public Cast updateCast(CastDTO castDTO){
+    public Cast updateCast(Long id,CastDTO castDTO){
         try {
-            Cast cast = castRepository.getById(castDTO.getId());
-            cast.setFullName(castDTO.getFullName());
-            cast.setType(castDTO.getType());
-            cast.setStatus(castDTO.getStatus());
+            Cast cast = castRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            Cast updateCast1 = dtoToModelConverter.convertToModel(castDTO, Cast.class);
             cast.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            cast = updateCast1;
             return castRepository.save(cast);
         }
         catch (Exception e){

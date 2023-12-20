@@ -3,8 +3,10 @@ package com.example.tv360.Service;
 import com.example.tv360.DTO.MediaDTO;
 import com.example.tv360.Entity.Media;
 import com.example.tv360.Repository.MediaRepository;
+import com.example.tv360.Utils.DtoToModelConverter;
 import com.example.tv360.Utils.Helper;
 import com.example.tv360.Utils.ModelToDtoConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,11 +25,15 @@ public class MediaService {
     private Helper helper;
     private final MediaRepository mediaRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
+
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter,Helper helper ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter,Helper helper ,DtoToModelConverter dtoToModelConverter ) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
+        this.dtoToModelConverter = dtoToModelConverter;
+
     }
 
     public List<MediaDTO> getAllMedias(){
@@ -41,35 +47,27 @@ public class MediaService {
     }
 
     public Media createMedia(MediaDTO mediaDTO, MultipartFile logo) throws IOException {
-        Media media = new Media();
+        Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
         if (!logo.isEmpty()) {
             String thumbnail = helper.uploadImage(logo);
             media.setThumbnail(thumbnail);
         }
-        media.setTitle(mediaDTO.getTitle());
-        media.setDescription(mediaDTO.getDescription());
-        media.setType(mediaDTO.getType());
-        media.setCountryId(mediaDTO.getCountryId());
         media.setStatus(1);
-
         return mediaRepository.save(media);
     }
 
 
-    public Media updateMedia(MediaDTO mediaDTO,MultipartFile logo){
+    public Media updateMedia(Long id,MediaDTO mediaDTO,MultipartFile logo){
         try {
-            Media media = mediaRepository.getById(mediaDTO.getId());
+            Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+            BeanUtils.copyProperties(updateMedia1, media);
             if (!logo.isEmpty()) {
                 String thumbnail = helper.uploadImage(logo);
                 media.setThumbnail(thumbnail);
             }
-            media.setTitle(mediaDTO.getTitle());
-            media.setDescription(mediaDTO.getDescription());
-            media.setCountryId(mediaDTO.getCountryId());
-            media.setType(mediaDTO.getType());
-            media.setStatus(mediaDTO.getStatus());
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
+//            media = updateMedia1;
             return mediaRepository.save(media);
         }
         catch (Exception e){

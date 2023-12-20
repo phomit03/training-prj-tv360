@@ -73,7 +73,7 @@ public class MediaController {
     @PostMapping("/media/update/{id}")
     public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO,@RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(mediaDTO,logo);
+            mediaService.updateMedia(id, mediaDTO,logo);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

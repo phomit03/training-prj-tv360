@@ -65,7 +65,7 @@ public class CategoryController {
     @PostMapping("/category/update/{id}")
     public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, RedirectAttributes attributes){
         try {
-            categoryService.updateCategory(categoryDTO);
+            categoryService.updateCategory(id,categoryDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

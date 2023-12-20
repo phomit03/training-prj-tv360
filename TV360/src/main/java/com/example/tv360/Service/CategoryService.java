@@ -6,11 +6,13 @@ import com.example.tv360.Entity.Cast;
 import com.example.tv360.Entity.Category;
 import com.example.tv360.Repository.CastRepository;
 import com.example.tv360.Repository.CategoryRepository;
+import com.example.tv360.Utils.DtoToModelConverter;
 import com.example.tv360.Utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -22,10 +24,12 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,ModelToDtoConverter modelToDtoConverter ) {
+    public CategoryService(CategoryRepository categoryRepository,ModelToDtoConverter modelToDtoConverter,DtoToModelConverter dtoToModelConverter ) {
         this.categoryRepository = categoryRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.dtoToModelConverter = dtoToModelConverter;
     }
 
     public List<CategoryDTO> getAllCategories(){
@@ -38,24 +42,20 @@ public class CategoryService {
         return modelToDtoConverter.convertToDto(category, CategoryDTO.class);
     }
 
-    public Category createCategory(CategoryDTO categoryDTO) throws IOException {
-        Category category = new Category();
-        category.setName(categoryDTO.getName());
-        category.setType(categoryDTO.getType());
+    public Category createCategory(CategoryDTO categoryDTO) throws IOException{
+        Category category = dtoToModelConverter.convertToModel(categoryDTO, Category.class);
         category.setStatus(1);
         return categoryRepository.save(category);
     }
 
-    public Category updateCategory(CategoryDTO categoryDTO){
+    public Category updateCategory(Long id,CategoryDTO categoryDTO){
         try {
-            Category category = categoryRepository.getById(categoryDTO.getId());
-            category.setName(categoryDTO.getName());
-            category.setType(categoryDTO.getType());
-            category.setStatus(categoryDTO.getStatus());
+            Category category = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            Category updateCategory1 = dtoToModelConverter.convertToModel(categoryDTO, Category.class);
             category.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            category = updateCategory1;
             return categoryRepository.save(category);
-        }
-        catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
             return null;
         }
