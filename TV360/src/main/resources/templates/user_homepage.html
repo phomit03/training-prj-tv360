@@ -21,22 +21,21 @@
                     <div class="title-wrapper">
                         <p class="section-subtitle">Online Streaming</p>
 
-                        <h2 class="h2 section-title">Upcoming Movies</h2>
+                        <h2 class="h2 section-title">New release</h2>
                     </div>
 
                     <ul class="filter-list">
                         <li>
-                            <button class="filter-btn">Movies</button>
+                            <button class="filter-btn" onclick="changeTabNewRelease('moviesReleaseTab', this)">Movies</button>
                         </li>
 
                         <li>
-                            <button class="filter-btn">Videos</button>
+                            <button class="filter-btn" onclick="changeTabNewRelease('videosReleaseTab', this)">Videos</button>
                         </li>
                     </ul>
                 </div>
 
-                <ul class="movies-list  has-scrollbar">
-
+                <ul class="movies-list movies-release-tab has-scrollbar">
                     <li>
                         <div class="movie-card">
 
@@ -296,6 +295,116 @@
 
                 </ul>
 
+                <ul class="videos-list videos-release-tab has-scrollbar">
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">HD</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">HD</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">HD</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+
             </div>
         </section>
 
@@ -309,17 +418,16 @@
                 <ul class="filter-list">
 
                     <li>
-                        <button class="filter-btn">Movies</button>
+                        <button class="filter-btn" onclick="changeTabTopRate('moviesRateTab', this)">Movies</button>
                     </li>
 
                     <li>
-                        <button class="filter-btn">Videos</button>
+                        <button class="filter-btn" onclick="changeTabTopRate('videosRateTab', this)">Videos</button>
                     </li>
 
                 </ul>
 
-                <ul class="movies-list">
-
+                <ul class="movies-list movies-rate-tab">
                     <li>
                         <div class="movie-card">
 
@@ -608,6 +716,187 @@
                         </div>
                     </li>
 
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/movie-7.png" alt="Death on the Nile movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">Death on the Nile</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">2K</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT127M">127 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>6.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/movie-8.png" alt="The King's Man movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The King's Man</h3>
+                                </a>
+
+                                <time datetime="2021">2021</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">HD</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT131M">131 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>7.0</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="videos-list videos-rate-tab">
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">Sonic the Hedgehog 2</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">2K</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT122M">122 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>7.8</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/movie-2.png" alt="Morbius movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">Morbius</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">HD</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT104M">104 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>5.9</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/movie-3.png" alt="The Adam Project movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Adam Project</h3>
+                                </a>
+
+                                <time datetime="2022">2022</time>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="badge badge-outline">4K</div>
+
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT106M">106 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>7.0</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
                 </ul>
 
             </div>
@@ -624,6 +913,50 @@
 <a th:replace="user_fragments::back-to-top"></a>
 
 <div th:replace="user_fragments::script"></div>
+
+<script>
+    function changeTabNewRelease(tabId, button) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        var movieList = document.querySelector('.movies-release-tab');
+        var videoList = document.querySelector('.videos-release-tab');
+
+        if (tabId === 'moviesReleaseTab') {
+            movieList.style.display = 'flex';
+            videoList.style.display = 'none';
+        } else if (tabId === 'videosReleaseTab') {
+            movieList.style.display = 'none';
+            videoList.style.display = 'flex';
+        }
+    }
+</script>
+
+<script>
+    function changeTabTopRate(tabId, button) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        var movieList = document.querySelector('.movies-rate-tab');
+        var videoList = document.querySelector('.videos-rate-tab');
+
+        if (tabId === 'moviesRateTab') {
+            movieList.style.display = 'grid';
+            videoList.style.display = 'none';
+        } else if (tabId === 'videosRateTab') {
+            movieList.style.display = 'none';
+            videoList.style.display = 'grid';
+        }
+    }
+</script>
 
 </body>
 

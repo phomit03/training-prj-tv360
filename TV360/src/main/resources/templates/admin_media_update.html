@@ -23,7 +23,7 @@
                         <i class="fas fa-table me-1"></i>
                         Update media data
 
-                        <a th:href="@{/admin/medias}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
@@ -35,44 +35,84 @@
                                            name="logo">
                                 </div>
                                 <div class="col-md-4">
-                                    <img style="width: 90px;" th:src="@{${mediaDTO.thumbnail}}">
+                                    <img style="width: 90px; margin-left: 50px" th:src="@{${mediaDTO.thumbnail}}">
                                 </div>
                             </div>
+
+                            <!--Toggle Tab
+                            <div class="form-floating mb-3" id="toggleTabButton">
+                                <button type="button" style="padding: 10px 20px; margin-top: 20px;background: none;border-radius: 10px;border: 1px solid #ced4da;">
+                                    <a href="#">
+                                        <i class="fas fa-circle-plus"></i> Source
+                                    </a>
+                                </button>
+                            </div>
+
+                            <div class="card mb-4" id="tabContent" style="display: none;">
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    Update source media
+                                </div>
+                                <div class="card-body">
+                                    <form th:action="@{/admin/media-detail/create/save}" th:object="${mediaDetailDTO}"
+                                      method="post">
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="sourceUrl" name="sourceUrl" type="text" th:field="${mediaDetail.sourceUrl}"
+                                                   placeholder="Link Film" required/>
+                                            <label for="sourceUrl">Media Url</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" id="exampleSelect" name="typeUrl" th:field="${mediaDetail.typeUrl}" required>
+                                                <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
+                                                <option value="1">vod</option>
+                                                <option value="2">film</option>
+                                            </select>
+                                            <label>Type Source</label>
+                                        </div>
+                                        <div class="form-floating mb-3" th:if="mediaDTO.type == 1">
+                                            <input class="form-control" id="episode" min="0" value="0" name="episode" type="number" th:field="${mediaDetail.episode}"/>
+                                            <label for="episode">Episode</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" th:field="${mediaDetail.duration}" required/>
+                                            <label for="episode">Duration</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="rate" name="rate" min="0" max="5" value="1" type="number" th:field="${mediaDetail.rate}" required/>
+                                            <label for="rate">Rate</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="quality" th:field="${mediaDetail.quality}" required>
+                                                <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
+                                                <option value="2D">2D</option>
+                                                <option value="3D">3D</option>
+                                                <option value="4K">4K</option>
+                                                <option value="5K">5K</option>
+                                            </select>
+                                            <label>Quality</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="mediaId" name="mediaId" th:field="${mediaDTO.id}" type="number" required/>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                        <button type="submit" class="btn btn-success">Create</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                            End Toggle Tab-->
 
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{title}" name="title" type="text"
                                        placeholder="Title" required />
                                 <label>Title</label>
                             </div>
+
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{description}" name="description"
                                        type="text" placeholder="Description" required />
                                 <label>Description</label>
                             </div>
-                            <!--<div class="form-floating mb-3">
-                                &lt;!&ndash; Input field for Evaluate &ndash;&gt;
-                                <input class="form-control" th:field="*{evaluate}" id="Evaluate" name="evaluate"
-                                       type="number" min="1" max="5" placeholder="Evaluate" required />
-                                <label for="Evaluate">Evaluate</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{duration}" name="duration" type="text"
-                                       placeholder="Duration" required />
-                                <label>Duration</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                &lt;!&ndash; Select field for Quality &ndash;&gt;
-                                <select class="form-select" id="Quality" name="quality"
-                                        th:field="*{quality}" required>
-                                    <option value="" selected>-- choose option --</option>
-                                    <option value="2D">2D</option>
-                                    <option value="3D">3D</option>
-                                    <option value="4K">4K</option>
-                                    <option value="6K">6K</option>
-                                    <option value="8K">8K</option>
-                                </select>
-                                <label for="Quality">Quality</label>
-                            </div>-->
 
                             <div class="form-floating mb-3">
                                 <select class="form-control" id="countryId" name="countryId" aria-label="type"
@@ -119,6 +159,18 @@
 </div>
 
 <div th:replace="admin_fragments::script"></div>
+
+
+<script>
+    document.getElementById("toggleTabButton").addEventListener("click", function () {
+        var tabContent = document.getElementById("tabContent");
+        if (tabContent.style.display === "none") {
+            tabContent.style.display = "block";
+        } else {
+            tabContent.style.display = "none";
+        }
+    });
+</script>
 
 </body>
 

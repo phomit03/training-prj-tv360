@@ -23,13 +23,12 @@
                         <i class="fas fa-table me-1"></i>
                         Create a new media
 
-                        <a th:href="@{/admin/medias}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/media/create/save}" th:object="${mediaDTO}" method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
-<!--                                <label for="Thumbnail">Thumbnail</label>-->
                                 <div class="col-sm-10">
                                     <input class="form-control" type="file" id="Thumbnail"
                                            required name="logo">
@@ -47,32 +46,6 @@
                                        placeholder="Description" required />
                                 <label for="Description">Description</label>
                             </div>
-
-    <!--                            <div class="form-floating mb-3">-->
-    <!--                                &lt;!&ndash; Input field for Evaluate &ndash;&gt;-->
-    <!--                                <input class="form-control" id="Evaluate" name="evaluate" type="number" min="1"-->
-    <!--                                       max="5" placeholder="Evaluate" required />-->
-    <!--                                <label for="Evaluate">Evaluate</label>-->
-    <!--                            </div>-->
-
-    <!--                            <div class="form-floating mb-3">-->
-    <!--                                <input class="form-control" id="Duration" name="duration" type="text"-->
-    <!--                                       placeholder="Duration" required />-->
-    <!--                                <label for="Duration">Duration</label>-->
-    <!--                            </div>-->
-
-    <!--                            <div class="form-floating mb-3">-->
-    <!--                                &lt;!&ndash; Select field for Quality &ndash;&gt;-->
-    <!--                                <select class="form-select" id="Quality" name="quality" required>-->
-    <!--                                    <option value="" selected>&#45;&#45; choose option &#45;&#45;</option>-->
-    <!--                                    <option value="2D">2D</option>-->
-    <!--                                    <option value="3D">3D</option>-->
-    <!--                                    <option value="4K">4K</option>-->
-    <!--                                    <option value="6K">6K</option>-->
-    <!--                                    <option value="8K">8K</option>-->
-    <!--                                </select>-->
-    <!--                                <label for="Quality">Quality</label>-->
-    <!--                            </div>-->
 
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="Country" name="country_id" th:field="*{countryId}"
@@ -110,6 +83,7 @@
 </div>
 
 <div th:replace="admin_fragments::script"></div>
+
 
 </body>
 

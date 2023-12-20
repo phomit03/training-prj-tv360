@@ -23,25 +23,37 @@
                         <i class="fas fa-table me-1"></i>
                         Update media detail data
 
-                        <a th:href="@{/admin/mediadetails}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/media-details}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/mediadetail/update/{id} (id = ${mediaDetailDTO.id})}"
+                        <form th:action="@{/admin/media-detail/update/{id} (id = ${mediaDetailDTO.id})}"
                               th:object="${mediaDetailDTO}" method="post">
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{mediaUrl}" name="mediaUrl" type="text"
+                                <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
                                        placeholder="Link Film" required/>
                                 <label>Media Url</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="type" name="type" aria-label="type"
-                                        th:field="*{type}" required>
+                                <select class="form-control" id="type" name="typeUrl" aria-label="typeUrl"
+                                        th:field="*{typeUrl}" required>
                                     <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${mediaDetailDTO.type == 1}">vod</option>
-                                    <option value="2" th:selected="${mediaDetailDTO.type == 2}">film</option>
+                                    <option value="1" th:selected="${mediaDetailDTO.typeUrl == 1}">vod</option>
+                                    <option value="2" th:selected="${mediaDetailDTO.typeUrl == 2}">film</option>
                                 </select>
-                                <label>Type</label>
+                                <label>Type Source</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{episode}" id="episode" min="0" value="0" name="episode" type="number"/>
+                                <label for="episode">Episode</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{duration}" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" required/>
+                                <label for="episode">Duration</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{rate}" id="rate" name="rate" min="0" max="5" value="0" type="number" required/>
+                                <label for="rate">Rate</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <select class="form-control" name="status" th:field="*{status}" required>

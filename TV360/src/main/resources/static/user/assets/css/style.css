@@ -262,7 +262,7 @@ body.active { overflow: hidden; }
  * MOVIE CARD
  */
 
-.movies-list {
+.movies-list, .videos-list {
   display: grid;
   gap: 50px;
 }
@@ -353,7 +353,7 @@ body.active { overflow: hidden; }
  * CUSTOM SLIDER & SCROLLBAR
  */
 
-.movies-list.has-scrollbar {
+.has-scrollbar {
   display: flex;
   justify-content: flex-start;
   gap: 30px;
@@ -543,7 +543,7 @@ body.active { overflow: hidden; }
   padding-block: var(--section-padding);
 }
 
-.upcoming .flex-wrapper { margin-bottom: 30px; }
+.upcoming .flex-wrapper { margin-bottom: 40px; }
 
 .upcoming .section-title { margin-bottom: 30px; }
 
@@ -567,7 +567,7 @@ body.active { overflow: hidden; }
 
 .upcoming .filter-btn:focus { border-color: var(--citrine); }
 
-.upcoming .movies-list > li {
+.upcoming .movies-list > li, .upcoming .videos-list > li {
   min-width: 100%;
   scroll-snap-align: start;
 }
@@ -1106,7 +1106,7 @@ body.active { overflow: hidden; }
 
   /* MOVIE CARD */
 
-  .movies-list {
+  .movies-list, .videos-list {
     grid-template-columns: 1fr 1fr;
     gap: 60px 30px;
   }
@@ -1127,7 +1127,7 @@ body.active { overflow: hidden; }
    * UPCOMING
    */
 
-  .upcoming .movies-list > li { min-width: calc(50% - 15px); }
+  .upcoming .movies-list > li, .upcoming .videos-list > li { min-width: calc(50% - 15px); }
 
 
 
@@ -1329,7 +1329,7 @@ body.active { overflow: hidden; }
 
   /* MOVIE CARD */
 
-  .movies-list { grid-template-columns: repeat(6, 1fr); }
+  .movies-list, .videos-list { grid-template-columns: repeat(6, 1fr); }
 
 
   /**
@@ -1400,7 +1400,7 @@ body.active { overflow: hidden; }
 
   .upcoming .section-title { margin-bottom: 0; }
 
-  .upcoming .movies-list > li { min-width: calc(33.33% - 20px); }
+  .upcoming .movies-list > li, .upcoming .videos-list > li { min-width: calc(33.33% - 20px); }
 
 
 
@@ -1510,7 +1510,7 @@ body.active { overflow: hidden; }
 
   /* MOVIE CARD */
 
-  .movies-list { grid-template-columns: repeat(6, 1fr); }
+  .movies-list, .videos-list { grid-template-columns: repeat(6, 1fr); }
 
 
   /**
@@ -1540,7 +1540,7 @@ body.active { overflow: hidden; }
    * UPCOMING
    */
 
-  .upcoming .movies-list > li {
+  .upcoming .movies-list > li, .upcoming .videos-list > li {
     min-width: calc(20% - 25px);
   }
 
@@ -1633,3 +1633,6 @@ body.active { overflow: hidden; }
   cursor: pointer;
 }
 
+.videos-list {
+  display: none;
+}

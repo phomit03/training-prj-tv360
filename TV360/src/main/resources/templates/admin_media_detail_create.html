@@ -1,20 +1,21 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="admin_fragments::head"></head>
 
 <body>
-<!-- navbar Start -->
+&lt;!&ndash; navbar Start &ndash;&gt;
 <div th:replace="admin_fragments::navbar"></div>
-<!-- navbar End -->
+&lt;!&ndash; navbar End &ndash;&gt;
 
 <div id="layoutSidenav">
-    <!-- menu Start -->
+    &lt;!&ndash; menu Start &ndash;&gt;
     <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
-    <!-- menu End -->
+    &lt;!&ndash; menu End &ndash;&gt;
 
     <div id="layoutSidenav_content">
-        <!-- Content Start -->
+        &lt;!&ndash; Content Start &ndash;&gt;
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4 title-admin">Create Media Detail</h1>
@@ -23,24 +24,54 @@
                         <i class="fas fa-table me-1"></i>
                         Create a new media detail
 
-                        <a th:href="@{/admin/mediadetails}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/media-details}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/mediadetail/create/save}" th:object="${mediadetailDTO}"
+                        <form th:action="@{/admin/media-detail/create/save}" th:object="${mediaDetailDTO}"
                               method="post">
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="mediaUrl" name="mediaUrl" type="text"
+                                <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
                                        placeholder="Link Film" required/>
-                                <label for="mediaUrl">Media Url</label>
+                                <label for="sourceUrl">Media Url</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="exampleSelect" name="type" required>
-                                    <option value="" selected>-- choose type --</option>
+                                <select class="form-control" id="exampleSelect" name="typeUrl" required>
+                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
                                     <option value="1">vod</option>
                                     <option value="2">film</option>
                                 </select>
-                                <label>Type</label>
+                                <label>Type Source</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="episode" min="0" value="0" name="episode" type="number"/>
+                                <label for="episode">Episode</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" required/>
+                                <label for="episode">Duration</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="rate" name="rate" min="0" max="5" value="0" type="number" required/>
+                                <label for="rate">Rate</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                    <select class="form-control" name="quality" required>
+                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
+                                    <option value="2D">2D</option>
+                                    <option value="3D">3D</option>
+                                    <option value="4K">4K</option>
+                                    <option value="5K">5K</option>
+                                </select>
+                                <label>Quality</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="mediaId" th:field="*{mediaId}" required>
+                                    <option value="" selected>&#45;&#45; choose media &#45;&#45;</option>
+                                    <option th:each="mediaDTO : ${mediaList}" th:value="${mediaDTO.id}"
+                                            th:text="${mediaDTO.title}"></option>
+                                </select>
+                                <label for="mediaId">Category</label>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                 <button type="submit" class="btn btn-success">Create</button>
@@ -50,11 +81,11 @@
                 </div>
             </div>
         </main>
-        <!-- Content End -->
+        &lt;!&ndash; Content End &ndash;&gt;
 
-        <!-- footer Start -->
+        &lt;!&ndash; footer Start &ndash;&gt;
         <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-        <!-- footer End -->
+        &lt;!&ndash; footer End &ndash;&gt;
     </div>
 </div>
 
@@ -63,3 +94,4 @@
 </body>
 
 </html>
+-->

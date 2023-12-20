@@ -84,37 +84,37 @@
 </div>
 
 
-<div th:replace="admin_fragments::script">
-  <script>
-    $('.delete-btn').click(function () {
-      var id = $(this).attr('data-id');
-      var newRow = $('.cast-' + id);
-      Swal.fire({
-        title: 'Are you sure you want to delete this item?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: "/admin/cast/delete/" + id,
-            success: function () {
-              newRow.remove();
-              Swal.fire(
-                  'Success',
-                  'Delete success',
-                  'success'
-              );
-            }
-          })
-        }
-      })
+<div th:replace="admin_fragments::script"></div>
+
+<script>
+  $('.delete-btn').click(function () {
+    var id = $(this).attr('data-id');
+    var newRow = $('.cast-' + id);
+    Swal.fire({
+      title: 'Are you sure you want to delete this item?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/admin/cast/delete/" + id,
+          success: function () {
+            newRow.remove();
+            Swal.fire(
+                    'Success',
+                    'Delete success',
+                    'success'
+            );
+          }
+        })
+      }
     })
-  </script>
-</div>
+  })
+</script>
 
 </body>
 
