@@ -48,11 +48,11 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-select" id="Country" name="country_id" th:field="*{countryId}"
+                                <select class="form-select" id="Country" name="country"
                                         aria-label="Country Id" required>
                                     <option value="" selected>-- choose option --</option>
                                     <option th:each="country : ${countries}" th:value="${country.id}"
-                                            th:text="${country.id}"></option>
+                                            th:text="${country.name}"></option>
                                 </select>
                                 <label for="Country">Country</label>
                             </div>

@@ -115,11 +115,11 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="countryId" name="countryId" aria-label="type"
-                                        th:field="*{countryId}" required>
+                                <select class="form-control" id="country" name="country" aria-label="type"
+                                        th:field="*{country.id}" required>
                                     <option value="">-- choose option --</option>
-                                    <option th:selected="*{countryId == country.id}" th:each="country : ${countries}"
-                                            th:value="${country.id}" th:text="${country.name}"></option>
+                                    <option th:each="country1 : ${countries}" th:selected="*{country.id == country.id}"
+                                            th:value="${country1.id}" th:text="${country1.name}"></option>
                                 </select>
                                 <label>Type</label>
                             </div>
