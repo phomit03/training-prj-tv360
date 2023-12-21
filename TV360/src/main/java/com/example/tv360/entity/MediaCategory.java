@@ -36,12 +36,12 @@ public class MediaCategory {
     private Timestamp updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "media_id")
     @MapToDTO
     private Media media;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id")
     @MapToDTO
     private Category category;
 }

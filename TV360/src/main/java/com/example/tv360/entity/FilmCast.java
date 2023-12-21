@@ -36,12 +36,12 @@ public class FilmCast {
     private Timestamp updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "media_id")
     @MapToDTO
     private Media media;          //type: series_movie, movie
 
     @ManyToOne
-    @JoinColumn(name = "cast_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "cast_id")
     @MapToDTO
     private Cast cast;
 }

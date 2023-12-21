@@ -2,6 +2,7 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
+import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
@@ -24,14 +25,16 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
+    private final CountryRepository countryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter,Helper helper ,DtoToModelConverter dtoToModelConverter ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
+        this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
 
     }
@@ -66,6 +69,7 @@ public class MediaService {
                 String thumbnail = helper.uploadImage(logo);
                 media.setThumbnail(thumbnail);
             }
+            media.setCountry(countryRepository.findById(media.getCountry().getId()).get());
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaRepository.save(media);
         }

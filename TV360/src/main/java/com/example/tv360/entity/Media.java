@@ -49,7 +49,7 @@ public class Media {
     private Timestamp updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "country_id")
     @MapToDTO
     private Country country;
 }

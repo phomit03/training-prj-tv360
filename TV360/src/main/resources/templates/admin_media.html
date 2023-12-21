@@ -67,6 +67,7 @@
                     <th>Thumbnail</th>
                     <th>Title</th>
                     <th>Description</th>
+                    <!--<th>Country</th>-->
                     <th>Type</th>
                     <th>Status</th>
                     <th>Source</th>
@@ -74,35 +75,36 @@
                   </tr>
                 </thead>
                 <tbody th:if="${media1 != null and #lists.size(media1) > 0}">
-                  <tr th:each="media, iterStat : ${media1}"
-                      th:class="'media-' + ${media.id}" th:data-media-id="${media.id}">
-                    <th:block >
-                      <td th:text="${iterStat.index + 1}"></td>
-                      <td>
-                        <img style="width: 70px; max-height: 100px" th:src="@{${media.thumbnail}}">
-                      </td>
-                      <td th:text="${media.title}"></td>
-                      <td th:text="${media.description}"></td>
-                      <td th:text="${#strings.equalsIgnoreCase(media.type, '1') ? 'Movie Series' : (#strings.equalsIgnoreCase(media.type, '2') ? 'Movie' : 'Video')}"></td>
-                      <td>
-                        <span style="color: green">
-                          <th:block th:if="${media.status == 1}">
-                            active
-                          </th:block>
-                        </span>
-                        <span style="color: red">
-                          <th:block th:if="${media.status == 0}">
-                            in-active
-                          </th:block>
-                        </span>
-                      </td>
-                      <td>
-                        <!--<a th:value="${mediaDetail.sourceUrl}"></a>-->
-                        <button class="btn" id="openPopup">
-                          <a href="#">
-                            <i class="fas fa-circle-plus"></i>
-                          </a>
-                        </button>
+                  <tr th:each="media, iterStat : ${media1}" th:class="'media-' + ${media.id}" th:data-media-id="${media.id}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td>
+                      <img style="width: 70px; max-height: 100px" th:src="@{${media.thumbnail}}">
+                    </td>
+                    <td th:text="${media.title}"></td>
+                    <td th:text="${media.description}"></td>
+<!--
+                    <td th:text="${media.country.name}"></td>
+-->
+                    <td th:text="${#strings.equalsIgnoreCase(media.type, '1') ? 'Movie Series' : (#strings.equalsIgnoreCase(media.type, '2') ? 'Movie' : 'Video')}"></td>
+                    <td>
+                      <span style="color: green">
+                        <th:block th:if="${media.status == 1}">
+                          active
+                        </th:block>
+                      </span>
+                      <span style="color: red">
+                        <th:block th:if="${media.status == 0}">
+                          in-active
+                        </th:block>
+                      </span>
+                    </td>
+                    <td>
+                      <!--<a th:value="${mediaDetail.sourceUrl}"></a>-->
+                      <button class="btn" id="openPopup">
+                        <a href="#">
+                          <i class="fas fa-circle-plus"></i>
+                        </a>
+                      </button>
 
                         <!--pop-up-->
                         <div class="popup" id="popupForm">
