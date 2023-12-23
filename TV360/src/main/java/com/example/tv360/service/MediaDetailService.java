@@ -60,18 +60,19 @@ public class MediaDetailService {
         return mediaDetailRepository.save(mediaDetail);
     }
 
-        public MediaDetail updateMediaDetail(MediaDetailDTO mediaDetailDTO){
+        public MediaDetail updateMediaDetail(Long id,MediaDetailDTO mediaDetailDTO){
         try {
-            MediaDetail mediaDetail = mediaDetailRepository.getById(mediaDetailDTO.getId());
-            mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());
-            mediaDetail.setRate(mediaDetailDTO.getRate());
-            mediaDetail.setDuration(mediaDetailDTO.getDuration());
-            mediaDetail.setQuality(mediaDetailDTO.getQuality());
-            mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
-            mediaDetail.setMedia(mediaDetailDTO.getMedia());
-            mediaDetail.setStatus(mediaDetailDTO.getStatus());
+            MediaDetail mediaDetail = mediaDetailRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            MediaDetail updateMediaDetail1 = dtoToModelConverter.convertToModel(mediaDetailDTO, MediaDetail.class);
+//            mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());
+//            mediaDetail.setRate(mediaDetailDTO.getRate());
+//            mediaDetail.setDuration(mediaDetailDTO.getDuration());
+//            mediaDetail.setQuality(mediaDetailDTO.getQuality());
+//            mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
+//            mediaDetail.setMedia(mediaDetailDTO.getMedia());
+//            mediaDetail.setStatus(mediaDetailDTO.getStatus());
             mediaDetail.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
+            mediaDetail = updateMediaDetail1;
             return mediaDetailRepository.save(mediaDetail);
         }
         catch (Exception e){
