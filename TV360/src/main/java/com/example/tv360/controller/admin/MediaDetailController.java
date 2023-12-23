@@ -75,7 +75,7 @@ public class MediaDetailController {
     @PostMapping("/media-detail/update/{id}")
     public String updateMediaDetail(@PathVariable Long id, @ModelAttribute("mediaDetailDTO") MediaDetailDTO mediaDetailDTO, RedirectAttributes attributes){
         try {
-            mediaDetailService.updateMediaDetail(mediaDetailDTO);
+            mediaDetailService.updateMediaDetail(id, mediaDetailDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

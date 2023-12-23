@@ -3,6 +3,36 @@
 
 <head th:replace="admin_fragments::head"></head>
 
+<style>
+  .popup {
+    display: none;
+    position: fixed;
+    top: 51%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    width: 40%;
+  }
+
+  .popup-content {
+    margin: 0 auto;
+  }
+
+  .close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .btn {
+    cursor: pointer;
+  }
+
+</style>
 <body>
 <!-- navbar Start -->
 <div th:replace="admin_fragments::navbar"></div>
@@ -22,8 +52,9 @@
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
                 List of media details
+
               <a th:href="@{/admin/media-detail/create}">
-                <button type="button" class="btn btn-primary" style="float: right">+ media</button>
+                <button type="button" class="btn btn-primary" style="float: right">+ media detail</button>
               </a>
             </div>
             <div class="card-body">
@@ -32,8 +63,11 @@
                   <tr>
                     <th>#</th>
                     <th>Media</th>
-                    <th>Source</th>
+                    <th>Media Url</th>
                     <th>Episode</th>
+                    <th>Evaluate</th>
+                    <th>Duration</th>
+                    <th>Quantity</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
@@ -42,8 +76,14 @@
                   <tr th:each="mediaDetail, iterStat : ${mediaDetails}" th:class="'media-detail-' + ${mediaDetail.id}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${mediaDetail.media.title}"></td>
-                    <td><a th:href="${mediaDetail.sourceUrl}" th:text="${mediaDetail.sourceUrl}">Source</a></td>
-                    <td th:text="${(mediaDetail.episode != null) ? mediaDetail.episode : null}"></td>
+                    <td><a th:href="${mediaDetail.sourceUrl}">Source</a></td>
+                    <td th:text="(${mediaDetail.episode}) ? 'Episode ' + ${mediaDetail.episode} : ''"></td>
+                    <td>
+                      <span style="color: gold" th:utext="${'&#9733;'.repeat(mediaDetail.rate)}"></span>
+                    </td>
+                    <td th:text="${mediaDetail.duration}"></td>
+                    <td th:text="${mediaDetail.quality}"></td>
+<!--                    <td th:text="${(mediaDetail.episode != null) ? mediaDetail.episode : null}"></td>-->
                     <td>
                       <span style="color: green">
                         <th:block th:if="${mediaDetail.status == 1}">

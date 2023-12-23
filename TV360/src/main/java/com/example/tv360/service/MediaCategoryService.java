@@ -1,8 +1,13 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaCategoryDTO;
+import com.example.tv360.entity.Category;
+import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaCategory;
+import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.MediaCategoryRepository;
+import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +24,18 @@ import java.util.stream.Collectors;
 public class MediaCategoryService {
     private final MediaCategoryRepository mediaCategoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
+    private final CategoryRepository categoryRepository;
+    private final MediaRepository mediaRepository;
+
     @Autowired
-    public MediaCategoryService(MediaCategoryRepository mediaCategoryRepository, ModelToDtoConverter modelToDtoConverter ) {
+    public MediaCategoryService(MediaCategoryRepository mediaCategoryRepository, ModelToDtoConverter modelToDtoConverter,DtoToModelConverter dtoToModelConverter, MediaRepository mediaRepository, CategoryRepository categoryRepository ) {
         this.mediaCategoryRepository = mediaCategoryRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.dtoToModelConverter = dtoToModelConverter;
+        this.categoryRepository = categoryRepository;
+        this.mediaRepository = mediaRepository;
+
     }
 
     public List<MediaCategoryDTO> getAllMediaCategories(){
@@ -36,20 +49,19 @@ public class MediaCategoryService {
     }
 
     public MediaCategory createMediaCategory(MediaCategoryDTO mediaCategoryDTO) throws IOException{
-        MediaCategory mediaCategory = new MediaCategory();
-        mediaCategory.setMedia(mediaCategoryDTO.getMedia());
-        mediaCategory.setCategory(mediaCategoryDTO.getCategory());
+        MediaCategory mediaCategory = dtoToModelConverter.convertToModel(mediaCategoryDTO, MediaCategory.class);
         mediaCategory.setStatus(1);
         return mediaCategoryRepository.save(mediaCategory);
     }
 
-    public MediaCategory updateMediaCategory(MediaCategoryDTO mediaCategoryDTO){
+    public MediaCategory updateMediaCategory(Long id,MediaCategoryDTO mediaCategoryDTO){
         try {
-            MediaCategory mediaCategory = mediaCategoryRepository.getById(mediaCategoryDTO.getId());
-            mediaCategory.setMedia(mediaCategoryDTO.getMedia());
-            mediaCategory.setCategory(mediaCategoryDTO.getCategory());
-            mediaCategory.setStatus(mediaCategoryDTO.getStatus());
+            MediaCategory mediaCategory = mediaCategoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            MediaCategory mediaCategory1 = dtoToModelConverter.convertToModel(mediaCategoryDTO, MediaCategory.class);
+            mediaCategory.setMedia(mediaRepository.findById(mediaCategory.getMedia().getId()).get());
+            mediaCategory.setCategory(categoryRepository.findById(mediaCategory.getCategory().getId()).get());
             mediaCategory.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            mediaCategory = mediaCategory1;
             return mediaCategoryRepository.save(mediaCategory);
         }
         catch (Exception e){

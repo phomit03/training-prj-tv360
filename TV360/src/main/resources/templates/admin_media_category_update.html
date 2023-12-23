@@ -23,50 +23,40 @@
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Create a new media category
-                        <a th:href="@{/admin/mediazcategories}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/media-category}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/mediacategory/update/{id} (id=${mcDTO.id})}" th:object="${mcDTO}" method="post">
-                            <!-- Hidden input to store the old category name -->
-                            <input type="hidden" id="oldCategoryName" th:value="${mcDTO.category.name}" />
-
+                        <form th:action="@{/admin/media-category/update/{id} (id=${mcDTO.id})}" th:object="${mcDTO}" method="post">
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="mediaId" th:field="*{media_id}">
-                                    <!-- ... (code for media options) ... -->
+                                <select th:field="*{media.id}" class="form-control" id="mediaId"  required>
+                                    <option value="" selected>-- choose media --</option>
+                                    <option th:each="media : ${medias}" th:value="${media.id}"
+                                            th:text="${media.title}"></option>
                                 </select>
                                 <label for="mediaId">Media</label>
                             </div>
 
-                            <div class="form-floating mb-3 category-option movie-series">
-                                <select class="form-control" id="movieseries" th:field="*{category_id}">
-                                    <!-- ... (code for movie series categories) ... -->
+                            <div class="form-floating mb-3">
+                                <select th:field="*{category.id}" class="form-control" id="categoryId" required>
+                                    <option value="" selected>-- choose category --</option>
+                                    <option th:each="category : ${categories}" th:value="${category.id}"
+                                            th:text="${category.name}"></option>
                                 </select>
-                                <label for="movieseries">Category</label>
-                            </div>
-
-                            <div class="form-floating mb-3 category-option movie">
-                                <select class="form-control" id="movie" th:field="*{category_id}">
-                                    <!-- ... (code for movie categories) ... -->
-                                </select>
-                                <label for="movie">Category</label>
-                            </div>
-
-                            <div class="form-floating mb-3 category-option video">
-                                <select class="form-control" id="video" th:field="*{category_id}">
-                                    <!-- ... (code for video categories) ... -->
-                                </select>
-                                <label for="video">Category</label>
+                                <label for="categoryId">Category</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="categoryName" th:field="*{category.name}"
-                                       placeholder="Enter category name">
-                                <label for="categoryName">Category Name</label>
+                                <select class="form-control" name="status" th:field="*{status}" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="0" th:selected="${mcDTO.status == 0}">in-active</option>
+                                    <option value="1" th:selected="${mcDTO.status == 1}">active</option>
+                                </select>
+                                <label>Status</label>
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                <button type="submit" class="btn btn-success">Create</button>
+                                <button type="submit" class="btn btn-success">Update</button>
                             </div>
                         </form>
                     </div>

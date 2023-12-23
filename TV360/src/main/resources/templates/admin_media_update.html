@@ -20,88 +20,24 @@
                 <h1 class="mt-4 title-admin">Update Media</h1>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        Update media data
-
+                        <i class="fas fa-table me-1"></i> Update media data
                         <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}"
-                              th:object="${mediaDTO}" method="post" enctype="multipart/form-data">
-                            <div class="form-floating mb-3" style="height: 100px; display: flex; align-items: center">
+                        <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}" th:object="${mediaDTO}"
+                              method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3"
+                                 style="height: 100px; display: flex; align-items: center">
                                 <div class="col-sm-4">
                                     <input class="form-control" type="file" id="thumbnail"
                                            name="logo">
                                 </div>
                                 <div class="col-md-4">
-                                    <img style="width: 90px; margin-left: 50px" th:src="@{${mediaDTO.thumbnail}}">
+                                    <img id="previewImage" style="width: 90px; margin-left: 50px"
+                                         th:src="@{${mediaDTO.thumbnail}}">
                                 </div>
                             </div>
-
-                            <!--Toggle Tab
-                            <div class="form-floating mb-3" id="toggleTabButton">
-                                <button type="button" style="padding: 10px 20px; margin-top: 20px;background: none;border-radius: 10px;border: 1px solid #ced4da;">
-                                    <a href="#">
-                                        <i class="fas fa-circle-plus"></i> Source
-                                    </a>
-                                </button>
-                            </div>
-
-                            <div class="card mb-4" id="tabContent" style="display: none;">
-                                <div class="card-header">
-                                    <i class="fas fa-table me-1"></i>
-                                    Update source media
-                                </div>
-                                <div class="card-body">
-                                    <form th:action="@{/admin/media-detail/create/save}" th:object="${mediaDetailDTO}"
-                                      method="post">
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="sourceUrl" name="sourceUrl" type="text" th:field="${mediaDetail.sourceUrl}"
-                                                   placeholder="Link Film" required/>
-                                            <label for="sourceUrl">Media Url</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <select class="form-control" id="exampleSelect" name="typeUrl" th:field="${mediaDetail.typeUrl}" required>
-                                                <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                                <option value="1">vod</option>
-                                                <option value="2">film</option>
-                                            </select>
-                                            <label>Type Source</label>
-                                        </div>
-                                        <div class="form-floating mb-3" th:if="mediaDTO.type == 1">
-                                            <input class="form-control" id="episode" min="0" value="0" name="episode" type="number" th:field="${mediaDetail.episode}"/>
-                                            <label for="episode">Episode</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" th:field="${mediaDetail.duration}" required/>
-                                            <label for="episode">Duration</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="rate" name="rate" min="0" max="5" value="1" type="number" th:field="${mediaDetail.rate}" required/>
-                                            <label for="rate">Rate</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <select class="form-control" name="quality" th:field="${mediaDetail.quality}" required>
-                                                <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                                <option value="2D">2D</option>
-                                                <option value="3D">3D</option>
-                                                <option value="4K">4K</option>
-                                                <option value="5K">5K</option>
-                                            </select>
-                                            <label>Quality</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="mediaId" name="mediaId" th:field="${mediaDTO.id}" type="number" required/>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <button type="submit" class="btn btn-success">Create</button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                            End Toggle Tab-->
-
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{title}" name="title" type="text"
                                        placeholder="Title" required />
@@ -117,8 +53,9 @@
                                 <select class="form-control" id="country" name="country" aria-label="type"
                                         th:field="*{country.id}" required>
                                     <option value="">-- choose option --</option>
-                                    <option th:each="country1 : ${countries}" th:selected="*{country.id == country.id}"
-                                            th:value="${country1.id}" th:text="${country1.name}"></option>
+                                    <option th:each="country1 : ${countries}"
+                                            th:selected="*{country.id == country.id}" th:value="${country1.id}"
+                                            th:text="${country1.name}"></option>
                                 </select>
                                 <label>Country</label>
                             </div>
@@ -159,15 +96,17 @@
 
 <div th:replace="admin_fragments::script"></div>
 
-
 <script>
-    document.getElementById("toggleTabButton").addEventListener("click", function () {
-        var tabContent = document.getElementById("tabContent");
-        if (tabContent.style.display === "none") {
-            tabContent.style.display = "block";
-        } else {
-            tabContent.style.display = "none";
-        }
+    document.getElementById("thumbnail").addEventListener("change", function () {
+        var input = this;
+        var imgElement = document.getElementById("previewImage");
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            imgElement.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
     });
 </script>
 

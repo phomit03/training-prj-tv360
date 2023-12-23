@@ -35,7 +35,6 @@ public class MediaController {
     @GetMapping("/media")
     public String getAllMedia(Model model) {
         model.addAttribute("title", "Media");
-
         List<MediaDTO> media = mediaService.getAllMedias();
         model.addAttribute("media1", media);
 
@@ -67,10 +66,8 @@ public class MediaController {
     public String showUpdateMedia(@PathVariable Long id, Model model){
         MediaDTO mediaDTO = mediaService.getMediaById(id);
         model.addAttribute("mediaDTO", mediaDTO);
-
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
-
         if (mediaDTO == null){
             return "redirect:/admin/media";
         }

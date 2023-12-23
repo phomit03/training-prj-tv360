@@ -41,7 +41,6 @@ public class MediaService {
         this.mediaDetailRepository = mediaDetailRepository;
         this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
-
     }
 
     public List<MediaDTO> getAllMedias(){
