@@ -42,7 +42,7 @@ public class MediaDetailController {
         model.addAttribute("mediaList", mediaList);
 
         model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
-        return "admin_media";
+        return "admin_media_detail_create";
     }
 
     @PostMapping("/media-detail/create/save")
@@ -54,17 +54,21 @@ public class MediaDetailController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media";
+        return "redirect:/admin/media-details";
     }
 
     @GetMapping("/media-detail/update/{id}")
     public String showUpdateMediaDetail(@PathVariable Long id, Model model){
         MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
+        model.addAttribute("mediaDetailDTO", mediaDetailDTO);
+
+        List<MediaDTO> mediaList = mediaService.getAllMedias();
+        model.addAttribute("mediaList", mediaList);
+
         if (mediaDetailDTO == null){
             return "redirect:/admin/media-details";
         }
 
-        model.addAttribute("mediaDetailDTO", mediaDetailDTO);
         return "admin_media_detail_update";
     }
 

@@ -67,46 +67,40 @@
                     <th>Thumbnail</th>
                     <th>Title</th>
                     <th>Description</th>
-                    <!--<th>Country</th>-->
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Source</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody th:if="${media1 != null and #lists.size(media1) > 0}">
                   <tr th:each="media, iterStat : ${media1}" th:class="'media-' + ${media.id}" th:data-media-id="${media.id}">
-                    <td th:text="${iterStat.index + 1}"></td>
-                    <td>
-                      <img style="width: 70px; max-height: 100px" th:src="@{${media.thumbnail}}">
-                    </td>
-                    <td th:text="${media.title}"></td>
-                    <td th:text="${media.description}"></td>
-<!--
-                    <td th:text="${media.country.name}"></td>
--->
-                    <td th:text="${#strings.equalsIgnoreCase(media.type, '1') ? 'Movie Series' : (#strings.equalsIgnoreCase(media.type, '2') ? 'Movie' : 'Video')}"></td>
-                    <td>
-                      <span style="color: green">
-                        <th:block th:if="${media.status == 1}">
-                          active
-                        </th:block>
-                      </span>
-                      <span style="color: red">
-                        <th:block th:if="${media.status == 0}">
-                          in-active
-                        </th:block>
-                      </span>
-                    </td>
-                    <td>
-                      <!--<a th:value="${mediaDetail.sourceUrl}"></a>-->
-                      <button class="btn" id="openPopup">
-                        <a href="#">
-                          <i class="fas fa-circle-plus"></i>
-                        </a>
-                      </button>
+                      <td th:text="${iterStat.index + 1}"></td>
+                      <td>
+                        <img style="width: 70px; max-height: 100px" th:src="@{${media.thumbnail}}">
+                      </td>
+                      <td th:text="${media.title}"></td>
+                      <td th:text="${media.description}"></td>
+                      <td th:text="${#strings.equalsIgnoreCase(media.type, '1') ? 'Movie' : (#strings.equalsIgnoreCase(media.type, '2') ? 'Video' : 'Movie Series')}"></td>
+                      <td>
+                        <span style="color: green">
+                          <th:block th:if="${media.status == 1}">
+                            active
+                          </th:block>
+                        </span>
+                        <span style="color: red">
+                          <th:block th:if="${media.status == 0}">
+                            in-active
+                          </th:block>
+                        </span>
+                      </td>
+                      <!--<td>
+                        <button class="btn" id="openPopup">
+                          <a href="#">
+                            <i class="fas fa-circle-plus"></i>
+                          </a>
+                        </button>
 
-                        <!--pop-up-->
+                        &lt;!&ndash;pop-up&ndash;&gt;
                         <div class="popup" id="popupForm">
                           <div class="popup-content">
                             <div class="modal-header" style="padding: 0.5rem 0;">
@@ -123,18 +117,18 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                   <select class="form-control" id="exampleSelect" name="typeUrl" required>
-                                    <option value="" selected>-- choose type --</option>
+                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
                                     <option value="1">vod</option>
                                     <option value="2">film</option>
                                   </select>
                                   <label>Type Source</label>
                                 </div>
-                                <div class="form-floating mb-3" th:if="mediaDTO.type == 1">
+                                <div class="form-floating mb-3">
                                   <input class="form-control" id="episode" min="0" value="0" name="episode" type="number"/>
                                   <label for="episode">Episode</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                  <input class="form-control" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" required/>
+                                  <input class="form-control" id="duration" name="duration" type="text" value="00:00" required/>
                                   <label for="episode">Duration</label>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -143,7 +137,7 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                   <select class="form-control" name="quality" required>
-                                    <option value="" selected>-- choose type --</option>
+                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
                                     <option value="2D">2D</option>
                                     <option value="3D">3D</option>
                                     <option value="4K">4K</option>
@@ -162,7 +156,7 @@
                           </div>
                         </div>
 
-                      </td>
+                      </td>-->
                       <td>
                         <button class="btn">
                           <a th:href="@{/admin/media/update/{id} (id=${media.id})}">
@@ -175,7 +169,6 @@
                           </a>
                         </button>
                       </td>
-                    </th:block>
                   </tr>
                 </tbody>
               </table>
@@ -190,26 +183,6 @@
       <!-- footer End -->
     </div>
 </div>
-
-
-
-<script>
-  document.getElementById('openPopup').addEventListener('click', function() {
-    document.getElementById('popupForm').style.display = 'block';
-  });
-
-  document.getElementById('closePopup').addEventListener('click', function() {
-    document.getElementById('popupForm').style.display = 'none';
-  });
-
-  // Close the popup if the user clicks outside of it
-  window.addEventListener('click', function(event) {
-    if (event.target === document.getElementById('popupForm')) {
-      document.getElementById('popupForm').style.display = 'none';
-    }
-  });
-</script>
-
 
 <div th:replace="admin_fragments::script"></div>
 

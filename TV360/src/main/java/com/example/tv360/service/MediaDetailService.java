@@ -41,7 +41,6 @@ public class MediaDetailService {
     public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) throws IOException{
         MediaDetail mediaDetail = new MediaDetail();
         mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());
-        mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
         mediaDetail.setRate(mediaDetailDTO.getRate());
         mediaDetail.setDuration(mediaDetailDTO.getDuration());
         mediaDetail.setQuality(mediaDetailDTO.getQuality());
@@ -58,7 +57,6 @@ public class MediaDetailService {
             mediaDetail.setRate(mediaDetailDTO.getRate());
             mediaDetail.setDuration(mediaDetailDTO.getDuration());
             mediaDetail.setQuality(mediaDetailDTO.getQuality());
-            mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
             mediaDetail.setMedia(mediaDetailDTO.getMedia());
             mediaDetail.setStatus(mediaDetailDTO.getStatus());
             mediaDetail.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

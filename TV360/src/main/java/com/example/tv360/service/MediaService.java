@@ -2,7 +2,9 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CountryRepository;
+import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
@@ -16,6 +18,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,15 +28,17 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
     private final CountryRepository countryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , MediaDetailRepository mediaDetailRepository, CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
+        this.mediaDetailRepository = mediaDetailRepository;
         this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
 
@@ -89,5 +94,4 @@ public class MediaService {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
     }
-
 }

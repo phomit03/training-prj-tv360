@@ -25,10 +25,6 @@ public class MediaDetail {
     @MapToDTO
     private String sourceUrl;
 
-    @Column(name = "type_url")
-    @MapToDTO
-    private String typeUrl;
-
     @MapToDTO
     private Integer episode;
 

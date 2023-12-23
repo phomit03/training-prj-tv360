@@ -30,18 +30,18 @@
                         <form th:action="@{/admin/media-detail/update/{id} (id = ${mediaDetailDTO.id})}"
                               th:object="${mediaDetailDTO}" method="post">
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
-                                       placeholder="Link Film" required/>
-                                <label>Media Url</label>
+                                <select class="form-control" id="mediaId" name="mediaId" aria-label="type"
+                                        th:field="*{media.id}" required>
+                                    <option value="">-- choose option --</option>
+                                    <option th:each="media : ${mediaList}" th:selected="*{media.id == media.id}"
+                                            th:value="${media.id}" th:text="${media.title}"></option>
+                                </select>
+                                <label>Country</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="type" name="typeUrl" aria-label="typeUrl"
-                                        th:field="*{typeUrl}" required>
-                                    <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${mediaDetailDTO.typeUrl == 1}">vod</option>
-                                    <option value="2" th:selected="${mediaDetailDTO.typeUrl == 2}">film</option>
-                                </select>
-                                <label>Type Source</label>
+                                <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
+                                       placeholder="Link Film" required/>
+                                <label>Source</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{episode}" id="episode" min="0" value="0" name="episode" type="number"/>
@@ -54,6 +54,16 @@
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{rate}" id="rate" name="rate" min="0" max="5" value="0" type="number" required/>
                                 <label for="rate">Rate</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-control" name="quality" th:field="*{quality}" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="2D" th:selected="${mediaDetailDTO.quality.equals('2D')}">2D</option>
+                                    <option value="3D" th:selected="${mediaDetailDTO.quality.equals('3D')}">3D</option>
+                                    <option value="4K" th:selected="${mediaDetailDTO.quality.equals('4K')}">4K</option>
+                                    <option value="5K" th:selected="${mediaDetailDTO.quality.equals('5K')}">5K</option>
+                                </select>
+                                <label>Quality</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <select class="form-control" name="status" th:field="*{status}" required>

@@ -1,6 +1,7 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.*;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CountryService;
@@ -41,17 +42,6 @@ public class MediaController {
         return "admin_media";
     }
 
-    @GetMapping("/media-series")
-    public String getAllMediaSeries(Model model) {
-        model.addAttribute("title", "Media");
-
-        List<MediaDTO> media = mediaService.getAllMedias();
-        model.addAttribute("media1", media);
-
-        return "admin_media_series";
-    }
-
-
     @GetMapping("/media/create")
     public String showCreateMedia(Model model){
         model.addAttribute("mediaDTO", new MediaDTO());
@@ -70,6 +60,7 @@ public class MediaController {
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/media";
+
     }
 
     @GetMapping("/media/update/{id}")

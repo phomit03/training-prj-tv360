@@ -109,8 +109,7 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{description}" name="description"
-                                       type="text" placeholder="Description" required />
+                                <input class="form-control" type="text" th:field="*{description}" required/>
                                 <label>Description</label>
                             </div>
 
@@ -128,9 +127,9 @@
                                 <select class="form-control" id="type" name="type" aria-label="type"
                                         th:field="*{type}" required>
                                     <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${mediaDTO.type == 1}">Movie Series</option>
-                                    <option value="2" th:selected="${mediaDTO.type == 2}">Movie</option>
-                                    <option value="3" th:selected="${mediaDTO.type == 3}">Video</option>
+                                    <option value="1" th:selected="${mediaDTO.type == 1}">Movie</option>
+                                    <option value="2" th:selected="${mediaDTO.type == 2}">Video</option>
+                                    <option value="3" th:selected="${mediaDTO.type == 3}">Movie Series</option>
                                 </select>
                                 <label>Type</label>
                             </div>

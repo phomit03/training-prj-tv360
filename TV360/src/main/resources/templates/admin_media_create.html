@@ -30,20 +30,17 @@
                         <form th:action="@{/admin/media/create/save}" th:object="${mediaDTO}" method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="file" id="Thumbnail"
-                                           required name="logo">
+                                    <input class="form-control" type="file" name="logo" id="Thumbnail" required/>
                                 </div>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Title" name="title" type="text"
-                                       placeholder="Title" required />
+                                <input class="form-control" id="Title" name="title" type="text" required/>
                                 <label for="Title">Title</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="Description" name="description" type="text"
-                                       placeholder="Description" required />
+                                <input class="form-control" name="description" id="description" required/>
                                 <label for="Description">Description</label>
                             </div>
 
@@ -60,9 +57,9 @@
                             <div class="form-floating mb-3">
                                 <select class="form-control" id="exampleSelect" name="type" required>
                                     <option value="" selected>-- choose type --</option>
-                                    <option value="1">Movie Series</option>
-                                    <option value="2">Movie</option>
-                                    <option value="3">Video</option>
+                                    <option value="1">Movie</option>
+                                    <option value="2">Video</option>
+                                    <option value="3">Movie Series</option>
                                 </select>
                                 <label>Type</label>
                             </div>
