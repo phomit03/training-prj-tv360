@@ -4,6 +4,7 @@ import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,14 @@ public class MediaDetailService {
     private final MediaDetailRepository mediaDetailRepository;
     private final MediaRepository mediaRepository;
     private final ModelToDtoConverter modelToDtoConverter;
+    private final DtoToModelConverter dtoToModelConverter;
     @Autowired
-    public MediaDetailService(MediaDetailRepository mediaDetailRepository, MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter ) {
+    public MediaDetailService(MediaDetailRepository mediaDetailRepository, MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter , DtoToModelConverter dtoToModelConverter ) {
         this.mediaDetailRepository = mediaDetailRepository;
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
+        this.dtoToModelConverter = dtoToModelConverter;
+
     }
 
     public List<MediaDetailDTO> getAllMediaDetails(){
@@ -38,20 +42,25 @@ public class MediaDetailService {
         return modelToDtoConverter.convertToDto(mediaDetails, MediaDetailDTO.class);
     }
 
-    public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) throws IOException{
-        MediaDetail mediaDetail = new MediaDetail();
-        mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());
-        mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
-        mediaDetail.setRate(mediaDetailDTO.getRate());
-        mediaDetail.setDuration(mediaDetailDTO.getDuration());
-        mediaDetail.setQuality(mediaDetailDTO.getQuality());
-        mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMediaId()).get());
+//    public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) throws IOException{
+//        MediaDetail mediaDetail = new MediaDetail();
+//        mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());
+//        mediaDetail.setTypeUrl(mediaDetailDTO.getTypeUrl());
+//        mediaDetail.setRate(mediaDetailDTO.getRate());
+//        mediaDetail.setDuration(mediaDetailDTO.getDuration());
+//        mediaDetail.setQuality(mediaDetailDTO.getQuality());
+//        mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMediaId()).get());
+//        mediaDetail.setStatus(1);
+//
+//        return mediaDetailRepository.save(mediaDetail);
+//    }
+    public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) throws IOException {
+        MediaDetail mediaDetail = dtoToModelConverter.convertToModel(mediaDetailDTO, MediaDetail.class);
         mediaDetail.setStatus(1);
-
         return mediaDetailRepository.save(mediaDetail);
     }
 
-    public MediaDetail updateMediaDetail(MediaDetailDTO mediaDetailDTO){
+        public MediaDetail updateMediaDetail(MediaDetailDTO mediaDetailDTO){
         try {
             MediaDetail mediaDetail = mediaDetailRepository.getById(mediaDetailDTO.getId());
             mediaDetail.setSourceUrl(mediaDetailDTO.getSourceUrl());

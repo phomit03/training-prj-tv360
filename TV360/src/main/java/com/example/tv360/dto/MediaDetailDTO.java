@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
 
 @Data
@@ -22,6 +23,9 @@ public class MediaDetailDTO {
 
     @MapToModel("typeUrl")
     private String typeUrl;
+
+    @MapToModel("episode")
+    private Integer episode;
 
     @MapToModel("rate")
     private Integer rate;

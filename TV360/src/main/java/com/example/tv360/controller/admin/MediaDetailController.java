@@ -38,11 +38,10 @@ public class MediaDetailController {
 
     @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
+        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
         List<MediaDTO> mediaList = mediaService.getAllMedias();
         model.addAttribute("mediaList", mediaList);
-
-        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
-        return "admin_media";
+        return "admin_media_detail_create";
     }
 
     @PostMapping("/media-detail/create/save")
@@ -59,6 +58,8 @@ public class MediaDetailController {
 
     @GetMapping("/media-detail/update/{id}")
     public String showUpdateMediaDetail(@PathVariable Long id, Model model){
+        List<MediaDTO> mediaList = mediaService.getAllMedias();
+        model.addAttribute("mediaList", mediaList);
         MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
         if (mediaDetailDTO == null){
             return "redirect:/admin/media-details";

@@ -64,6 +64,11 @@
              Categories
           </a>
 
+          <a th:href="@{/admin/media-details}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-details') ? 'active' : ''}">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            Media Details
+          </a>
+
           <a th:href="@{/admin/media-category}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-category') ? 'active' : ''}">
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
             Media Categories

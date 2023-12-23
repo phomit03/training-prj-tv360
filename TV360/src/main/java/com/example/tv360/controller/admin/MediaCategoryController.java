@@ -58,7 +58,7 @@ public class MediaCategoryController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media/category";
+        return "redirect:/admin/media-category";
     }
 
     @GetMapping("/media-category/update/{id}")
@@ -67,9 +67,9 @@ public class MediaCategoryController {
         List<CategoryDTO> categories = categoryService.getAllCategories();
         MediaCategoryDTO mcDTO = mediaCategoryService.getMediaCategoryById(id);
         if (mcDTO == null){
-            return "redirect:/admin/media/category";
+            return "redirect:/admin/media-category";
         }
-        model.addAttribute("media1", media);
+        model.addAttribute("medias", media);
         model.addAttribute("categories", categories);
         model.addAttribute("mcDTO", mcDTO);
         return "admin_media_category_update";
@@ -78,13 +78,13 @@ public class MediaCategoryController {
     @PostMapping("/media-category/update/{id}")
     public String updateMediaCategory(@PathVariable Long id, @ModelAttribute("mcDTO") MediaCategoryDTO mcDTO, RedirectAttributes attributes){
         try {
-            mediaCategoryService.updateMediaCategory(mcDTO);
+            mediaCategoryService.updateMediaCategory(id, mcDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/media/category";
+        return "redirect:/admin/media-category";
     }
 
     @GetMapping("/media-category/delete/{id}")

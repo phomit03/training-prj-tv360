@@ -34,7 +34,6 @@ public class MediaController {
     @GetMapping("/media")
     public String getAllMedia(Model model) {
         model.addAttribute("title", "Media");
-
         List<MediaDTO> media = mediaService.getAllMedias();
         model.addAttribute("media1", media);
 

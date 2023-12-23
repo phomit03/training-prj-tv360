@@ -1,77 +1,87 @@
-<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="admin_fragments::head"></head>
 
 <body>
-&lt;!&ndash; navbar Start &ndash;&gt;
+<!-- navbar Start -->
 <div th:replace="admin_fragments::navbar"></div>
-&lt;!&ndash; navbar End &ndash;&gt;
+<!-- navbar End -->
 
 <div id="layoutSidenav">
-    &lt;!&ndash; menu Start &ndash;&gt;
+    <!-- menu Start -->
     <div id="layoutSidenav_nav" th:replace="admin_fragments::menu"></div>
-    &lt;!&ndash; menu End &ndash;&gt;
+    <!-- menu End -->
 
     <div id="layoutSidenav_content">
-        &lt;!&ndash; Content Start &ndash;&gt;
+        <!-- Content Start -->
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4 title-admin">Create Media Detail</h1>
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Create a new media detail
+                        Create media detail data
 
                         <a th:href="@{/admin/media-details}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/media-detail/create/save}" th:object="${mediaDetailDTO}"
-                              method="post">
+                            method="post">
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
+                                <select class="form-control" id="media" name="media" aria-label="type"
+                                        th:field="*{media.id}" required>
+                                    <option value="">-- choose option --</option>
+                                    <option th:each="media : ${mediaList}" th:selected="*{media.id == media.id}"
+                                            th:value="${media.id}" th:text="${media.title}"></option>
+                                </select>
+                                <label>Media</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
                                        placeholder="Link Film" required/>
-                                <label for="sourceUrl">Media Url</label>
+                                <label>Media Url</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="exampleSelect" name="typeUrl" required>
-                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                    <option value="1">vod</option>
-                                    <option value="2">film</option>
+                                <select class="form-control" id="type" name="typeUrl" aria-label="typeUrl"
+                                        th:field="*{typeUrl}" required>
+                                    <option value="" selected>-- choose option --</option>
+                                    <option value="1" th:selected="${mediaDetailDTO.typeUrl == 1}">vod</option>
+                                    <option value="2" th:selected="${mediaDetailDTO.typeUrl == 2}">film</option>
                                 </select>
                                 <label>Type Source</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="episode" min="0" value="0" name="episode" type="number"/>
-                                <label for="episode">Episode</label>
+                                <input class="form-control" th:field="*{episode}" id="episode" name="episode" type="number" required/>
+                                <label for="rate">Episode</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="duration" name="duration" type="time" step="60" pattern="^[0-2][0-9]:[0-5][0-9]$" required/>
-                                <label for="episode">Duration</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="rate" name="rate" min="0" max="5" value="0" type="number" required/>
+                                <input class="form-control" th:field="*{rate}" id="rate" name="rate" min="0" max="5" value="0" type="number" required/>
                                 <label for="rate">Rate</label>
                             </div>
                             <div class="form-floating mb-3">
-                                    <select class="form-control" name="quality" required>
-                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                    <option value="2D">2D</option>
-                                    <option value="3D">3D</option>
-                                    <option value="4K">4K</option>
-                                    <option value="5K">5K</option>
+                                <input class="form-control" th:field="*{duration}" id="duration" name="duration" type="number"  required/>
+                                <label for="duration">Duration</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select th:field="*{quality}" class="form-control" name="quality" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="HD" th:selected="${mediaDetailDTO.quality == 'HD'}">HD</option>
+                                    <option value="2K" th:selected="${mediaDetailDTO.quality == '2K'}">2K</option>
+                                    <option value="4K" th:selected="${mediaDetailDTO.quality == '4K'}">4K</option>
+                                    <option value="8K" th:selected="${mediaDetailDTO.quality == '8K'}">8K</option>
                                 </select>
                                 <label>Quality</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="mediaId" th:field="*{mediaId}" required>
-                                    <option value="" selected>&#45;&#45; choose media &#45;&#45;</option>
-                                    <option th:each="mediaDTO : ${mediaList}" th:value="${mediaDTO.id}"
-                                            th:text="${mediaDTO.title}"></option>
+                                <select class="form-control" name="status" th:field="*{status}" required>
+                                    <option value="" selected>-- choose type --</option>
+                                    <option value="0" th:selected="${mediaDetailDTO.status == 0}">in-active</option>
+                                    <option value="1" th:selected="${mediaDetailDTO.status == 1}">active</option>
                                 </select>
-                                <label for="mediaId">Category</label>
+                                <label>Status</label>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                 <button type="submit" class="btn btn-success">Create</button>
@@ -81,11 +91,11 @@
                 </div>
             </div>
         </main>
-        &lt;!&ndash; Content End &ndash;&gt;
+        <!-- Content End -->
 
-        &lt;!&ndash; footer Start &ndash;&gt;
+        <!-- footer Start -->
         <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-        &lt;!&ndash; footer End &ndash;&gt;
+        <!-- footer End -->
     </div>
 </div>
 
@@ -94,4 +104,3 @@
 </body>
 
 </html>
--->
