@@ -42,19 +42,10 @@
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
                                        placeholder="Link Film" required/>
-                                <label>Media Url</label>
+                                <label>Source</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="type" name="typeUrl" aria-label="typeUrl"
-                                        th:field="*{typeUrl}" required>
-                                    <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${mediaDetailDTO.typeUrl == 1}">vod</option>
-                                    <option value="2" th:selected="${mediaDetailDTO.typeUrl == 2}">film</option>
-                                </select>
-                                <label>Type Source</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{episode}" id="episode" name="episode" type="number" required/>
+                                <input class="form-control" th:field="*{episode}" min="0" step="1" id="episode" name="episode" type="number"/>
                                 <label for="rate">Episode</label>
                             </div>
                             <div class="form-floating mb-3">
@@ -62,7 +53,7 @@
                                 <label for="rate">Rate</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{duration}" id="duration" name="duration" type="number"  required/>
+                                <input class="form-control" th:field="*{duration}" id="duration" name="duration" value="00:00" type="text" required/>
                                 <label for="duration">Duration</label>
                             </div>
                             <div class="form-floating mb-3">

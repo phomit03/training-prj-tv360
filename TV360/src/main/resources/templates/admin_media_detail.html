@@ -64,9 +64,7 @@
                     <th>#</th>
                     <th>Media</th>
                     <th>Media Url</th>
-                    <th>Type Url</th>
                     <th>Episode</th>
-<!--                    <th>Position</th>-->
                     <th>Evaluate</th>
                     <th>Duration</th>
                     <th>Quantity</th>
@@ -79,12 +77,11 @@
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${mediaDetail.media.title}"></td>
                     <td><a th:href="${mediaDetail.sourceUrl}">Source</a></td>
-                    <td th:text="${(mediaDetail.typeUrl == 1 ) ? 'vod' : 'film'}"></td>
-                    <td th:text="'Tập ' + ${mediaDetail.episode}"></td>
+                    <td th:text="(${mediaDetail.episode}) ? 'Episode ' + ${mediaDetail.episode} : ''"></td>
                     <td>
                       <span style="color: gold" th:utext="${'&#9733;'.repeat(mediaDetail.rate)}"></span>
                     </td>
-                    <td th:text="${mediaDetail.duration + ' Phút'}"></td>
+                    <td th:text="${mediaDetail.duration}"></td>
                     <td th:text="${mediaDetail.quality}"></td>
 <!--                    <td th:text="${(mediaDetail.episode != null) ? mediaDetail.episode : null}"></td>-->
                     <td>

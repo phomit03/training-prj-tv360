@@ -46,7 +46,7 @@ public class CountryService {
         return countryRepository.save(country);
     }
 
-    public Country updateCountry(Long id,CountryDTO countryDTO){
+    public Country updateCountry(Long id, CountryDTO countryDTO){
         try {
             Country country = countryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
             Country updateCountry1 = dtoToModelConverter.convertToModel(countryDTO, Country.class);

@@ -64,16 +64,6 @@
              Categories
           </a>
 
-          <a th:href="@{/admin/media-details}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-details') ? 'active' : ''}">
-            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-            Media Details
-          </a>
-
-          <a th:href="@{/admin/media-category}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-category') ? 'active' : ''}">
-            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-            Media Categories
-          </a>
-
           <a th:href="@{/admin/casts}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/casts') ? 'active' : ''}">
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
             Casts
@@ -84,14 +74,14 @@
             Countries
           </a>
 
+          <a th:href="@{/admin/media-category}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-category') ? 'active' : ''}">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            Media Categories
+          </a>
+
           <a th:href="@{/admin/media}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media') ? 'active' : ''}">
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
             Media
-          </a>
-
-          <a th:href="@{/admin/media-series}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-series') ? 'active' : ''}">
-            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-            Media Series
           </a>
 
           <a th:href="@{/admin/media-details}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-details') ? 'active' : ''}">

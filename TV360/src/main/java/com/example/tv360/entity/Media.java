@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,6 +30,8 @@ public class Media {
     private String title;
 
     @MapToDTO
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "type")

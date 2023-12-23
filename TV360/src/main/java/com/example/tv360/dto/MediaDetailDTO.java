@@ -21,9 +21,6 @@ public class MediaDetailDTO {
     @MapToModel("sourceUrl")
     private String sourceUrl;
 
-    @MapToModel("typeUrl")
-    private String typeUrl;
-
     @MapToModel("episode")
     private Integer episode;
 

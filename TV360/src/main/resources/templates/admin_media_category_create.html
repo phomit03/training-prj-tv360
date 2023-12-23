@@ -30,21 +30,21 @@
                         <form th:action="@{/admin/media-category/create/save}" th:object="${mcDTO}"
                               method="post">
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="mediaId" th:field="*{mediaId}" required>
+                                <select class="form-control" id="media" name="media" required>
                                     <option value="" selected>-- choose media --</option>
                                     <option th:each="media : ${medias}" th:value="${media.id}"
                                             th:text="${media.title}"></option>
                                 </select>
-                                <label for="mediaId">Media</label>
+                                <label for="media">Media</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="categoryId" th:field="*{categoryId}" required>
+                                <select class="form-control" id="category" name="category" required>
                                     <option value="" selected>-- choose category --</option>
                                     <option th:each="category : ${categories}" th:value="${category.id}"
                                             th:text="${category.name}"></option>
                                 </select>
-                                <label for="categoryId">Category</label>
+                                <label for="category">Category</label>
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">

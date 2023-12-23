@@ -38,9 +38,10 @@ public class MediaDetailController {
 
     @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
-        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
         List<MediaDTO> mediaList = mediaService.getAllMedias();
         model.addAttribute("mediaList", mediaList);
+
+        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
         return "admin_media_detail_create";
     }
 
@@ -53,26 +54,28 @@ public class MediaDetailController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media";
+        return "redirect:/admin/media-details";
     }
 
     @GetMapping("/media-detail/update/{id}")
     public String showUpdateMediaDetail(@PathVariable Long id, Model model){
+        MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
+        model.addAttribute("mediaDetailDTO", mediaDetailDTO);
+
         List<MediaDTO> mediaList = mediaService.getAllMedias();
         model.addAttribute("mediaList", mediaList);
-        MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
+
         if (mediaDetailDTO == null){
             return "redirect:/admin/media-details";
         }
 
-        model.addAttribute("mediaDetailDTO", mediaDetailDTO);
         return "admin_media_detail_update";
     }
 
     @PostMapping("/media-detail/update/{id}")
     public String updateMediaDetail(@PathVariable Long id, @ModelAttribute("mediaDetailDTO") MediaDetailDTO mediaDetailDTO, RedirectAttributes attributes){
         try {
-            mediaDetailService.updateMediaDetail(id,mediaDetailDTO);
+            mediaDetailService.updateMediaDetail(id, mediaDetailDTO);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
