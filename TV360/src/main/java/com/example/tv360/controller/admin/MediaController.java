@@ -75,10 +75,8 @@ public class MediaController {
     public String showUpdateMedia(@PathVariable Long id, Model model){
         MediaDTO mediaDTO = mediaService.getMediaById(id);
         model.addAttribute("mediaDTO", mediaDTO);
-
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
-
         if (mediaDTO == null){
             return "redirect:/admin/media";
         }
