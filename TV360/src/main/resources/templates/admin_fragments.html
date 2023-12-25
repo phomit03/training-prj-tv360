@@ -88,6 +88,11 @@
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
             Source Media
           </a>
+
+          <a th:href="@{/admin/film-casts}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/film-casts') ? 'active' : ''}">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            Caster
+          </a>
         </div>
       </div>
       <div class="sb-sidenav-footer">
