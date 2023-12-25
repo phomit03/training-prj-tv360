@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> {
-    List<MediaDetail> findByMediaId(Long mediaId);
+    List<MediaDetail> findTop15ByOrderByCreatedAtDesc();
 }

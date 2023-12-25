@@ -74,4 +74,7 @@ public class MediaDetailService {
         }
     }
 
+    public List<MediaDetail> getNewRelease() {
+        return mediaDetailRepository.findTop15ByOrderByCreatedAtDesc();
+    }
 }

@@ -18,12 +18,6 @@ public class MediaCategoryDTO {
     @MapToModel("id")
     private Long id;
 
-    @MapToModel("mediaId")
-    private Long mediaId;
-
-    @MapToModel("categoryId")
-    private Long categoryId;
-
     @MapToModel("status")
     private Integer status;
 

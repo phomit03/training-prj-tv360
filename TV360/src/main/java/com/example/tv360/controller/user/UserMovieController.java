@@ -15,4 +15,12 @@ public class UserMovieController {
     }
 
 
+    @RequestMapping("/movie/detail")
+    public String movieDetail(Model model) {
+        model.addAttribute("title", "Movie Detail");
+
+        return "user_movie_detail";
+    }
+
+
 }

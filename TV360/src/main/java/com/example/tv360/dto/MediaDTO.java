@@ -30,9 +30,6 @@ public class MediaDTO {
     @MapToModel("type")
     private Integer type;
 
-    @MapToModel("countryId")
-    private Long countryId;
-
     @MapToModel("status")
     private Integer status;
 

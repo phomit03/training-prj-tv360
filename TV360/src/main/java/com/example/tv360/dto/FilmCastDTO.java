@@ -18,12 +18,6 @@ public class FilmCastDTO {
     @MapToModel("id")
     private Long id;
 
-    @MapToModel("mediaId")
-    private Long mediaId;
-
-    @MapToModel("castId")
-    private Long castId;
-
     @MapToModel("status")
     private Integer status;
 

@@ -33,9 +33,6 @@ public class MediaDetailDTO {
     @MapToModel("quality")
     private String quality;
 
-    @MapToModel("mediaId")
-    private Long mediaId;
-
     @MapToModel("status")
     private Integer status;
 
