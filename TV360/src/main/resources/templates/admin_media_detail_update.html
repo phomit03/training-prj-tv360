@@ -59,7 +59,9 @@
                             <div class="form-floating mb-3">
                                 <select th:field="*{quality}" class="form-control" name="quality" required>
                                     <option value="" selected>-- choose type --</option>
-                                    <option value="HD" th:selected="${mediaDetailDTO.quality == 'HD'}">HD</option>
+                                    <option value="2D" th:selected="${mediaDetailDTO.quality == '2D'}">2D</option>
+                                    <option value="3D" th:selected="${mediaDetailDTO.quality == '3D'}">3D</option>
+                                    <option value="4D" th:selected="${mediaDetailDTO.quality == '4D'}">4D</option>
                                     <option value="2K" th:selected="${mediaDetailDTO.quality == '2K'}">2K</option>
                                     <option value="4K" th:selected="${mediaDetailDTO.quality == '4K'}">4K</option>
                                     <option value="8K" th:selected="${mediaDetailDTO.quality == '8K'}">8K</option>

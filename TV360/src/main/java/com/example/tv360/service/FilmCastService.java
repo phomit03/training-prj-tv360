@@ -1,7 +1,6 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.FilmCastDTO;
-import com.example.tv360.entity.FilmCast;
 import com.example.tv360.repository.*;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;

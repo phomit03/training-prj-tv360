@@ -46,7 +46,7 @@
 
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="Country" name="country"
-                                        aria-label="Country Id" required>
+                                        aria-label="Country Id">
                                     <option value="" selected>-- choose option --</option>
                                     <option th:each="country : ${countries}" th:value="${country.id}"
                                             th:text="${country.name}"></option>

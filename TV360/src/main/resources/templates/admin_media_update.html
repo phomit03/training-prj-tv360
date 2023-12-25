@@ -51,7 +51,7 @@
 
                             <div class="form-floating mb-3">
                                 <select class="form-control" id="country" name="country" aria-label="type"
-                                        th:field="*{country.id}" required>
+                                        th:field="*{country.id}">
                                     <option value="">-- choose option --</option>
                                     <option th:each="country1 : ${countries}"
                                             th:selected="*{country.id == country.id}" th:value="${country1.id}"

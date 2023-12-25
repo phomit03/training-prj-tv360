@@ -80,4 +80,5 @@ public class MediaCategoryService {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
     }
+
 }

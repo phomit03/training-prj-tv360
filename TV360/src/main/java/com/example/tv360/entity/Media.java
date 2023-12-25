@@ -10,7 +10,9 @@ import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -56,4 +58,22 @@ public class Media {
     @JoinColumn(name = "country_id")
     @MapToDTO
     private Country country;
+
+    @MapToDTO
+    @ManyToMany
+    @JoinTable(
+            name = "media_category",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new LinkedHashSet<>();
+
+    @MapToDTO
+    @ManyToMany
+    @JoinTable(
+            name = "media_cast",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "cast_id")
+    )
+    private Set<Cast> cast = new LinkedHashSet<>();
 }

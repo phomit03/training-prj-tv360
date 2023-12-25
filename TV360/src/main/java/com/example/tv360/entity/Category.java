@@ -9,6 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -41,4 +44,9 @@ public class Category {
     @Column(name = "updated_at")
     @MapToDTO
     private Timestamp updatedAt;
+
+    @MapToDTO
+    @ManyToMany(mappedBy = "categories")
+    private Set<Media> media = new LinkedHashSet<>();
+
 }

@@ -40,5 +40,6 @@ public class MediaDTO {
     private Timestamp updatedAt;
 
     @MapToModel("country")
-    private Country country;
+    private CountryDTO country;
+
 }

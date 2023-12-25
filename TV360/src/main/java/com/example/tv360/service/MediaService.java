@@ -1,9 +1,11 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDTO;
+import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Media;
-import com.example.tv360.entity.MediaDetail;
+import com.example.tv360.entity.MediaCategory;
 import com.example.tv360.repository.CountryRepository;
+import com.example.tv360.repository.MediaCategoryRepository;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.utils.DtoToModelConverter;
@@ -11,8 +13,6 @@ import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +20,6 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,16 +30,18 @@ public class MediaService {
     private Helper helper;
     private final MediaRepository mediaRepository;
     private final MediaDetailRepository mediaDetailRepository;
+    private final MediaCategoryRepository mediaCategoryRepository;
     private final CountryRepository countryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , MediaDetailRepository mediaDetailRepository, CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , MediaDetailRepository mediaDetailRepository, MediaCategoryRepository mediaCategoryRepository, CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
         this.mediaDetailRepository = mediaDetailRepository;
+        this.mediaCategoryRepository = mediaCategoryRepository;
         this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
     }
@@ -96,4 +97,11 @@ public class MediaService {
         }
     }
 
+
+    public List<Media> getMediaByCategory(Category category) {
+        List<MediaCategory> mediaCategories = mediaCategoryRepository.findByCategory(category);
+        return mediaCategories.stream()
+                .map(MediaCategory::getMedia)
+                .collect(Collectors.toList());
+    }
 }
