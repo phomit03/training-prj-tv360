@@ -1,7 +1,6 @@
 package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CategoryDTO;
-import com.example.tv360.dto.MediaCategoryDTO;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaCategoryService;

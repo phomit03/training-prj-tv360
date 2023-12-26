@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +31,7 @@ public class CategoryDTO {
 
     @MapToModel("updatedAt")
     private Timestamp updatedAt;
+
+    @MapToModel("media")
+    private Set<MediaDTO> media;
 }

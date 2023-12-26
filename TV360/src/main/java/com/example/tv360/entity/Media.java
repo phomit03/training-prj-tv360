@@ -76,4 +76,8 @@ public class Media {
             inverseJoinColumns = @JoinColumn(name = "cast_id")
     )
     private Set<Cast> cast = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "media")
+    @MapToDTO
+    private Set<MediaDetail> mediaDetails;
 }

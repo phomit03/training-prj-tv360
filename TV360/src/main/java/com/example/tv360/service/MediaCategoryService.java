@@ -1,8 +1,5 @@
 package com.example.tv360.service;
 
-import com.example.tv360.dto.MediaCategoryDTO;
-import com.example.tv360.entity.Category;
-import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaCategory;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.MediaCategoryRepository;

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @Builder
@@ -42,4 +43,13 @@ public class MediaDTO {
     @MapToModel("country")
     private CountryDTO country;
 
+    @MapToModel("categories")
+    private Set<CategoryDTO> categories;
+
+    @MapToModel("cast")
+    private Set<CastDTO> cast;
+
+    //1-n
+    @MapToModel("mediaDetails")
+    private Set<MediaDetailDTO> mediaDetails;
 }
