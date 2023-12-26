@@ -1,8 +1,8 @@
+/*
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.repository.MediaCategoryRepository;
 import com.example.tv360.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +18,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class MediaCategoryController {
-    private final MediaCategoryService mediaCategoryService;
     private final MediaService mediaService;
     private final CategoryService categoryService;
-    private final MediaCategoryRepository mediaCategoryRepository;
     @Autowired
     public MediaCategoryController(MediaCategoryService mediaCategoryService, MediaService mediaService, CategoryService categoryService, MediaCategoryRepository mediaCategoryRepository) {
         this.mediaCategoryService = mediaCategoryService;
@@ -98,3 +96,4 @@ public class MediaCategoryController {
         }
     }
 }
+*/

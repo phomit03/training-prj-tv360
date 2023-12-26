@@ -1,8 +1,7 @@
+/*
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.*;
-import com.example.tv360.repository.FilmCastRepository;
-import com.example.tv360.repository.MediaCategoryRepository;
 import com.example.tv360.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -98,3 +97,4 @@ public class FilmCastController {
         }
     }
 }
+*/
