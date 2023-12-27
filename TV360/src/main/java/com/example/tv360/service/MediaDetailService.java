@@ -1,6 +1,7 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Country;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
@@ -86,4 +87,9 @@ public class MediaDetailService {
         Pageable pageable = PageRequest.of(0, 12, Sort.by("createdAt").descending());
         return mediaDetailRepository.findTopRated(pageable);
     }
+
+    public List<MediaDetailResponse> getMediaDetails_client() {
+        return mediaDetailRepository.getMediaDetails();
+    }
+
 }
