@@ -17,47 +17,27 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT md FROM MediaDetail md JOIN FETCH md.media WHERE md.rate = 5 ORDER BY md.createdAt DESC")
     List<MediaDetail> findTopRated(Pageable pageable);
 
-//    @Query("SELECT md.media AS media_detail_id, " +
-//            "md.media AS media_id, " +
-//            "m.title AS media_title, " +
-//            "m.type AS media_type, " +
-//            "m.description AS media_description, " +
-//            "c.fullName AS cast_fullname, " +
-//            "c.type AS cast_type, " +
-//            "ct.type AS category_type, " +
-//            "ct.name AS category_name, " +
-//            "co.name AS country_name, " +
+//    @Query("SELECT new com.example.tv360.dto.response.MediaDetailResponse(" +
+//            "m.title, " +
+//            "m.type, " +
+//            "m.description, " +
+//            "c.fullName, " +
+//            "c.type, " +
+//            "ct.type, " +
+//            "ct.name, " +
+//            "co.name, " +
 //            "md.sourceUrl, " +
 //            "md.duration, " +
 //            "md.quality, " +
-//            "md.episode AS media_detail_episode " +
+//            "md.episode) " +
 //            "FROM MediaDetail md " +
 //            "INNER JOIN md.media m " +
 //            "INNER JOIN m.cast c " +
 //            "INNER JOIN m.categories ct " +
 //            "INNER JOIN m.country co")
-//    List<Object[]> getMediaDetails();
+//    List<MediaDetailResponse> getMediaDetails();
 
-//    @Query("SELECT m.title AS media_title, " +
-//            "m.type AS media_type, " +
-//            "m.description AS media_description, " +
-//            "c.fullName AS cast_fullname, " +
-//            "c.type AS cast_type, " +
-//            "ct.type AS category_type, " +
-//            "ct.name AS category_name, " +
-//            "co.name AS country_name, " +
-//            "md.sourceUrl, " +
-//            "md.duration, " +
-//            "md.quality, " +
-//            "md.episode AS media_detail_episode " +
-//            "FROM MediaDetail md " +
-//            "INNER JOIN md.media m " +
-//            "INNER JOIN m.cast c " +
-//            "INNER JOIN m.categories ct " +
-//            "INNER JOIN m.country co")
-//    List<Object[]> getMediaDetails();
-
-    @Query("SELECT new com.example.tv360.dto.response.MediaDetailResponse(" +
+    @Query("SELECT DISTINCT  new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.title, " +
             "m.type, " +
             "m.description, " +
@@ -71,10 +51,16 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "md.quality, " +
             "md.episode) " +
             "FROM MediaDetail md " +
-            "INNER JOIN md.media m " +
-            "INNER JOIN m.cast c " +
-            "INNER JOIN m.categories ct " +
-            "INNER JOIN m.country co")
+            "LEFT JOIN md.media m " +
+            "LEFT JOIN m.cast c " +
+            "LEFT JOIN m.categories ct " +
+            "LEFT JOIN m.country co " +
+            "LEFT JOIN m.categories mct " +
+            "LEFT JOIN m.cast mcast " +
+            "WHERE (mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)")
     List<MediaDetailResponse> getMediaDetails();
+
+
+
 
 }
