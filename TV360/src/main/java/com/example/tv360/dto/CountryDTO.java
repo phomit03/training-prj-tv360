@@ -29,7 +29,7 @@ public class CountryDTO {
     @MapToModel("updatedAt")
     private Timestamp updatedAt;
 
-    //1-n
+    /*//1-n
     @MapToModel("media")
-    private Set<MediaDTO> media;
+    private Set<MediaDTO> media;*/
 }

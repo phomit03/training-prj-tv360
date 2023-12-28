@@ -1,9 +1,10 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.*;
-import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.service.CastService;
+import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -22,14 +24,14 @@ import java.util.List;
 public class MediaController {
     private final MediaService mediaService;
     private final CountryService countryService;
-    private final MediaRepository mediaRepository;
-    private final MediaDetailRepository mediaDetailRepository;
+    private final CategoryService categoryService;
+    private final CastService castService;
 
-    public MediaController(MediaService mediaService, CountryService countryService, MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
+    public MediaController(MediaService mediaService, CountryService countryService, CategoryService categoryService, CastService castService, MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
-        this.mediaRepository = mediaRepository;
-        this.mediaDetailRepository = mediaDetailRepository;
+        this.categoryService = categoryService;
+        this.castService = castService;
     }
 
     @GetMapping("/media")
@@ -44,15 +46,26 @@ public class MediaController {
     @GetMapping("/media/create")
     public String showCreateMedia(Model model){
         model.addAttribute("mediaDTO", new MediaDTO());
+
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
+
+        List<CategoryDTO> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+
+        List<CastDTO> cast = castService.getAllCasts();
+        model.addAttribute("listCast", cast);
         return "admin_media_create";
     }
 
     @PostMapping("/media/create/save")
-    public String createMedia(@ModelAttribute MediaDTO mediaDTO, @RequestParam("logo") MultipartFile logo, RedirectAttributes redirectAttributes) {
+    public String createMedia(@ModelAttribute MediaDTO mediaDTO,
+                              @RequestParam("logo") MultipartFile logo,
+                              @RequestParam("selectedCategories") Long[] selectedCategories,
+                              @RequestParam("selectedCast") Long[] selectedCast,
+                              RedirectAttributes redirectAttributes) {
         try {
-            mediaService.createMedia(mediaDTO, logo);
+            mediaService.createMedia(mediaDTO, logo, selectedCategories, selectedCast);
             redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();

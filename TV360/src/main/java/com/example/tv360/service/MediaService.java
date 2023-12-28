@@ -1,10 +1,12 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDTO;
+import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Media;
+import com.example.tv360.repository.CastRepository;
+import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.CountryRepository;
-import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
@@ -18,8 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,17 +28,21 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
-    private final MediaDetailRepository mediaDetailRepository;
     private final CountryRepository countryRepository;
+    private final CastRepository castRepository;
+    private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper , MediaDetailRepository mediaDetailRepository, CountryRepository countryRepository, DtoToModelConverter dtoToModelConverter ) {
+    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
+                        CountryRepository countryRepository, CategoryService categoryService,
+                        CastRepository castRepository, CategoryRepository categoryRepository, DtoToModelConverter dtoToModelConverter) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
-        this.mediaDetailRepository = mediaDetailRepository;
+        this.castRepository = castRepository;
+        this.categoryRepository = categoryRepository;
         this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
     }
@@ -52,12 +57,34 @@ public class MediaService {
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
     }
 
-    public Media createMedia(MediaDTO mediaDTO, MultipartFile logo) throws IOException {
+    public Media createMedia(MediaDTO mediaDTO, MultipartFile logo,
+                             Long[] selectedCategories, Long[] selectedCast
+                             ) throws IOException {
         Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+
         if (!logo.isEmpty()) {
             String thumbnail = helper.uploadImage(logo);
             media.setThumbnail(thumbnail);
         }
+
+        Set<Category> categories = new LinkedHashSet<>();
+        for (Long categoryId : selectedCategories) {
+            Category category = categoryRepository.findById(categoryId).orElse(null);
+            if (category != null) {
+                categories.add(category);
+            }
+        }
+        media.setCategories(categories);
+
+        Set<Cast> listCast = new LinkedHashSet<>();
+        for (Long castId : selectedCast) {
+            Cast cast = castRepository.findById(castId).orElse(null);
+            if (cast != null) {
+                listCast.add(cast);
+            }
+        }
+        media.setCast(listCast);
+
         media.setStatus(1);
         return mediaRepository.save(media);
     }
@@ -72,7 +99,7 @@ public class MediaService {
                 String thumbnail = helper.uploadImage(logo);
                 media.setThumbnail(thumbnail);
             }
-            media.setCountry(countryRepository.findById(media.getCountry().getId()).get());
+
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaRepository.save(media);
         }
