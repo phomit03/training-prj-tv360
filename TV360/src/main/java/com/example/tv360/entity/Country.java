@@ -39,7 +39,12 @@ public class Country {
     @MapToDTO
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "country")
+    /*@OneToMany(mappedBy = "country")
     @MapToDTO
     private Set<Media> media;
+
+    @Override
+    public String toString() {
+        return "Country [name = " + name + "]";
+    }*/
 }

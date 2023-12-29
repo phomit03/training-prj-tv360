@@ -1,6 +1,7 @@
 package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaService;
@@ -27,11 +28,8 @@ public class UserMovieController {
     public String movies(Model model) {
         model.addAttribute("title", "Movies");
 
-        List<CategoryDTO> categories = categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
-
-        /*List<MediaCategoryDTO> mediaCategories = mediaCategoryService.getAllMediaCategories();
-        model.addAttribute("mediaCategories", mediaCategories);*/
+        List<MediaDTO> mediaDTOList = mediaService.getMediaWithCategories();
+        model.addAttribute("mediaList", mediaDTOList);
 
         return "user_movies";
     }

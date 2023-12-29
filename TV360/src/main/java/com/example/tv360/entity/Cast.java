@@ -1,6 +1,8 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +48,8 @@ public class Cast {
     private Timestamp updatedAt;
 
     @MapToDTO
-    @ManyToMany(mappedBy = "cast")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "cast", fetch = FetchType.LAZY)
     private Set<Media> media = new LinkedHashSet<>();
+
 }

@@ -81,7 +81,7 @@ public class Media {
     )
     private Set<Cast> cast = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "media")
+    /*@OneToMany(mappedBy = "media")
     @MapToDTO
-    private Set<MediaDetail> mediaDetails;
+    private Set<MediaDetail> mediaDetails;*/
 }
