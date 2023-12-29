@@ -1,12 +1,19 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.*;
+import com.example.tv360.entity.Cast;
+import com.example.tv360.entity.Country;
+import com.example.tv360.entity.Media;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,22 +33,24 @@ public class MediaController {
     private final CountryService countryService;
     private final CategoryService categoryService;
     private final CastService castService;
+    private final MediaRepository mediaRepository;
 
     public MediaController(MediaService mediaService, CountryService countryService, CategoryService categoryService, CastService castService, MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
         this.categoryService = categoryService;
         this.castService = castService;
+        this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/media")
-    public String getAllMedia(Model model) {
-        model.addAttribute("title", "Media");
-        List<MediaDTO> media = mediaService.getAllMedias();
-        model.addAttribute("media1", media);
-
-        return "admin_media";
-    }
+//    @GetMapping("/media")
+//    public String getAllMedia(Model model) {
+//        model.addAttribute("title", "Media");
+//        List<MediaDTO> media = mediaService.getAllMedias();
+//        model.addAttribute("media1", media);
+//
+//        return "admin_media";
+//    }
 
     @GetMapping("/media/create")
     public String showCreateMedia(Model model){
@@ -116,5 +125,39 @@ public class MediaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error!");
         }
+    }
+
+    @GetMapping("/media")
+    public String getAllMedia(Model model,
+                              @RequestParam(name = "title", required = false) String title,
+                              @RequestParam(name = "type", required = false) Integer type,
+                              @RequestParam(name = "status", required = false) Integer status
+    ) {
+        model.addAttribute("title", "Media");
+        return findPaginated(1, model, title,type,status);
+    }
+
+    @GetMapping("/media/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                Model model,
+                                @RequestParam(name = "title", required = false) String title,
+                                @RequestParam(name = "type", required = false) Integer type,
+                                @RequestParam(name = "status", required = false) Integer status
+    ) {
+        int pageSize = 6;
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        List<Media> result = mediaRepository.searchMedia(title,type,status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title,type, status).size());
+        List<Media> media = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("media1", media);
+        model.addAttribute("title", title);
+        model.addAttribute("type", type);
+        model.addAttribute("status", status);
+        return "admin_media";
     }
 }

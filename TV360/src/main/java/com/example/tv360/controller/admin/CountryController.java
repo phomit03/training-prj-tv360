@@ -1,8 +1,14 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.entity.Cast;
+import com.example.tv360.entity.Country;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.service.CountryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,13 +30,13 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
-    @GetMapping("/countries")
-    public String getAllCountries(Model model) {
-        model.addAttribute("title", "Country");
-        List<CountryDTO> countries = countryService.getAllCountries();
-        model.addAttribute("countries", countries);
-        return "admin_country";
-    }
+//    @GetMapping("/countries")
+//    public String getAllCountries(Model model) {
+//        model.addAttribute("title", "Country");
+//        List<CountryDTO> countries = countryService.getAllCountries();
+//        model.addAttribute("countries", countries);
+//        return "admin_country";
+//    }
 
     @GetMapping("/country/create")
     public String showCreateCountry(Model model){
@@ -83,5 +89,36 @@ public class CountryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error!");
         }
+    }
+
+    @GetMapping("/countries")
+    public String getAllCasts(Model model,
+                              @RequestParam(name = "name", required = false) String name,
+                              @RequestParam(name = "status", required = false) Integer status
+    ) {
+        model.addAttribute("title", "Country");
+        return findPaginated(1, model,name,status);
+    }
+
+    @GetMapping("/countries/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                Model model,
+                                @RequestParam(name = "name", required = false) String name,
+                                @RequestParam(name = "status", required = false) Integer status
+    ) {
+        int pageSize = 6;
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        List<Country> result = countryRepository.searchCategories(name,status,pageable);
+        Page<Country> page = new PageImpl<>(result, pageable,countryRepository.searchCategories1(name, status).size());
+        List<Country> countries = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("countries", countries);
+        model.addAttribute("name", name);
+        model.addAttribute("status", status);
+        return "admin_country";
     }
 }

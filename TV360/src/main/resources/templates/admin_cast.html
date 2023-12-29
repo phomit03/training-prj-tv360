@@ -24,7 +24,13 @@
               <div class="input-group">
                 <form th:action="@{/admin/casts}" method="get">
                   <label><input placeholder="Full Name " class="form-control" type="text" name="fullName" th:value="${fullName}" /></label>
-                  <label><input placeholder="Type Cast " class="form-control" type="text" name="type" th:value="${type}" /></label>
+                  <label>
+                    <select class="form-control" name="type">
+                      <option value="" selected>Choose Type</option>
+                      <option value="1">Director</option>
+                      <option value="2">Actor</option>
+                    </select>
+                  </label>
                   <label>
                     <select class="form-control" name="status">
                       <option value="" selected>Choose Status</option>
@@ -38,9 +44,10 @@
             </div>
 
           </div>
+
           <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i>
+                <i class="fas fa-table "></i>
                 List of casts
 
               <a th:href="@{/admin/cast/create}">
@@ -91,6 +98,7 @@
                   </tr>
                 </tbody>
               </table>
+<!--               phan trang-->
               <div th:if = "${totalPages > 1}">
                 <div class = "row col-sm-12">
                   <div class = "col-sm-2">
@@ -107,9 +115,9 @@
                 </div>
               </div>
 
+              </div>
             </div>
           </div>
-        </div>
       </main>
       <!-- Content End -->
 

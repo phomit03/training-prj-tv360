@@ -4,6 +4,7 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
+import com.example.tv360.entity.Country;
 import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CastRepository;
 import com.example.tv360.repository.CategoryRepository;
@@ -14,6 +15,9 @@ import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -143,4 +147,10 @@ public class MediaService {
         return mediaDTOList;
     }
 
+    //phan trang
+    public Page<Country> findPaginated(int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.countryRepository.findAll(pageable);
+    }
 }
