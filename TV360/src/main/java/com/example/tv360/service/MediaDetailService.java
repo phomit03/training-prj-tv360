@@ -88,8 +88,13 @@ public class MediaDetailService {
         return mediaDetailRepository.findTopRated(pageable);
     }
 
-    public List<MediaDetailResponse> getMediaDetails_client() {
-        return mediaDetailRepository.getMediaDetails();
+    public List<MediaDetailResponse> getMediaDetailsClient() {
+        try {
+            return mediaDetailRepository.getMediaDetails();
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 
 }

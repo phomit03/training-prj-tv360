@@ -99,6 +99,7 @@ public class MediaService {
         try {
             Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
             Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+            updateMedia1.setThumbnail(media.getThumbnail());
             BeanUtils.copyProperties(updateMedia1, media);
             if (!logo.isEmpty()) {
                 String thumbnail = helper.uploadImage(logo);

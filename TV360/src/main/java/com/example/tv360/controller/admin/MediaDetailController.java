@@ -101,9 +101,9 @@ public class MediaDetailController {
 
 
     @GetMapping("/test")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetails() {
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
         try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetails_client();
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClient();
             return ResponseEntity.ok(mediaDetails);
         } catch (Exception e) {
             // Handle exceptions or return an appropriate response
