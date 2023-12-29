@@ -1,5 +1,6 @@
 package com.example.tv360.service;
 
+import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
@@ -62,11 +63,6 @@ public class MediaService {
                              ) throws IOException {
         Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
 
-        if (!logo.isEmpty()) {
-            String thumbnail = helper.uploadImage(logo);
-            media.setThumbnail(thumbnail);
-        }
-
         Set<Category> categories = new LinkedHashSet<>();
         for (Long categoryId : selectedCategories) {
             Category category = categoryRepository.findById(categoryId).orElse(null);
@@ -75,6 +71,11 @@ public class MediaService {
             }
         }
         media.setCategories(categories);
+
+        if (!logo.isEmpty()) {
+            String thumbnail = helper.uploadImage(logo);
+            media.setThumbnail(thumbnail);
+        }
 
         Set<Cast> listCast = new LinkedHashSet<>();
         for (Long castId : selectedCast) {
@@ -118,6 +119,28 @@ public class MediaService {
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
+    }
+
+    public List<MediaDTO> getMediaWithCategories() {
+        List<Media> mediaList = mediaRepository.findAll();
+
+        List<MediaDTO> mediaDTOList = new ArrayList<>();
+
+        for (Media media : mediaList) {
+            MediaDTO mediaDTO = new MediaDTO();
+            Set<CategoryDTO> categoryDTOList = new HashSet<>();
+            for (Category category : media.getCategories()) {
+                if (category != null){
+                    CategoryDTO categoryDTO = new CategoryDTO();
+                    categoryDTOList.add(categoryDTO);
+                }
+            }
+
+            mediaDTO.setCategories(categoryDTOList);
+            mediaDTOList.add(mediaDTO);
+        }
+
+        return mediaDTOList;
     }
 
 }

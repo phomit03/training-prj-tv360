@@ -47,7 +47,8 @@ public class Cast {
     private Timestamp updatedAt;
 
     @MapToDTO
-    @ManyToMany(mappedBy = "cast")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "cast", fetch = FetchType.LAZY)
     private Set<Media> media = new LinkedHashSet<>();
 
 }

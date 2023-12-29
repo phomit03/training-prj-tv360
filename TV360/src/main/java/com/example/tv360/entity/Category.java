@@ -48,6 +48,7 @@ public class Category {
     private Timestamp updatedAt;
 
     @MapToDTO
-    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Media> media = new LinkedHashSet<>();
 }

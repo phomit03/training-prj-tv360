@@ -2,6 +2,7 @@ package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
@@ -93,6 +94,20 @@ public class MediaDetailController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error!");
+        }
+    }
+
+
+
+
+    @GetMapping("/test")
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetails() {
+        try {
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetails_client();
+            return ResponseEntity.ok(mediaDetails);
+        } catch (Exception e) {
+            // Handle exceptions or return an appropriate response
+            return ResponseEntity.status(500).body(null);
         }
     }
 }

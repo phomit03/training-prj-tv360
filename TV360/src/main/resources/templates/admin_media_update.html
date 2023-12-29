@@ -3,6 +3,20 @@
 
 <head th:replace="admin_fragments::head"></head>
 
+<style type="text/css">
+    #categories-input, #actor-input, #director-input {
+        width: 100%;
+        margin: 0 0 5px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        font-family: arial, verdana, sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+    }
+</style>
+
 <body>
 <!-- navbar Start -->
 <div th:replace="admin_fragments::navbar"></div>
@@ -27,6 +41,20 @@
                     <div class="card-body">
                         <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}" th:object="${mediaDTO}"
                               method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3">
+                                <div class="demo-multiple-select">
+                                    <select class="form-control" id="categories" name="selectedCategories" multiple required>
+                                        <option th:each="category : ${categories}" th:value="${category.id}"
+                                                th:text="${category.name}" th:selected="${category.id}"></option>
+                                    </select>
+
+                                    <input class="form-control" id="categories-input"
+                                           style="padding: 1rem 0.75rem; border-radius: 0.375rem;"
+                                           placeholder="Please select categories..." data-dropdown="true"
+                                           data-input-style="outline" data-label-style="stacked" data-tags="true"/>
+                                </div>
+                            </div>
+
                             <div class="form-floating mb-3"
                                  style="height: 100px; display: flex; align-items: center">
                                 <div class="col-sm-4">
@@ -38,6 +66,7 @@
                                          th:src="@{${mediaDTO.thumbnail}}">
                                 </div>
                             </div>
+
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{title}" name="title" type="text"
                                        placeholder="Title" required />
@@ -107,6 +136,25 @@
         };
 
         reader.readAsDataURL(input.files[0]);
+    });
+</script>
+
+<script>
+    mobiscroll.setOptions({
+        theme: 'ios',
+        themeVariant: 'light'
+    });
+
+    mobiscroll.select('#categories', {
+        inputElement: document.getElementById('categories-input')
+    });
+
+    mobiscroll.select('#actor', {
+        inputElement: document.getElementById('actor-input')
+    });
+
+    mobiscroll.select('#director', {
+        inputElement: document.getElementById('director-input')
     });
 </script>
 
