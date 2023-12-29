@@ -24,6 +24,7 @@ public class Cast {
     private Long id;
 
     @MapToDTO
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "type")

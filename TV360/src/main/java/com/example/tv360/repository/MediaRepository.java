@@ -10,4 +10,5 @@ import javax.persistence.EntityManager;
 import java.util.List;
 public interface MediaRepository extends JpaRepository<Media, Long> {
 
+
 }
