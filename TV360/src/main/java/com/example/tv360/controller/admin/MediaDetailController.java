@@ -3,9 +3,15 @@ package com.example.tv360.controller.admin;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.MediaDetail;
+import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,20 +28,22 @@ public class MediaDetailController {
     private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
 
-    public MediaDetailController(MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
+    public MediaDetailController(MediaDetailRepository mediaDetailRepository ,MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
+        this.mediaDetailRepository = mediaDetailRepository;
         this.mediaDetailService = mediaDetailService;
         this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/media-details")
-    public String getAllMediaDetails(Model model) {
-        model.addAttribute("title", "Media Detail");
-        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
-        model.addAttribute("mediaDetails", mediaDetails);
-        return "admin_media_detail";
-    }
+//    @GetMapping("/media-details")
+//    public String getAllMediaDetails(Model model) {
+//        model.addAttribute("title", "Media Detail");
+//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
+//        model.addAttribute("mediaDetails", mediaDetails);
+//        return "admin_media_detail";
+//    }
 
     @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
@@ -110,4 +118,45 @@ public class MediaDetailController {
             return ResponseEntity.status(500).body(null);
         }
     }
+    //phan trang
+    @GetMapping("/media-details")
+    public String getAllPlayers(Model model,
+                                @RequestParam(name = "title", required = false) String title,
+                                @RequestParam(name = "quality", required = false) String quality,
+                                @RequestParam(name = "episode", required = false) Integer episode,
+                                @RequestParam(name = "status", required = false) Integer  status
+    ) {
+//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
+//
+//        model.addAttribute("mediaDetails", mediaDetails);
+        model.addAttribute("title", "Media Details");
+        return findPaginated(1, model, title, quality,episode,status);
+    }
+
+    @GetMapping("/media-details/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                Model model,
+                                @RequestParam(name = "title", required = false) String title,
+                                @RequestParam(name = "quality", required = false) String quality,
+                                @RequestParam(name = "episode", required = false) Integer episode,
+                                @RequestParam(name = "status", required = false) Integer  status
+    ) {
+        int pageSize = 11;
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        List<MediaDetail> result = mediaDetailRepository.searchMediaDetails(title, quality,episode,status, pageable);
+        Page<MediaDetail> page = new PageImpl<>(result, pageable,mediaDetailRepository.searchMediaDetails1(title, quality,episode,status).size());
+        List<MediaDetail> mediaDetails = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("mediaDetails", mediaDetails);
+        model.addAttribute("title", title);
+        model.addAttribute("quality", quality);
+        model.addAttribute("episode", episode);
+        model.addAttribute("status", status);
+        return "admin_media_detail";
+    }
+
 }
