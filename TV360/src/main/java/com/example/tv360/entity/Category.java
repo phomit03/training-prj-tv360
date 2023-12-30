@@ -1,6 +1,7 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,7 @@ public class Category {
     private Timestamp updatedAt;
 
     @MapToDTO
-    @JsonIgnore
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Media> media = new LinkedHashSet<>();
 }

@@ -21,7 +21,7 @@
 
           <!--        search-->
           <div class="row g-4 align-items-center">
-            <div class="col-6">
+            <div class="col-12">
               <div class="input-group">
                 <form th:action="@{/admin/categories}" method="get">
                   <label><input placeholder="Name" class="form-control" type="text" name="name" th:value="${name}" /></label>
@@ -57,7 +57,7 @@
 
             </div>
             <div class="card-body">
-              <table id="datatablesSimple">
+              <table class="datatable-table">
                 <thead>
                   <tr>
                     <th>#</th>

@@ -2494,6 +2494,7 @@ textarea.form-control-lg {
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
+  margin-bottom: 20px;
 }
 .input-group > .form-control, .input-group > .datatable-input,
 .input-group > .form-select,
@@ -2513,6 +2514,7 @@ textarea.form-control-lg {
 .input-group .btn {
   position: relative;
   z-index: 2;
+  margin-bottom: 5px;
 }
 .input-group .btn:focus {
   z-index: 5;
