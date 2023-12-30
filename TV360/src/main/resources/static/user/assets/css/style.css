@@ -1382,7 +1382,7 @@ body.active { overflow: hidden; }
 
   .hero-content {
     margin-top: 100px;
-    max-width: 600px;
+    max-width: 650px;
   }
 
 
@@ -1636,4 +1636,50 @@ body.active { overflow: hidden; }
 
 .videos-list {
   display: none;
+}
+
+.nav-link .active {
+  color: var(--citrine);;
+}
+
+.user-icon {
+  font-size: 35px;
+  color:  var(--citrine);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #1c252ed4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  transform: translateX(-80%) translateY(10%);
+  transition: transform 0.3s ease-in-out;
+  width: 15vw;
+}
+
+.dropdown-item {
+  padding:  20px;
+  display: block;
+  color: #e9ecef;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #32373bab;
+}
+
+.dropdown-divider {
+  height: 1px;
+  margin: 6px 0;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.dropdown-item .fa-user, .dropdown-item .fa-arrow-right {
+  margin-right: 10px;
+}
+
+.logout:hover {
+  margin-left: 10px;
 }

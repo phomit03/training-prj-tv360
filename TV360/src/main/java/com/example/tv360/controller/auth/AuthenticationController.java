@@ -6,15 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/registration")
-public class UserRegistrationController {
-
+public class AuthenticationController {
 	private UserService userService;
 
-	public UserRegistrationController(UserService userService) {
+	public AuthenticationController(UserService userService) {
 		super();
 		this.userService = userService;
 	}
@@ -23,13 +20,18 @@ public class UserRegistrationController {
     public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
-	
-	@GetMapping
+
+	@GetMapping("/login")
+	public String login() {
+		return "auth_login";
+	}
+
+	@GetMapping("/registration")
 	public String showRegistrationForm() {
-		return "registration";
+		return "auth_register";
 	}
 	
-	@PostMapping
+	@PostMapping("/registration")
 	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
 		userService.save(registrationDto);
 		return "redirect:/registration?success";

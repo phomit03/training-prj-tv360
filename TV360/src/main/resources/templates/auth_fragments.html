@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="shortcut icon" th:href="@{/user/favicon.svg}" type="image/svg+xml">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/vendor/bootstrap/css/bootstrap.min.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/vendor/animate/animate.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/vendor/css-hamburgers/hamburgers.min.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/vendor/select2/select2.min.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/css/util.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/auth/css/main.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+
+<body>
+  <!--content-->
+
+  <div th:fragment="script">
+    <!--===============================================================================================-->
+    <script th:src="@{/auth/vendor/jquery/jquery-3.2.1.min.js}"></script>
+    <!--===============================================================================================-->
+    <script th:src="@{/auth/vendor/bootstrap/js/popper.js}"></script>
+    <script th:src="@{/auth/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <!--===============================================================================================-->
+    <script th:src="@{/auth/vendor/select2/select2.min.js}"></script>
+    <!--===============================================================================================-->
+    <script th:src="@{/auth/vendor/tilt/tilt.jquery.min.js}"></script>
+    <script >
+      $('.js-tilt').tilt({
+        scale: 1.1
+      })
+    </script>
+    <!--===============================================================================================-->
+    <script th:src="@{/auth/js/main.js}"></script>
+
+  </div>
+</body>
+</html>

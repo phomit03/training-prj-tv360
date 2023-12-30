@@ -126,7 +126,7 @@ public class MediaService {
         }
     }
 
-    public List<MediaDTO> getMediaWithCategories() {
+    public List<MediaDTO> getMediaWithCategory() {
         List<Media> mediaList = mediaRepository.findAll();
 
         List<MediaDTO> mediaDTOList = new ArrayList<>();
@@ -134,9 +134,12 @@ public class MediaService {
         for (Media media : mediaList) {
             MediaDTO mediaDTO = new MediaDTO();
             Set<CategoryDTO> categoryDTOList = new HashSet<>();
+
             for (Category category : media.getCategories()) {
-                if (category != null){
+                if (category != null) {
                     CategoryDTO categoryDTO = new CategoryDTO();
+                    categoryDTO.setId(category.getId());
+                    categoryDTO.setName(category.getName());
                     categoryDTOList.add(categoryDTO);
                 }
             }
@@ -147,6 +150,7 @@ public class MediaService {
 
         return mediaDTOList;
     }
+
 
     //phan trang
     public Page<Country> findPaginated(int pageNo, int pageSize) {

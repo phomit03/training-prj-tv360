@@ -15,12 +15,12 @@
   <!-- custom css link-->
   <link rel="stylesheet" th:href="@{/user/assets/css/style.css}">
 
-  <link rel="stylesheet" th:href="@{style.css}">
-
   <!-- google font link-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -32,7 +32,7 @@
     <div class="overlay" data-overlay></div>
 
     <a th:href="@{/home}" class="logo">
-      <img th:src="@{/user/assets/images/logo.svg}" alt="TV360 logo">
+      <img th:src="@{/user/assets/images/logo.png}" alt="Media360 logo">
     </a>
 
     <div class="header-actions">
@@ -56,9 +56,32 @@
         </select>
       </div>
 
-      <a th:href="@{/login}">
+      <!--<a th:href="@{/login}">
         <button class="btn btn-primary">Sign in</button>
-      </a>
+      </a>-->
+
+      <div class="nav-item dropdown" id="userDropdown">
+        <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
+        <span>
+            <i class="fa fa-user-circle user-icon"></i>
+        </span>
+        </a>
+        <div class="dropdown-menu" id="userDropdownMenu">
+          <!-- Các mục trong dropdown menu -->
+          <a class="dropdown-item" href="#">
+            <i class="fa fa-user"></i>
+            Hello, Xuan Thao
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" th:href="@{/logout}">
+            <span class="logout">
+              <i class="fa fa-arrow-right"></i> Logout
+            </span>
+          </a>
+        </div>
+      </div>
+
+
 
 
     </div>
@@ -70,7 +93,7 @@
     <nav class="navbar" data-navbar>
       <div class="navbar-top">
         <a th:href="@{/home}" class="logo">
-          <img th:src="@{/user/assets/images/logo.svg}" alt="TV360 logo">
+          <img th:src="@{/user/assets/images/logo.png}" alt="Media360 logo">
         </a>
 
         <button class="menu-close-btn" data-menu-close-btn>
@@ -79,16 +102,16 @@
       </div>
 
       <ul class="navbar-list">
-        <li class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/home') ? 'active' : ''}">
-          <a th:href="@{/home}" class="navbar-link">Home</a>
+        <li class="nav-item nav-link">
+          <a th:href="@{/home}" class="navbar-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/home') ? 'active' : ''}">Home</a>
         </li>
 
-        <li class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/movies') ? 'active' : ''}">
-          <a th:href="@{/movies}" class="navbar-link">Movies</a>
+        <li class="nav-item nav-link">
+          <a th:href="@{/movies}" class="navbar-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/movies') ? 'active' : ''}">Movies</a>
         </li>
 
-        <li class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/videos') ? 'active' : ''}">
-          <a th:href="@{/videos}" class="navbar-link">Videos</a>
+        <li class="nav-item nav-link">
+          <a th:href="@{/videos}" class="navbar-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/videos') ? 'active' : ''}">Videos</a>
         </li>
       </ul>
     </nav>
@@ -103,10 +126,10 @@
 
     <div class="hero-content">
 
-      <p class="hero-subtitle">TV360</p>
+      <p class="hero-subtitle">Media360</p>
 
       <h1 class="h1 hero-title">
-        Unlimited <strong>Movie</strong>, TVs Shows, & More.
+        Unlimited <strong>Movie</strong>, Videos, & More.
       </h1>
 
       <div class="meta-wrapper">
@@ -114,37 +137,25 @@
         <div class="badge-wrapper">
           <div class="badge badge-fill">PG 18</div>
 
-          <div class="badge badge-outline">HD</div>
+          <div class="badge badge-outline">2D</div>
+          <div class="badge badge-outline">4K</div>
+          <div class="badge badge-outline">6K</div>
+          <div class="badge badge-outline">8K</div>
         </div>
 
         <div class="ganre-wrapper">
-          <a href="#">Romance,</a>
-
-          <a href="#">Drama</a>
+          <a href="#">Action,</a>
+          <a href="#">Comedy,</a>
+          <a href="#">Thrillers,</a>
+          <a href="#">Series,</a>
+          <a href="#">Cartoons,...</a>
         </div>
-
-        <div class="date-time">
-
-          <div>
-            <ion-icon name="calendar-outline"></ion-icon>
-
-            <time datetime="2022">2022</time>
-          </div>
-
-          <div>
-            <ion-icon name="time-outline"></ion-icon>
-
-            <time datetime="PT128M">128 min</time>
-          </div>
-
-        </div>
-
       </div>
 
       <button class="btn btn-primary">
         <ion-icon name="play"></ion-icon>
 
-        <span>Watch now</span>
+        <span>Update everyday</span>
       </button>
 
     </div>
@@ -158,10 +169,10 @@
   <div class="container">
 
     <div class="title-wrapper">
-      <h2 class="cta-title">Trial start first 30 days.</h2>
+      <h2 class="cta-title">Get the latest information.</h2>
 
       <p class="cta-text">
-        Enter your email to create or restart your membership.
+        Enter your email to receive the latest information from us. Thank you!
       </p>
     </div>
 
@@ -184,7 +195,7 @@
       <div class="footer-brand-wrapper">
 
         <a th:href="@{/home}" class="logo">
-          <img th:src="@{/user/assets/images/logo.svg}" alt="TV360 logo">
+          <img th:src="@{/user/assets/images/logo.png}" alt="Media360 logo">
         </a>
 
         <ul class="footer-list">
@@ -194,11 +205,11 @@
           </li>
 
           <li>
-            <a href="movies.html" class="footer-link">Movies</a>
+            <a th:href="@{/movies}" class="footer-link">Movies</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Videos</a>
+            <a th:href="@{/videos}" class="footer-link">Videos</a>
           </li>
 
         </ul>
@@ -266,7 +277,7 @@
     <div class="container">
 
       <p class="copyright">
-        &copy; 2022 <a href="#">codewithsadee</a>. All Rights Reserved
+        &copy; 2023 <a href="#">LeCeng-XuanThao</a>. All Rights Reserved
       </p>
 
       <img th:src="@{/user/assets/images/footer-bottom-img.png}" alt="Online banking companies logo" class="footer-bottom-img">
@@ -277,14 +288,11 @@
 </footer>
 <!--end footer-->
 
-
-<!--
-  - #GO TO TOP
--->
+<!--#GO TO TOP-->
 <a href="#top" class="go-top" data-go-top th:fragment="back-to-top">
   <ion-icon name="chevron-up"></ion-icon>
 </a>
-
+<!--END GO TO TOP-->
 
 <div th:fragment="script">
   <!-- custom js link-->
@@ -294,6 +302,13 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </div>
+
+<script>
+  function toggleDropdown() {
+    var dropdownMenu = document.getElementById("userDropdownMenu");
+    dropdownMenu.style.display = (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") ? "block" : "none";
+  }
+</script>
 
 </body>
 </html>

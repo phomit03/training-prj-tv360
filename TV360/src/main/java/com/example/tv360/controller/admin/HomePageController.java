@@ -21,6 +21,6 @@ public class HomePageController {
 
     @GetMapping("")
     public String homePageAdmin(Model model){
-        return "admin_cast";
+        return "admin_media";
     }
 }

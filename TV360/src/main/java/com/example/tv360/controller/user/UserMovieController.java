@@ -28,7 +28,7 @@ public class UserMovieController {
     public String movies(Model model) {
         model.addAttribute("title", "Movies");
 
-        List<MediaDTO> mediaDTOList = mediaService.getMediaWithCategories();
+        List<MediaDTO> mediaDTOList = mediaService.getMediaWithCategory();
         model.addAttribute("mediaList", mediaDTOList);
 
         return "user_movies";

@@ -3,22 +3,22 @@
 
 @font-face {
   font-family: Poppins-Regular;
-  src: url('Poppins-Regular.ttf');
+  src: url('../fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
   font-family: Poppins-Bold;
-  src: url('Poppins-Bold.ttf');
+  src: url('../fonts/poppins/Poppins-Bold.ttf');
 }
 
 @font-face {
   font-family: Poppins-Medium;
-  src: url('Poppins-Medium.ttf');
+  src: url('../fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
   font-family: Montserrat-Bold;
-  src: url('Montserrat-Bold.ttf');
+  src: url('../fonts/montserrat/Montserrat-Bold.ttf');
 }
 
 /*//////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #57b846;
+  color: #e2d703;
 }
 
 /*---------------------------------------------*/
@@ -133,14 +133,14 @@ iframe {
   font-family: Poppins-Regular;
   font-size: 13px;
   line-height: 1.5;
-  color: #999999;
+  color: #e1e1e1;
 }
 
 .txt2 {
   font-family: Poppins-Regular;
   font-size: 13px;
   line-height: 1.5;
-  color: #666666;
+  color: #a2a2a2;
 }
 
 
@@ -164,16 +164,17 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: #9053c7;
+  /*background: #9053c7;
   background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
-  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  background: linear-gradient(-135deg, #c850c0, #4158d0);*/
+  background: url("../../user/assets/images/hero-bg.jpg");
 }
 
 .wrap-login100 {
   width: 960px;
-  background: #fff;
+  background: rgb(43 48 54 / 66%);
   border-radius: 10px;
   overflow: hidden;
 
@@ -207,7 +208,7 @@ iframe {
 .login100-form-title {
   font-family: Poppins-Bold;
   font-size: 24px;
-  color: #333333;
+  color: #e1e1e1;
   line-height: 1.2;
   text-align: center;
 
@@ -252,7 +253,7 @@ iframe {
   width: 100%;
   height: 100%;
   box-shadow: 0px 0px 0px 0px;
-  color: rgba(87,184,70, 0.8);
+  color: #e2d703;
 }
 
 .input100:focus + .focus-input100 {
@@ -300,7 +301,7 @@ iframe {
 }
 
 .input100:focus + .focus-input100 + .symbol-input100 {
-  color: #57b846;
+  color: #dad006;
   padding-left: 28px;
 }
 
@@ -328,7 +329,7 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 25px;
-  background: #57b846;
+  background: #e2d703;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -345,7 +346,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background: #333333;
+  background: #b6af0c;
 }
 
 
