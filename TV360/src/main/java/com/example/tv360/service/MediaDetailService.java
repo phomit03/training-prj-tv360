@@ -9,6 +9,7 @@ import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -88,8 +89,19 @@ public class MediaDetailService {
         return mediaDetailRepository.findTopRated(pageable);
     }
 
-    public List<MediaDetailResponse> getMediaDetails_client() {
-        return mediaDetailRepository.getMediaDetails();
+    public List<MediaDetailResponse> getMediaDetailsClient() {
+        try {
+            return mediaDetailRepository.getMediaDetails();
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public Page<MediaDetail> findPaginated(int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.mediaDetailRepository.findAll(pageable);
     }
 
 }

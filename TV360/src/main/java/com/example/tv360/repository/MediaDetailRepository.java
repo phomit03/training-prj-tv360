@@ -1,10 +1,12 @@
 package com.example.tv360.repository;
 
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.MediaDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,6 +61,32 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.cast mcast " +
             "WHERE (mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)")
     List<MediaDetailResponse> getMediaDetails();
+
+
+    // phan trang
+    @Query(value = "SELECT md.* FROM media_detail md " +
+            "LEFT JOIN media m ON md.media_id = m.id " +
+            "WHERE (:title is null or m.title  like CONCAT('%', :title, '%')) " +
+            "AND (:quality  is null or md.quality  like CONCAT('%', :quality, '%')) " +
+            "AND (:episode is null or md.episode like CONCAT('%', :episode, '%')) " +
+            "AND (:status is null or md.status like CONCAT('%', :status, '%'))", nativeQuery = true)
+    List<MediaDetail> searchMediaDetails(@Param("title") String title,
+                                         @Param("quality") String quality,
+                                         @Param("episode") Integer episode,
+                                         @Param("status") Integer status, Pageable pageable);
+
+    @Query(value = "SELECT md.* FROM media_detail md " +
+            "LEFT JOIN media m ON md.media_id = m.id " +
+            "WHERE (:title is null or m.title  like CONCAT('%', :title, '%')) " +
+            "AND (:quality  is null or md.quality  like CONCAT('%', :quality, '%')) " +
+            "AND (:episode is null or md.episode like CONCAT('%', :episode, '%')) " +
+            "AND (:status is null or md.status like CONCAT('%', :status, '%'))", nativeQuery = true)
+    List<MediaDetail> searchMediaDetails1(@Param("title") String title,
+                                         @Param("quality") String quality,
+                                         @Param("episode") Integer episode,
+                                         @Param("status") Integer status);
+
+
 
 
 

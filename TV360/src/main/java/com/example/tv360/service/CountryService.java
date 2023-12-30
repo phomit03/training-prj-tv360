@@ -1,11 +1,15 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Country;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -69,5 +73,12 @@ public class CountryService {
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
+    }
+
+    //phan trang
+    public Page<Country> findPaginated(int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.countryRepository.findAll(pageable);
     }
 }
