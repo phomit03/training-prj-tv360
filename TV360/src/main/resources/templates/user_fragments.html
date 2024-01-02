@@ -207,10 +207,19 @@
       </p>
     </div>
 
-    <form th:action="@{/send-mail}" method="post" class="cta-form">
-      <input type="email" name="email" placeholder="Enter your email..." class="email-field" required>
-      <button type="submit" class="cta-form-btn">Register</button>
-    </form>
+    <th:block th:if="${session.loggedInUser == null}">
+      <form  class="cta-form">
+        <input type="email" name="email" placeholder="Enter your email..." class="email-field" required>
+        <a th:href="@{/login}" class="cta-form-btn">Register</a>
+      </form>
+    </th:block>
+
+    <th:block th:if="${session.loggedInUser != null}">
+      <form th:action="@{/send-mail}" method="post" class="cta-form">
+        <input type="email" name="email" placeholder="Enter your email..." class="email-field" required>
+        <button type="submit" class="cta-form-btn">Register</button>
+      </form>
+    </th:block>
 
   </div>
 </section>
