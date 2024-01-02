@@ -40,7 +40,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!--=======================================Icon============================================-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!--=======================================Sweet Alert============================================-->
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"
+          integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+          crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -199,10 +207,9 @@
       </p>
     </div>
 
-    <form action="" class="cta-form">
-      <input type="email" name="email" required placeholder="Enter your email" class="email-field">
-
-      <button type="submit" class="cta-form-btn">Get started</button>
+    <form th:action="@{/send-mail}" method="post" class="cta-form">
+      <input type="email" name="email" placeholder="Enter your email..." class="email-field" required>
+      <button type="submit" class="cta-form-btn">Register</button>
     </form>
 
   </div>
@@ -324,14 +331,37 @@
   <!-- icon link-->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</div>
 
-<script>
-  function toggleDropdown() {
-    var dropdownMenu = document.getElementById("userDropdownMenu");
-    dropdownMenu.style.display = (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") ? "block" : "none";
-  }
-</script>
+  <script>
+    function toggleDropdown() {
+      var dropdownMenu = document.getElementById("userDropdownMenu");
+      dropdownMenu.style.display = (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") ? "block" : "none";
+    }
+  </script>cường taxi
+
+  <!-- Thêm SweetAlert2 từ CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script th:inline="javascript">
+    var successMessage = [[${success}]];
+    if (successMessage) {
+      Swal.fire({
+        icon: 'success',
+        title: 'success',
+        text: successMessage
+      });
+    }
+
+    var errorMessage = [[${error}]];
+    if (errorMessage) {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: errorMessage
+      });
+    }
+  </script>
+</div>
 
 </body>
 </html>
