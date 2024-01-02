@@ -76,47 +76,37 @@
         </select>
       </div>
 
-      <!--<a th:href="@{/login}">
-        <button class="btn btn-primary">Sign in</button>
-      </a>-->
-
-      <div class="nav-item dropdown" id="userDropdown">
-        <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
-        <span>
-            <i class="fa fa-user-circle user-icon"></i>
-        </span>
+      <th:block th:if="${session.loggedInUser == null }">
+        <a th:href="@{/login}">
+          <button class="btn btn-primary">Sign in</button>
         </a>
-        <div class="dropdown-menu" id="userDropdownMenu">
-          <!-- Các mục trong dropdown menu -->
-          <!--login/user-->
-          <li th:if="${session.loggedInUser == null }">
-            <a th:href="@{/login}" class="btn-primary py-2 px-3" style="color:var(--citrine);">Login
-              <i class="icon-user"
-                 aria-hidden="true">
-              </i>
-            </a>
-          </li>
-
-<!--          session k null-->
-          <div th:if="${session.loggedInUser != null}">
-          <a class="dropdown-item user-dropdown" href="#">
-            <i class="fa fa-user"></i>
-            Hello
-            <span class="user-full-name" th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.fullName}"></span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" th:href="@{/logout}">
-            <span class="logout">
-              <i class="fa fa-arrow-right"></i> Logout
+      </th:block>
+      <th:block th:if="${session.loggedInUser != null }">
+        <div class="nav-item dropdown" id="userDropdown">
+          <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
+            <span>
+                <i class="fa fa-user-circle user-icon"></i>
             </span>
           </a>
+          <div class="dropdown-menu" id="userDropdownMenu">
+            <div>
+              <div class="dropdown-item user-dropdown">
+                <i class="fa fa-user"></i>
+                <span class="user-full-name" style="display: inline-flex;"
+                      th:if="${session.loggedInUser != null}"
+                      th:text="${'Hello, ' + session.loggedInUser.fullName}">
+                </span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" th:href="@{/logout}">
+                <span class="logout">
+                  <i class="fa fa-arrow-right"></i> Logout
+                </span>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-
-
-
-
+      </th:block>
     </div>
 
     <button class="menu-open-btn" data-menu-open-btn>

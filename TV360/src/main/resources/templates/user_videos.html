@@ -14,12 +14,10 @@
         <section class="hero" th:replace="user_fragments::banner"></section>
 
         <!-- content-->
-        <section class="upcoming" style="padding: 30px" th:each="category : ${categories}"
+        <section class="upcoming" style="padding: 30px" th:each="category : ${categoriesWithMedia}"
                  th:if="${category.getType() == 2}">
             <div class="container">
-
                 <div class="flex-wrapper">
-
                     <div class="title-wrapper">
                         <p class="section-subtitle">Online Streaming</p>
 
@@ -30,27 +28,27 @@
                     </a>
                 </div>
 
-                <!--<ul class="movies-list has-scrollbar">
-                    <li th:each="mediaCategory : ${mediaCategories}"
-                        th:if="${category.getId() == mediaCategory.category.getId()}">
+                <ul class="movies-list has-scrollbar">
+                    <li th:each="media : ${category.media}">
                         <div class="movie-card">
 
                             <a href="">
                                 <figure class="card-banner">
-                                    <img th:src="${mediaCategory.media.getThumbnail()}">
+                                    <img th:src="${media.getThumbnail()}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
                                 <a href="">
-                                    <h3 class="card-title align-content-center" th:text="${mediaCategory.media.getTitle()}"></h3>
+                                    <h3 class="card-title align-content-center" th:text="${media.getTitle()}"></h3>
                                 </a>
                             </div>
                         </div>
                     </li>
-                </ul>-->
+                </ul>
             </div>
         </section>
+
         <!-- end content-->
 
         <!-- contact -->

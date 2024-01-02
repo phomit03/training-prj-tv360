@@ -25,4 +25,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                                 @Param("type") Integer type,
                                 @Param("status") Integer status);
 
+
+    @Query("SELECT c FROM Category c " +
+            "LEFT JOIN FETCH c.media m " +
+            "WHERE m IS NOT NULL")
+    Set<Category> findAllCategoriesWithMedia();
 }

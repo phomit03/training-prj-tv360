@@ -1,6 +1,7 @@
 package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.entity.Category;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping()
@@ -26,11 +28,8 @@ public class UserVideoController {
     public String videos(Model model) {
         model.addAttribute("title", "Videos");
 
-        List<CategoryDTO> categories = categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
-
-        /*List<MediaCategoryDTO> mediaCategories = mediaCategoryService.getAllMediaCategories();
-        model.addAttribute("mediaCategories", mediaCategories);*/
+        List<CategoryDTO> categoriesWithMedia = categoryService.getAllCategoriesWithMedia();
+        model.addAttribute("categoriesWithMedia", categoriesWithMedia);
 
         return "user_videos";
     }

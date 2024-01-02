@@ -11,12 +11,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +28,9 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     public CategoryService(CategoryRepository categoryRepository,ModelToDtoConverter modelToDtoConverter,DtoToModelConverter dtoToModelConverter ) {
         this.categoryRepository = categoryRepository;
@@ -76,5 +83,18 @@ public class CategoryService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.categoryRepository.findAll(pageable);
+    }
+
+    public List<CategoryDTO> getAllCategoriesWithMedia() {
+        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL ORDER BY m.createdAt DESC";
+
+        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
+        query.setMaxResults(15);
+
+        List<Category> categories = query.getResultList();
+
+        return categories.stream()
+                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 }

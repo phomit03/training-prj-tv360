@@ -3,9 +3,7 @@ package com.example.tv360.entity;
 import com.example.tv360.utils.MapToDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.w3c.dom.Text;
@@ -63,24 +61,24 @@ public class Media {
     private Country country;
 
     @MapToDTO
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinTable(
             name = "media_category",
             joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories = new LinkedHashSet<>();
+    private Set<Category> categories;
 
     @MapToDTO
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinTable(
             name = "media_cast",
             joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "cast_id")
     )
-    private Set<Cast> cast = new LinkedHashSet<>();
+    private Set<Cast> cast;
 
     /*@OneToMany(mappedBy = "media")
     @MapToDTO
