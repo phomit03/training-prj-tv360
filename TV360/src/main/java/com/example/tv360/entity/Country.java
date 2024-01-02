@@ -41,10 +41,5 @@ public class Country {
 
     /*@OneToMany(mappedBy = "country")
     @MapToDTO
-    private Set<Media> media;
-
-    @Override
-    public String toString() {
-        return "Country [name = " + name + "]";
-    }*/
+    private Set<Media> media;*/
 }
