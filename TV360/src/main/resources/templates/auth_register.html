@@ -62,6 +62,10 @@
 					</span>
 				</div>
 
+				<div th:if="${error_admin}" class="alert alert-danger">
+					<p th:text="${error_admin}"></p>
+				</div>
+
 				<!-- error message -->
 				<div th:if="${param.error}">
 					<div class="alert alert-danger">Invalid username or
