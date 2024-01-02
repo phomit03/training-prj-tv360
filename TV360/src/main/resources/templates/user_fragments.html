@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+  .user-dropdown {
+    display: flex;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .user-dropdown i {
+    margin-right: 5px;
+  }
+
+  .user-full-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    color: #555;
+  }
+
+</style>
 
 <head th:fragment="head">
   <meta charset="utf-8" />
@@ -68,9 +88,21 @@
         </a>
         <div class="dropdown-menu" id="userDropdownMenu">
           <!-- Các mục trong dropdown menu -->
-          <a class="dropdown-item" href="#">
+          <!--login/user-->
+          <li th:if="${session.loggedInUser == null }">
+            <a th:href="@{/login}" class="btn-primary py-2 px-3" style="color:var(--citrine);">Login
+              <i class="icon-user"
+                 aria-hidden="true">
+              </i>
+            </a>
+          </li>
+
+<!--          session k null-->
+          <div th:if="${session.loggedInUser != null}">
+          <a class="dropdown-item user-dropdown" href="#">
             <i class="fa fa-user"></i>
-            Hello, Xuan Thao
+            Hello
+            <span class="user-full-name" th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.fullName}"></span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" th:href="@{/logout}">
@@ -78,6 +110,7 @@
               <i class="fa fa-arrow-right"></i> Logout
             </span>
           </a>
+          </div>
         </div>
       </div>
 
