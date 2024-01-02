@@ -74,15 +74,13 @@
 				</div>
 
 				<!-- error message -->
-				<div th:if="${param.error}">
-					<div class="alert alert-danger">Invalid username or
-						password.</div>
+				<div th:if="${param.error}" class="alert alert-danger">
+					<p>Registration failed, registration information unknown.</p>
 				</div>
 
 				<!-- success message -->
-				<div th:if="${param.success}">
-					<div class="alert alert-info">You've successfully registered
-						to our awesome app!</div>
+				<div th:if="${param.success}" class="alert alert-info">>
+					<p>You've successfully registered to our awesome app!</p>
 				</div>
 
 				<div class="container-login100-form-btn">
