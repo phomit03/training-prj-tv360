@@ -50,6 +50,6 @@ public class AuthenticationController {
 			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("error", "Account creation failed...");
 		}
-		return "redirect:/login";
+		return "redirect:/registration";
 	}
 }

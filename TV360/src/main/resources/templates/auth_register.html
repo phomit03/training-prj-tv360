@@ -119,8 +119,15 @@
 	if (successMessage) {
 		Swal.fire({
 			icon: 'success',
-			title: 'success',
-			text: successMessage
+			title: 'Success',
+			text: successMessage,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'OK'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Chuyển hướng đến trang login
+				window.location.href = '/login';
+			}
 		});
 	}
 
@@ -128,7 +135,7 @@
 	if (errorMessage) {
 		Swal.fire({
 			icon: 'error',
-			title: 'error',
+			title: 'Error',
 			text: errorMessage
 		});
 	}
