@@ -55,6 +55,15 @@ public class UserHomePageController {
         CategoryDTO category = categoryService.getCategoryById(categoryId);
         model.addAttribute("categoryName", category.getName());
 
+        model.addAttribute("title", "Media by " + category.getName());
+
         return "user_media_by_category";
+    }
+
+    @RequestMapping("/search")
+    public String search(Model model) {
+        model.addAttribute("title", "Search media");
+
+        return "user_search";
     }
 }

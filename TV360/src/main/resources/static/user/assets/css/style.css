@@ -1732,3 +1732,26 @@ body.active { overflow: hidden; }
   align-items: center;
   margin-top: 10vh;
 }
+
+.align-content-center .section-subtitle, .align-content-center .section-title {
+  text-align: center !important;
+}
+
+.fix-bg-search .upcoming {
+  padding: 20vh 0 0 0 !important;
+  background: url(../images/top-rated-bg-search.jpg) no-repeat !important;
+  background-size: cover;
+  background-position: center;
+  padding-block: var(--section-padding);
+}
+
+.fix-bg-search .container {
+  padding-bottom: 8vh
+}
+
+.search-result {
+  color: var(--white);
+  font-weight: 500;
+  font-size: 30px !important;
+  padding-top: 3vh;
+}
