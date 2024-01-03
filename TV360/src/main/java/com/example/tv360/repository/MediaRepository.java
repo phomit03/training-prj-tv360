@@ -25,6 +25,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     List<Media> searchMedia1(@Param("title") String title,
                            @Param("type") Integer type,
                            @Param("status") Integer status);
-
+    List<Media> findByCategoriesId(Long categoryId);
 
 }

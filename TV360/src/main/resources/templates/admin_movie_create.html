@@ -45,8 +45,10 @@
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
                                     <select class="form-control" id="categories" name="selectedCategories" multiple required>
-                                        <option th:each="category : ${listCategories}" th:value="${category.id}"
-                                                th:if="category.type == 1" th:text="${category.name}"></option>
+                                        <option th:each="category : ${listCategories}"
+                                                th:if="${category.type == 1}"
+                                                th:value="${category.id}"
+                                                th:text="${category.name}"></option>
                                     </select>
 
                                     <input class="form-control" id="categories-input"

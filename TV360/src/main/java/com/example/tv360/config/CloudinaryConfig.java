@@ -1,4 +1,4 @@
-package com.example.tv360.Config;
+package com.example.tv360.config;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
