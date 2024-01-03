@@ -1,9 +1,10 @@
 package com.example.tv360.controller.user;
 
-import com.example.tv360.entity.Category;
-import com.example.tv360.entity.Media;
+import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CategoryRepository;
+import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
 import org.springframework.stereotype.Controller;
@@ -13,16 +14,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping()
 public class UserHomePageController {
     private final MediaDetailService mediaDetailService;
+    private final CategoryService categoryService;
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
 
-    public UserHomePageController(MediaDetailService mediaDetailService, MediaService mediaService, CategoryRepository categoryRepository) {
+    public UserHomePageController(MediaDetailService mediaDetailService,
+                                  CategoryService categoryService, MediaService mediaService,
+                                  CategoryRepository categoryRepository) {
         this.mediaDetailService = mediaDetailService;
+        this.categoryService = categoryService;
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
     }
@@ -41,5 +47,14 @@ public class UserHomePageController {
         return "user_homepage";
     }
 
+    @GetMapping("/media/by-category/{categoryId}")
+    public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
+        Set<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
+        model.addAttribute("mediaByCategory", mediaByCategory);
 
+        CategoryDTO category = categoryService.getCategoryById(categoryId);
+        model.addAttribute("categoryName", category.getName());
+
+        return "user_media_by_category";
+    }
 }

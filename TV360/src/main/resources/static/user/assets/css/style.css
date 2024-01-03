@@ -1683,3 +1683,52 @@ body.active { overflow: hidden; }
 .logout:hover {
   margin-left: 10px;
 }
+
+
+
+.view-all-category {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+.view-all-category:hover {
+  color: var(--citrine);;
+  text-decoration: underline;
+}
+
+
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin-right: 5px;
+}
+
+.pagination a, .pagination span {
+  text-decoration: none;
+  padding: 5px 10px;
+  color: var(--white);
+  border-radius: 6px;
+  transition: background-color 0.1s;
+}
+
+.pagination a:hover {
+  background-color: var(--citrine);
+  color: #110f1a;
+}
+
+.pagination .current {
+  background-color: var(--citrine);
+  color: #110f1a;
+}
+
+.justify-content-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10vh;
+}

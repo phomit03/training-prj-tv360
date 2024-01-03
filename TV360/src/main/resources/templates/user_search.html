@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="user_fragments::head"></head>
+
+<body>
+<!-- header Start -->
+<header th:replace="user_fragments::header" class="header" data-header></header>
+<!-- header End -->
+
+<main>
+    <article>
+        <!-- content-->
+        <section class="top-rated" style="padding: 20vh 0;">
+            <div class="container">
+                <p class="section-subtitle">Online Streaming</p>
+
+                <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;"
+                    th:text="${categoryName}">
+                </h2>
+
+                <ul class="movies-list">
+                    <li th:each="media : ${mediaByCategory}">
+                        <div class="movie-card">
+                            <a href="./movie-details.html">
+                                <figure class="card-banner"
+                                        th:style="${media.getType() == 3 ? 'aspect-ratio: 8/5;' : 'aspect-ratio: 2/3;'}"
+                                >
+                                    <img th:src="${media.getThumbnail()}">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title" th:text="${media.getTitle()}"></h3>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="justify-content-center">
+                    <ul class="pagination">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#" class="current">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- end content-->
+
+        <!-- contact -->
+        <section class="cta" th:replace="user_fragments::contact"></section>
+    </article>
+</main>
+
+<footer class="footer" th:replace="user_fragments::footer"></footer>
+
+<a th:replace="user_fragments::back-to-top"></a>
+
+<div th:replace="user_fragments::script"></div>
+
+</body>
+
+</html>

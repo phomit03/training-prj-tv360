@@ -23,7 +23,9 @@ public class UserMovieController {
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
 
-    public UserMovieController(CategoryService categoryService,MediaService mediaService, CategoryRepository categoryRepository) {
+    public UserMovieController(CategoryService categoryService,
+                               MediaService mediaService,
+                               CategoryRepository categoryRepository) {
         this.categoryService = categoryService;
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
@@ -45,13 +47,6 @@ public class UserMovieController {
         model.addAttribute("title", "Movie Detail");
 
         return "user_movie_detail";
-    }
-
-    @GetMapping("/media/by-category/{categoryId}")
-    public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
-        Set<Media> mediaList = categoryService.getMediaByCategoryId(categoryId);
-        model.addAttribute("mediaList", mediaList);
-        return "media_by_category";
     }
 
 }
