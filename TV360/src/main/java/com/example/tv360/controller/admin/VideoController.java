@@ -58,7 +58,7 @@ public class VideoController {
         List<CastDTO> cast = castService.getAllCasts();
         model.addAttribute("listCast", cast);
 
-        return "admin_video_create";
+        return "admin_video_form";
     }
 
     @PostMapping("/video/create/save")
@@ -91,7 +91,7 @@ public class VideoController {
             return "redirect:/admin/videos";
         }
 
-        return "admin_video_update";
+        return "admin_video_form";
     }
 
     @PostMapping("/video/update/{id}")

@@ -88,7 +88,7 @@ public class MediaDetailService {
         Pageable pageable = PageRequest.of(0, 12, Sort.by("createdAt").descending());
         return mediaDetailRepository.findTopRated(pageable);
     }
-
+        // phan media detail
     public List<MediaDetailResponse> getMediaDetailsClient() {
         try {
             return mediaDetailRepository.getMediaDetails();
@@ -97,6 +97,27 @@ public class MediaDetailService {
             return null;
         }
     }
+    // get by id
+    public List<MediaDetailResponse> getMediaDetailsClientById(Long mediaId) {
+        try {
+            return mediaDetailRepository.getMediaDetailsById(mediaId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // get theo categoyname
+    public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
+        try {
+            return mediaDetailRepository.getMediaDetailsByCategoryName(categoryName);
+        } catch (Exception e) {
+            // Xử lý ngoại lệ hoặc trả về một giá trị mặc định
+            return null;
+        }
+    }
+
+
+    // phan trang heheh
 
     public Page<MediaDetail> findPaginated(int pageNo, int pageSize) {
 

@@ -58,7 +58,7 @@ public class MovieController {
         List<CastDTO> cast = castService.getAllCasts();
         model.addAttribute("listCast", cast);
 
-        return "admin_movie_create";
+        return "admin_movie_form";
     }
 
     @PostMapping("/movie/create/save")
@@ -95,7 +95,7 @@ public class MovieController {
             return "redirect:/admin/movies";
         }
 
-        return "admin_movie_update";
+        return "admin_movie_form";
     }
 
     @PostMapping("/movie/update/{id}")

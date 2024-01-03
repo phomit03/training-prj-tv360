@@ -23,7 +23,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin1")
 public class MediaDetailController {
     private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
@@ -51,7 +51,7 @@ public class MediaDetailController {
         model.addAttribute("mediaList", mediaList);
 
         model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
-        return "admin_media_detail_create";
+        return "admin_media_detail_form";
     }
 
     @PostMapping("/media-detail/create/save")
@@ -78,7 +78,7 @@ public class MediaDetailController {
             return "redirect:/admin/media-details";
         }
 
-        return "admin_media_detail_update";
+        return "admin_media_detail_form";
     }
 
     @PostMapping("/media-detail/update/{id}")
@@ -107,7 +107,7 @@ public class MediaDetailController {
 
 
 
-
+// media detial api
     @GetMapping("/test")
     public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
         try {
@@ -118,6 +118,36 @@ public class MediaDetailController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+
+    @GetMapping("/test/{mediaId}")
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
+        try {
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
+            return ResponseEntity.ok(mediaDetails);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/by-category/{categoryName}")
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
+        try {
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsByCategoryName(categoryName);
+
+            if (mediaDetails != null && !mediaDetails.isEmpty()) {
+                return ResponseEntity.ok(mediaDetails);
+            } else {
+                // Trả về 404 Not Found nếu không có kết quả nào được tìm thấy
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            // Xử lý ngoại lệ hoặc trả về một giá trị mặc định
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
     //phan trang
     @GetMapping("/media-details")
     public String getAllPlayers(Model model,
