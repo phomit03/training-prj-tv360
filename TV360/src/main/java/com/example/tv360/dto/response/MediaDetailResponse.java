@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MediaDetailResponse {
+    private Long id;
     private String title;
     private Integer mediaType;
     private String mediaDescription;
@@ -22,7 +23,8 @@ public class MediaDetailResponse {
     private String quality;
     private Integer mediaDetailEpisode;
 
-    public MediaDetailResponse(String title, Integer mediaType, String mediaDescription, String castFullname, Integer castType, Integer categoryType, String categoryName, String countryName, String sourceUrl, String duration, String quality, Integer mediaDetailEpisode) {
+    public MediaDetailResponse(Long id,String title, Integer mediaType, String mediaDescription, String castFullname, Integer castType, Integer categoryType, String categoryName, String countryName, String sourceUrl, String duration, String quality, Integer mediaDetailEpisode) {
+        this.id = id;
         this.title = title;
         this.mediaType = mediaType;
         this.mediaDescription = mediaDescription;
