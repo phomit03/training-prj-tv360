@@ -1,8 +1,9 @@
 package com.example.tv360.controller.admin;
 
-import com.example.tv360.dto.*;
-import com.example.tv360.entity.Cast;
-import com.example.tv360.entity.Country;
+import com.example.tv360.dto.CastDTO;
+import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -23,19 +24,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class MediaController {
+public class VideoController {
     private final MediaService mediaService;
     private final CountryService countryService;
     private final CategoryService categoryService;
     private final CastService castService;
     private final MediaRepository mediaRepository;
 
-    public MediaController(MediaService mediaService, CountryService countryService, CategoryService categoryService, CastService castService, MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
+    public VideoController(MediaService mediaService, CountryService countryService, CategoryService categoryService,
+                           CastService castService, MediaRepository mediaRepository,
+                           MediaDetailRepository mediaDetailRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
         this.categoryService = categoryService;
@@ -43,83 +45,73 @@ public class MediaController {
         this.mediaRepository = mediaRepository;
     }
 
-//    @GetMapping("/media")
-//    public String getAllMedia(Model model) {
-//        model.addAttribute("title", "Media");
-//        List<MediaDTO> media = mediaService.getAllMedias();
-//        model.addAttribute("media1", media);
-//
-//        return "admin_media";
-//    }
-
-    @GetMapping("/media/create")
-    public String showCreateMedia(Model model){
-        model.addAttribute("mediaDTO", new MediaDTO());
+    @GetMapping("/video/create")
+    public String showCreateVideo(Model model){
+        model.addAttribute("videoDTO", new MediaDTO());
 
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> categories = categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
+        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
         model.addAttribute("listCast", cast);
-        return "admin_media_create";
+
+        return "admin_video_create";
     }
 
-    @PostMapping("/media/create/save")
-    public String createMedia(@ModelAttribute MediaDTO mediaDTO,
+    @PostMapping("/video/create/save")
+    public String createVideo(@ModelAttribute MediaDTO videoDTO,
                               @RequestParam("logo") MultipartFile logo,
                               @RequestParam("selectedCategories") Long[] selectedCategories,
-                              @RequestParam("selectedCast") Long[] selectedCast,
                               RedirectAttributes redirectAttributes) {
         try {
-            mediaService.createMedia(mediaDTO, logo, selectedCategories, selectedCast);
+            mediaService.createVideo(videoDTO, logo, selectedCategories);
             redirectAttributes.addFlashAttribute("success", "Create successfully!");
         }catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media";
-
+        return "redirect:/admin/videos";
     }
 
-    @GetMapping("/media/update/{id}")
-    public String showUpdateMedia(@PathVariable Long id, Model model){
-        MediaDTO mediaDTO = mediaService.getMediaById(id);
-        model.addAttribute("mediaDTO", mediaDTO);
+    @GetMapping("/video/update/{id}")
+    public String showUpdateVideo(@PathVariable Long id, Model model){
+        MediaDTO videoDTO = mediaService.getMediaById(id);
+        model.addAttribute("videoDTO", videoDTO);
 
-        List<CategoryDTO> categories = categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
+        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        model.addAttribute("listCategories", listCategories);
 
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        if (mediaDTO == null){
-            return "redirect:/admin/media";
+        if (videoDTO == null){
+            return "redirect:/admin/videos";
         }
 
-        return "admin_media_update";
+        return "admin_video_update";
     }
 
-    @PostMapping("/media/update/{id}")
-    public String updateMedia(@PathVariable Long id, @ModelAttribute("mediaDTO") MediaDTO mediaDTO,
+    @PostMapping("/video/update/{id}")
+    public String updateVideo(@PathVariable Long id, @ModelAttribute("videoDTO") MediaDTO videoDTO,
                               @RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(id, mediaDTO, logo);
+            mediaService.updateMedia(id, videoDTO, logo);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Failed to update");
         }
-        return "redirect:/admin/media";
+        return "redirect:/admin/videos";
     }
 
-    @GetMapping("/media/delete/{id}")
-    public ResponseEntity<String> deleteMedia(@PathVariable Long id){
+    @GetMapping("/video/delete/{id}")
+    public ResponseEntity<String> deleteVideo(@PathVariable Long id){
         try {
             mediaService.softDeleteMedia(id);
-            return ResponseEntity.ok("Delete media successfully");
+            return ResponseEntity.ok("Delete video successfully");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {
@@ -127,17 +119,17 @@ public class MediaController {
         }
     }
 
-    @GetMapping("/media")
-    public String getAllMedia(Model model,
+    @GetMapping("/videos")
+    public String getAllVideos(Model model,
                               @RequestParam(name = "title", required = false) String title,
                               @RequestParam(name = "type", required = false) Integer type,
                               @RequestParam(name = "status", required = false) Integer status
     ) {
-        model.addAttribute("title", "Media");
+        model.addAttribute("title", "videos");
         return findPaginated(1, model, title,type,status);
     }
 
-    @GetMapping("/media/{pageNo}")
+    @GetMapping("/videos/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
                                 @RequestParam(name = "title", required = false) String title,
@@ -147,17 +139,17 @@ public class MediaController {
         int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<Media> result = mediaRepository.searchMedia(title,type,status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title,type, status).size());
-        List<Media> media = page.getContent();
+        List<Media> result = mediaRepository.searchMedia(title, 3, status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title, 3, status).size());
+        List<Media> videos = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("media1", media);
+        model.addAttribute("videos", videos);
         model.addAttribute("title", title);
         model.addAttribute("type", type);
         model.addAttribute("status", status);
-        return "admin_media";
+        return "admin_videos";
     }
 }

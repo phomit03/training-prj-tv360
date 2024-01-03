@@ -31,21 +31,22 @@
         <!-- Content Start -->
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4 title-admin">Update Media</h1>
+                <h1 class="mt-4 title-admin">Update Video</h1>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> Update media data
-                        <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
+                        <i class="fas fa-table me-1"></i> Update video data
+                        <a th:href="@{/admin/videos}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/media/update/{id} (id = ${mediaDTO.id})}" th:object="${mediaDTO}"
+                        <form th:action="@{/admin/video/update/{id} (id = ${videoDTO.id})}" th:object="${videoDTO}"
                               method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
                                     <select class="form-control" id="categories" name="selectedCategories" multiple required>
-                                        <option th:each="category : ${categories}" th:value="${category.id}"
-                                                th:text="${category.name}" th:selected="${category.id}"></option>
+                                        <option th:each="category : ${listCategories}" th:value="${category.id}"
+                                                th:text="${category.name}" th:if="category.type == 2"
+                                                th:selected="${videoDTO.categories.contains(category.id)}"></option>
                                     </select>
 
                                     <input class="form-control" id="categories-input"
@@ -62,8 +63,8 @@
                                            name="logo">
                                 </div>
                                 <div class="col-md-4">
-                                    <img id="previewImage" style="width: 90px; margin-left: 50px"
-                                         th:src="@{${mediaDTO.thumbnail}}">
+                                    <img id="previewImage" style="width: 90px; margin: 10px 50px"
+                                         th:src="@{${videoDTO.thumbnail}}">
                                 </div>
                             </div>
 
@@ -90,20 +91,10 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="type" name="type" aria-label="type"
-                                        th:field="*{type}" required>
-                                    <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${mediaDTO.type == 1}">Movie</option>
-                                    <option value="2" th:selected="${mediaDTO.type == 2}">Video</option>
-                                    <option value="3" th:selected="${mediaDTO.type == 3}">Movie Series</option>
-                                </select>
-                                <label>Type</label>
-                            </div>
-                            <div class="form-floating mb-3">
                                 <select class="form-control" name="status" th:field="*{status}" required>
                                     <option value="" selected>-- choose type --</option>
-                                    <option value="0" th:selected="${mediaDTO.status == 0}">in-active</option>
-                                    <option value="1" th:selected="${mediaDTO.status == 1}">active</option>
+                                    <option value="0" th:selected="${videoDTO.status == 0}">in-active</option>
+                                    <option value="1" th:selected="${videoDTO.status == 1}">active</option>
                                 </select>
                                 <label>Status</label>
                             </div>
@@ -149,13 +140,6 @@
         inputElement: document.getElementById('categories-input')
     });
 
-    mobiscroll.select('#actor', {
-        inputElement: document.getElementById('actor-input')
-    });
-
-    mobiscroll.select('#director', {
-        inputElement: document.getElementById('director-input')
-    });
 </script>
 
 </body>

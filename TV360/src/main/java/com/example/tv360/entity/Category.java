@@ -50,6 +50,6 @@ public class Category {
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Media> media;
 }

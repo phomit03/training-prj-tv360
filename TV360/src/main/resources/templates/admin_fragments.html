@@ -89,14 +89,19 @@
             Casts
           </a>
 
-          <a th:href="@{/admin/media}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media') ? 'active' : ''}">
+          <a th:href="@{/admin/movies}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/movies') ? 'active' : ''}">
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-            Media
+            Movies
+          </a>
+
+          <a th:href="@{/admin/videos}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/videos') ? 'active' : ''}">
+            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+            Videos
           </a>
 
           <a th:href="@{/admin/media-details}" class="nav-item nav-link" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/admin/media-details') ? 'active' : ''}">
             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-            Source Media
+            Source Url
           </a>
         </div>
       </div>

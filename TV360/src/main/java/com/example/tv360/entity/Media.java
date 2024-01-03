@@ -61,7 +61,9 @@ public class Media {
     private Country country;
 
     @MapToDTO
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinTable(
             name = "media_category",
@@ -71,7 +73,9 @@ public class Media {
     private Set<Category> categories;
 
     @MapToDTO
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinTable(
             name = "media_cast",

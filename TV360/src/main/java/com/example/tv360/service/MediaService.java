@@ -62,7 +62,7 @@ public class MediaService {
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
     }
 
-    public Media createMedia(MediaDTO mediaDTO, MultipartFile logo,
+    public Media createMovie(MediaDTO mediaDTO, MultipartFile logo,
                              Long[] selectedCategories, Long[] selectedCast
                              ) throws IOException {
         Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
@@ -94,6 +94,29 @@ public class MediaService {
         return mediaRepository.save(media);
     }
 
+    public Media createVideo(MediaDTO mediaDTO, MultipartFile logo,
+                             Long[] selectedCategories) throws IOException {
+        Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+
+        Set<Category> categories = new LinkedHashSet<>();
+        for (Long categoryId : selectedCategories) {
+            Category category = categoryRepository.findById(categoryId).orElse(null);
+            if (category != null) {
+                categories.add(category);
+            }
+        }
+        media.setCategories(categories);
+
+        if (!logo.isEmpty()) {
+            String thumbnail = helper.uploadImage(logo);
+            media.setThumbnail(thumbnail);
+        }
+
+        media.setType(3);
+        media.setStatus(1);
+        return mediaRepository.save(media);
+    }
+
 
     public Media updateMedia(Long id,MediaDTO mediaDTO,MultipartFile logo){
         try {
@@ -106,6 +129,7 @@ public class MediaService {
                 media.setThumbnail(thumbnail);
             }
 
+            media.setType(3);
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaRepository.save(media);
         }
@@ -126,7 +150,7 @@ public class MediaService {
         }
     }
 
-    public List<MediaDTO> getMediaWithCategory() {
+    /*public List<MediaDTO> getMediaWithCategory() {
         List<Media> mediaList = mediaRepository.findAll();
 
         List<MediaDTO> mediaDTOList = new ArrayList<>();
@@ -149,7 +173,7 @@ public class MediaService {
         }
 
         return mediaDTOList;
-    }
+    }*/
 
 
     //phan trang

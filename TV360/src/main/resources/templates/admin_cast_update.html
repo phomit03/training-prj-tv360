@@ -38,8 +38,8 @@
                                 <select class="form-control" id="type" name="type" aria-label="type"
                                         th:field="*{type}" required>
                                     <option value="" selected>-- choose option --</option>
-                                    <option value="1" th:selected="${castDTO.type == 1}">director</option>
-                                    <option value="2" th:selected="${castDTO.type == 2}">actor</option>
+                                    <option value="1" th:selected="${castDTO.type == 1}">actor</option>
+                                    <option value="2" th:selected="${castDTO.type == 2}">director</option>
                                 </select>
                                 <label>Type</label>
                             </div>

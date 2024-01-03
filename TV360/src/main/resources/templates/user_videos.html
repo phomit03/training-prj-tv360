@@ -14,7 +14,7 @@
         <section class="hero" th:replace="user_fragments::banner"></section>
 
         <!-- content-->
-        <section class="upcoming" style="padding: 30px" th:each="category : ${categoriesWithMedia}"
+        <section class="upcoming" style="padding: 30px" th:each="category : ${categoriesWithVideo}"
                  th:if="${category.getType() == 2}">
             <div class="container">
                 <div class="flex-wrapper">
@@ -29,7 +29,7 @@
                 </div>
 
                 <ul class="movies-list has-scrollbar">
-                    <li th:each="media : ${category.media}">
+                    <li th:each="media : ${category.media}" th:if="${media.getType() == 3}">
                         <div class="movie-card">
 
                             <a href="">

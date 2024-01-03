@@ -30,8 +30,8 @@ public class UserMovieController {
     public String movies(Model model) {
         model.addAttribute("title", "Movies");
 
-        List<CategoryDTO> categoriesWithMedia = categoryService.getAllCategoriesWithMedia();
-        model.addAttribute("categoriesWithMedia", categoriesWithMedia);
+        List<CategoryDTO> categoriesWithMovie = categoryService.getAllCategoriesWithMedia();
+        model.addAttribute("categoriesWithMovie", categoriesWithMovie);
 
         return "user_movies";
     }

@@ -31,22 +31,22 @@
         <!-- Content Start -->
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4 title-admin">Create Media</h1>
+                <h1 class="mt-4 title-admin">Create movie</h1>
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Create a new media
+                        Create a new movie
 
-                        <a th:href="@{/admin/media}" type="button" class="btn btn-primary"
+                        <a th:href="@{/admin/movies}" type="button" class="btn btn-primary"
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/admin/media/create/save}" th:object="${mediaDTO}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/admin/movie/create/save}" th:object="${movieDTO}" method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
                                     <select class="form-control" id="categories" name="selectedCategories" multiple required>
-                                        <option th:each="category : ${categories}" th:value="${category.id}"
-                                                th:text="${category.name}"></option>
+                                        <option th:each="category : ${listCategories}" th:value="${category.id}"
+                                                th:if="category.type == 1" th:text="${category.name}"></option>
                                     </select>
 
                                     <input class="form-control" id="categories-input"
@@ -77,7 +77,7 @@
                                     <select class="form-control" id="actor" name="selectedCast" multiple required>
                                         <option th:each="cast : ${listCast}" th:value="${cast.id}"
                                                 th:text="${cast.fullName}"
-                                                th:if="${cast.getType() == 2}"></option>
+                                                th:if="${cast.getType() == 1}"></option>
                                     </select>
 
                                     <input class="form-control" id="actor-input"
@@ -92,7 +92,7 @@
                                     <select class="form-control" id="director" name="selectedCast" multiple required>
                                         <option th:each="cast : ${listCast}" th:value="${cast.id}"
                                                 th:text="${cast.fullName}"
-                                                th:if="${cast.getType() == 1}"></option>
+                                                th:if="${cast.getType() == 2}"></option>
                                     </select>
 
                                     <input class="form-control" id="director-input"
@@ -115,8 +115,7 @@
                                 <select class="form-control" id="exampleSelect" name="type" required>
                                     <option value="" selected>-- choose type --</option>
                                     <option value="1">Movie</option>
-                                    <option value="2">Video</option>
-                                    <option value="3">Movie Series</option>
+                                    <option value="2">Movie Series</option>
                                 </select>
                                 <label>Type</label>
                             </div>

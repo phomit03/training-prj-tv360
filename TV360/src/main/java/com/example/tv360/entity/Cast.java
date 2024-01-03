@@ -1,11 +1,10 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -48,7 +47,9 @@ public class Cast {
     private Timestamp updatedAt;
 
     @MapToDTO
-    @JsonIgnore
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "cast", fetch = FetchType.LAZY)
     private Set<Media> media = new LinkedHashSet<>();
 

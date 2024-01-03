@@ -28,8 +28,8 @@ public class UserVideoController {
     public String videos(Model model) {
         model.addAttribute("title", "Videos");
 
-        List<CategoryDTO> categoriesWithMedia = categoryService.getAllCategoriesWithMedia();
-        model.addAttribute("categoriesWithMedia", categoriesWithMedia);
+        List<CategoryDTO> categoriesWithVideo = categoryService.getAllCategoriesWithMedia();
+        model.addAttribute("categoriesWithVideo", categoriesWithVideo);
 
         return "user_videos";
     }
