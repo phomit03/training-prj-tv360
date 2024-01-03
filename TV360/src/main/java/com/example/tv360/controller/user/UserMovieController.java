@@ -3,11 +3,14 @@ package com.example.tv360.controller.user;
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Category;
+import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -44,14 +47,11 @@ public class UserMovieController {
         return "user_movie_detail";
     }
 
-    /*@GetMapping("/movies/byCategory/{categoryId}")
-    public String getMediaByCategory(@PathVariable Long categoryId, Model model) {
-        Category category = categoryRepository.findById(categoryId).orElse(null);
-        if (category != null) {
-            List<Media> mediaByCategory = mediaService.getMediaByCategory(category);
-            model.addAttribute("mediaByCategory", mediaByCategory);
-        }
-        return "";
-    }*/
+    @GetMapping("/media/by-category/{categoryId}")
+    public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
+        Set<Media> mediaList = categoryService.getMediaByCategoryId(categoryId);
+        model.addAttribute("mediaList", mediaList);
+        return "media_by_category";
+    }
 
 }

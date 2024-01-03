@@ -2,6 +2,7 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.entity.Category;
+import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
@@ -96,5 +97,12 @@ public class CategoryService {
         return categories.stream()
                 .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public Set<Media> getMediaByCategoryId(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found."));
+
+        return category.getMedia();
     }
 }

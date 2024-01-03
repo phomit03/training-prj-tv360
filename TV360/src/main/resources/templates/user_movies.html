@@ -23,7 +23,7 @@
 
                         <h2 class="h2 section-title" th:text="${category.getName()}"></h2>
                     </div>
-                    <a href="#">
+                    <a th:href="@{'/media/by-category/' + ${category.id}}">
                         <p style="color: aliceblue">View all > </p>
                     </a>
                 </div>
