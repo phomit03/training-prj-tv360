@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-
 @Controller
 @RequestMapping("/admin")
 public class CountryController {
@@ -30,51 +29,43 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
-//    @GetMapping("/countries")
-//    public String getAllCountries(Model model) {
-//        model.addAttribute("title", "Country");
-//        List<CountryDTO> countries = countryService.getAllCountries();
-//        model.addAttribute("countries", countries);
-//        return "admin_country";
-//    }
-
     @GetMapping("/country/create")
-    public String showCreateCountry(Model model){
+    public String showCreateOrUpdateCountry(Model model) {
         model.addAttribute("countryDTO", new CountryDTO());
-        return "admin_country_create";
+        return "admin_country_form";
+    }
+
+    @GetMapping("/country/update/{id}")
+    public String showCreateOrUpdateCountry(@PathVariable Long id, Model model) {
+        CountryDTO countryDTO = countryService.getCountryById(id);
+        if (countryDTO == null) {
+            return "redirect:/admin/countries";
+        }
+
+        model.addAttribute("countryDTO", countryDTO);
+        return "admin_country_form";
     }
 
     @PostMapping("/country/create/save")
-    public String createCountry(@ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
+    public String createOrUpdateCountry(@ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
         try {
             countryService.createCountry(countryDTO);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("success", "Create Successfully!");
+        } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/countries";
     }
 
-    @GetMapping("/country/update/{id}")
-    public String showUpdateCountry(@PathVariable Long id, Model model){
-        CountryDTO countryDTO = countryService.getCountryById(id);
-        if (countryDTO == null){
-            return "redirect:/admin/cast";
-        }
-
-        model.addAttribute("countryDTO", countryDTO);
-        return "admin_country_update";
-    }
-
     @PostMapping("/country/update/{id}")
-    public String updateCountry(@PathVariable Long id, @ModelAttribute("castDTO") CountryDTO countryDTO, RedirectAttributes attributes){
+    public String updateCountry(@PathVariable Long id, @ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
         try {
             countryService.updateCountry(id, countryDTO);
-            attributes.addFlashAttribute("success", "Update Successfully!");
-        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+        } catch (Exception e) {
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
+            redirectAttributes.addFlashAttribute("error", "Failed to update!");
         }
         return "redirect:/admin/countries";
     }
@@ -92,12 +83,12 @@ public class CountryController {
     }
 
     @GetMapping("/countries")
-    public String getAllCasts(Model model,
-                              @RequestParam(name = "name", required = false) String name,
-                              @RequestParam(name = "status", required = false) Integer status
+    public String getAllCountries(Model model,
+                                  @RequestParam(name = "name", required = false) String name,
+                                  @RequestParam(name = "status", required = false) Integer status
     ) {
-        model.addAttribute("title", "Country");
-        return findPaginated(1, model,name,status);
+        model.addAttribute("title", "Countries");
+        return findPaginated(1, model, name, status);
     }
 
     @GetMapping("/countries/{pageNo}")
@@ -109,8 +100,8 @@ public class CountryController {
         int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<Country> result = countryRepository.searchCategories(name,status,pageable);
-        Page<Country> page = new PageImpl<>(result, pageable,countryRepository.searchCategories1(name, status).size());
+        List<Country> result = countryRepository.searchCategories(name, status, pageable);
+        Page<Country> page = new PageImpl<>(result, pageable, countryRepository.searchCategories1(name, status).size());
         List<Country> countries = page.getContent();
 
         model.addAttribute("currentPage", pageNo);

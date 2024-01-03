@@ -43,15 +43,6 @@ public class MediaController {
         this.mediaRepository = mediaRepository;
     }
 
-//    @GetMapping("/media")
-//    public String getAllMedia(Model model) {
-//        model.addAttribute("title", "Media");
-//        List<MediaDTO> media = mediaService.getAllMedias();
-//        model.addAttribute("media1", media);
-//
-//        return "admin_media";
-//    }
-
     @GetMapping("/media/create")
     public String showCreateMedia(Model model){
         model.addAttribute("mediaDTO", new MediaDTO());
@@ -64,7 +55,7 @@ public class MediaController {
 
         List<CastDTO> cast = castService.getAllCasts();
         model.addAttribute("listCast", cast);
-        return "admin_media_create";
+        return "admin_media_form";
     }
 
     @PostMapping("/media/create/save")
@@ -99,7 +90,7 @@ public class MediaController {
             return "redirect:/admin/media";
         }
 
-        return "admin_media_update";
+        return "admin_media_form";
     }
 
     @PostMapping("/media/update/{id}")

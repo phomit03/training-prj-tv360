@@ -29,18 +29,10 @@ public class CastController {
         this.castRepository = castRepository;
     }
 
-//    @GetMapping("/casts")
-//    public String getAllCasts(Model model) {
-//        model.addAttribute("title", "Cast");
-//        List<CastDTO> casts = castService.getAllCasts();
-//        model.addAttribute("casts", casts);
-//        return "admin_cast";
-//    }
-
     @GetMapping("/cast/create")
     public String showCreateCast(Model model){
         model.addAttribute("castDTO", new CastDTO());
-        return "admin_cast_create";
+        return "admin_cast_form";
     }
 
     @PostMapping("/cast/create/save")
@@ -63,7 +55,7 @@ public class CastController {
         }
 
         model.addAttribute("castDTO", castDTO);
-        return "admin_cast_update";
+        return "admin_cast_form";
     }
 
     @PostMapping("/cast/update/{id}")

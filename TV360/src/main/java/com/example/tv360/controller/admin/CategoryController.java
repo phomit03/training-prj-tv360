@@ -31,18 +31,10 @@ public class CategoryController {
         this.categoryRepository = categoryRepository;
     }
 
-//    @GetMapping("/categories")
-//    public String getAllProducts(Model model) {
-//        model.addAttribute("title", "Categories");
-//        List<CategoryDTO> categories = categoryService.getAllCategories();
-//        model.addAttribute("categories", categories);
-//        return "admin_category";
-//    }
-
     @GetMapping("/category/create")
     public String showCreateCategory(Model model){
         model.addAttribute("categoryDTO", new CategoryDTO());
-        return "admin_category_create";
+        return "admin_category_form";
     }
 
     @PostMapping("/category/create/save")
@@ -65,7 +57,7 @@ public class CategoryController {
         }
 
         model.addAttribute("categoryDTO", categoryDTO);
-        return "admin_category_update";
+        return "admin_category_form";
     }
 
     @PostMapping("/category/update/{id}")
