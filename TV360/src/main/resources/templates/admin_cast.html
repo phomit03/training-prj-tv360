@@ -70,7 +70,7 @@
                   <tr th:each="cast, iterStat : ${casts}" th:class="'cast-' + ${cast.id}">
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${cast.fullName}"></td>
-                    <td th:text="${(cast.type == 1 ) ? 'actor' : 'director'}"></td>
+                    <td th:text="${(cast.type == 2 ) ? 'actor' : 'director'}"></td>
                     <td>
                       <span style="color: green">
                         <th:block th:if="${cast.status == 1}">
