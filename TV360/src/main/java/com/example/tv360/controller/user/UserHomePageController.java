@@ -2,11 +2,13 @@ package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
+import com.example.tv360.entity.Category;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,18 +49,59 @@ public class UserHomePageController {
         return "user_homepage";
     }
 
+
+    //phan trang
+//    @GetMapping("/media/by-category/{categoryId}/{pageNo}")
+//    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+//                                @PathVariable Long categoryId, Model model) {
+//
+//        CategoryDTO category = categoryService.getCategoryById(categoryId);
+//        model.addAttribute("categoryName", category.getName());
+//        model.addAttribute("title", "Media by " + category.getName());
+//
+//        int pageSize = 3;
+//        Set<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
+//        Page<MediaDTO> page = categoryService.findPaginated(pageNo, pageSize,mediaByCategory);
+//        List<MediaDTO> categories = page.getContent();
+//
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("mediaByCategory", mediaByCategory);
+//
+//        return "user_media_by_category";
+//    }
+
     @GetMapping("/media/by-category/{categoryId}")
     public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
-        Set<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
-        model.addAttribute("mediaByCategory", mediaByCategory);
+        return findPaginated(1, categoryId,model);
+    }
+    @GetMapping("/media/by-category/{categoryId}/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @PathVariable Long categoryId, Model model) {
 
         CategoryDTO category = categoryService.getCategoryById(categoryId);
         model.addAttribute("categoryName", category.getName());
-
         model.addAttribute("title", "Media by " + category.getName());
+
+        int pageSize = 3;
+        Set<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
+
+        // Sử dụng trang cụ thể và kích thước trang để lấy ra dữ liệu phân trang
+        Page<MediaDTO> page = categoryService.findPaginated(pageNo, pageSize, mediaByCategory);
+
+        List<MediaDTO> categories = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("categories", categories);
+        model.addAttribute("mediaByCategory", mediaByCategory);
 
         return "user_media_by_category";
     }
+
 
     @RequestMapping("/search")
     public String search(Model model) {
@@ -66,4 +109,8 @@ public class UserHomePageController {
 
         return "user_search";
     }
+
+
+
+
 }

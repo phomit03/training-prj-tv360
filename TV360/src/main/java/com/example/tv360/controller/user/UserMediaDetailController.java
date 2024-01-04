@@ -1,4 +1,4 @@
-package com.example.tv360.controller.admin;
+package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
@@ -23,27 +23,21 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
-public class MediaDetailController {
+@RequestMapping("/movie/detail")
+public class UserMediaDetailController {
     private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
     private final MediaRepository mediaRepository;
     private final MediaDetailRepository mediaDetailRepository;
 
-    public MediaDetailController(MediaDetailRepository mediaDetailRepository ,MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
+    public UserMediaDetailController(MediaDetailRepository mediaDetailRepository , MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
         this.mediaDetailRepository = mediaDetailRepository;
         this.mediaDetailService = mediaDetailService;
         this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
     }
 
-//    @GetMapping("/media-details")
-//    public String getAllMediaDetails(Model model) {
-//        model.addAttribute("title", "Media Detail");
-//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
-//        model.addAttribute("mediaDetails", mediaDetails);
-//        return "admin_media_detail";
-//    }
+
 
     @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
@@ -120,13 +114,48 @@ public class MediaDetailController {
     }
 
 
-    @GetMapping("/test/{mediaId}")
+    @GetMapping("/{mediaId}/4")
     public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
         try {
             List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
             return ResponseEntity.ok(mediaDetails);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
+        }
+    }
+        // lam trang details
+    @GetMapping()
+    public String movieDetail(Model model) {
+        model.addAttribute("title", "Movie Detail");
+        return "user_movie_detail";
+    }
+    @GetMapping("/{mediaId}")
+    public String showMediaDetails(@PathVariable Long mediaId, Model model) {
+        try {
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
+            String episode = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getMediaDetailEpisode());
+            String title = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getTitle());
+            String thumbnail = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getThumbnail());
+            String quality = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getQuality());
+            String categoryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCategoryName());
+            String castFullname = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCastFullname());
+            String countryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCountryName());
+            String duration = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getDuration());
+            String mediaDescription = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getMediaDescription());
+            model.addAttribute("mediaDetails", mediaDetails);
+            model.addAttribute("episode", episode);
+            model.addAttribute("thumbnail", thumbnail);
+            model.addAttribute("title", title);
+            model.addAttribute("quality", quality);
+            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("castFullname", castFullname);
+            model.addAttribute("countryName", countryName);
+            model.addAttribute("duration", duration);
+            model.addAttribute("mediaDescription", mediaDescription);
+            return "user_movie_detail";
+        } catch (Exception e) {
+            // Xử lý lỗi nếu cần
+            return "error404"; // Trả về trang lỗi
         }
     }
 
