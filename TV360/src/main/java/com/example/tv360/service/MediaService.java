@@ -177,9 +177,9 @@ public class MediaService {
 
 
     //phan trang
-    public Page<Country> findPaginated(int pageNo, int pageSize) {
+    public Page<Media> findPaginated(int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        return this.countryRepository.findAll(pageable);
+        return this.mediaRepository.findAll(pageable);
     }
 }

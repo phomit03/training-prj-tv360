@@ -9,6 +9,7 @@ import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -97,11 +99,16 @@ public class CategoryService {
     }
 
     //phan trang
-    public Page<Category> findPaginated(int pageNo, int pageSize) {
 
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        return this.categoryRepository.findAll(pageable);
+    public Page<MediaDTO> findPaginated(int pageNo, int pageSize, Set<MediaDTO> mediaByCategory) {
+        List<MediaDTO> pagedMediaList = mediaByCategory.stream()
+                .skip((long) (pageNo - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaByCategory.size());
     }
+
 
     public List<CategoryDTO> getAllCategoriesWithMedia() {
         String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL ORDER BY m.createdAt DESC";

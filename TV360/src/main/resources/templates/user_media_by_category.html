@@ -13,12 +13,14 @@
         <!-- content-->
         <section class="top-rated" style="padding: 20vh 0;">
             <div class="container">
-                <p class="section-subtitle">Online Streaming</p>
+                <div>
+                    <p class="section-subtitle">Online Streaming</p>
+                    <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;"
+                        th:text="${categoryName}">
+                    </h2>
+                </div>
 
-                <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;"
-                    th:text="${categoryName}">
-                </h2>
-
+                <div>
                 <ul class="movies-list">
                     <li th:each="media : ${mediaByCategory}">
                         <div class="movie-card">
@@ -38,17 +40,28 @@
                         </div>
                     </li>
                 </ul>
+                </div>
 
                 <div class="justify-content-center">
-                    <ul class="pagination">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#" class="current">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
+                    <div class="col-lg-7 text-center">
+                        <div class="custom-pagination">
+                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <a class="color-red" th:if="${currentPage != i}"
+                           th:href="@{'/media/by-category/' + ${categoryId} + '/' + ${i}}" th:text="${i}"
+                           style="background-color: white; color: #ca0f33"></a>
+                        <span th:unless="${currentPage != i}" th:text="${i}"
+                              style="background-color: #ca0f33; color: white"></span>
+                    </span>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+
+
+
+            <!-- ... -->
+
         </section>
         <!-- end content-->
 
