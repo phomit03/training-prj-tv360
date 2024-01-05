@@ -5,6 +5,7 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.CountryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CastService;
@@ -25,7 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -161,10 +164,18 @@ public class MovieController {
         Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title, type, status).size());
         List<Media> movies = page.getContent();
 
+        //Lấy danh sách MediaDetail cho mỗi Media
+        Map<Long, List<MediaDetail>> movieDetailMap = new HashMap<>();
+        for (Media movie : movies) {
+            List<MediaDetail> mediaDetails = mediaService.getMediaDetails(movie.getId());
+            movieDetailMap.put(movie.getId(), mediaDetails);
+        }
+
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("movies", movies);
+        model.addAttribute("movieDetailMap", movieDetailMap);
         model.addAttribute("title", title);
         model.addAttribute("type", type);
         model.addAttribute("status", status);

@@ -1,6 +1,7 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -56,11 +57,11 @@ public class Media {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    @MapToDTO
     @JsonIgnore
+    @MapToDTO
     private Country country;
 
-    @MapToDTO
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -70,9 +71,9 @@ public class Media {
             joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @MapToDTO
     private Set<Category> categories;
 
-    @MapToDTO
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -82,9 +83,13 @@ public class Media {
             joinColumns = @JoinColumn(name = "media_id"),
             inverseJoinColumns = @JoinColumn(name = "cast_id")
     )
+    @MapToDTO
     private Set<Cast> cast;
 
-    /*@OneToMany(mappedBy = "media")
+    @OneToMany(mappedBy = "media", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @MapToDTO
-    private Set<MediaDetail> mediaDetails;*/
+    private Set<MediaDetail> mediaDetails;
 }

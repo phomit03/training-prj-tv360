@@ -3,6 +3,7 @@ package com.example.tv360.repository;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Country;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
                            @Param("type") Integer type,
                            @Param("status") Integer status);
     List<Media> findByCategoriesId(Long categoryId);
+
+    @Query("SELECT md FROM MediaDetail md WHERE md.media.id = :mediaId")
+    List<MediaDetail> findMediaDetailsByMediaId(@Param("mediaId") Long mediaId);
 
 }

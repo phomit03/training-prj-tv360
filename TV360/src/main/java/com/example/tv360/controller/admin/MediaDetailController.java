@@ -37,33 +37,48 @@ public class MediaDetailController {
         this.mediaRepository = mediaRepository;
     }
 
-//    @GetMapping("/media-details")
-//    public String getAllMediaDetails(Model model) {
-//        model.addAttribute("title", "Media Detail");
-//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
-//        model.addAttribute("mediaDetails", mediaDetails);
-//        return "admin_media_detail";
-//    }
-
-    @GetMapping("/media-detail/create")
-    public String showCreateMediaDetail(Model model){
+    @GetMapping("/video-source/create")
+    public String showCreateVideoSource(Model model){
         List<MediaDTO> mediaList = mediaService.getAllMedias();
         model.addAttribute("mediaList", mediaList);
 
         model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
-        return "admin_media_detail_form";
+        return "admin_videos";
     }
 
-    @PostMapping("/media-detail/create/save")
-    public String createMediaDetail(@ModelAttribute MediaDetailDTO mediaDetailDTO, RedirectAttributes redirectAttributes) {
+    @GetMapping("/movie-source/create")
+    public String showCreateMovieSource(Model model){
+        List<MediaDTO> mediaList = mediaService.getAllMedias();
+        model.addAttribute("mediaList", mediaList);
+
+        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
+        return "admin_movies";
+    }
+
+    @PostMapping("/video-source/create/save")
+    public String createVideoSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
+                                    RedirectAttributes redirectAttributes) {
         try {
             mediaDetailService.createMediaDetail(mediaDetailDTO);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
+            redirectAttributes.addFlashAttribute("success", "Add source video successfully!");
         }catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/media-details";
+        return "redirect:/admin/videos";
+    }
+
+    @PostMapping("/movie-source/create/save")
+    public String createMovieSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            mediaDetailService.createMediaDetail(mediaDetailDTO);
+            redirectAttributes.addFlashAttribute("success", "Add source movie successfully!");
+        }catch (Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to create!");
+        }
+        return "redirect:/admin/movies";
     }
 
     @GetMapping("/media-detail/update/{id}")
@@ -107,7 +122,7 @@ public class MediaDetailController {
 
 
 
-// media detial api
+    // media detial api
     @GetMapping("/test")
     public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
         try {
@@ -150,15 +165,12 @@ public class MediaDetailController {
 
     //phan trang
     @GetMapping("/media-details")
-    public String getAllPlayers(Model model,
+    public String getAllMediaDetails(Model model,
                                 @RequestParam(name = "title", required = false) String title,
                                 @RequestParam(name = "quality", required = false) String quality,
                                 @RequestParam(name = "episode", required = false) Integer episode,
                                 @RequestParam(name = "status", required = false) Integer  status
     ) {
-//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
-//
-//        model.addAttribute("mediaDetails", mediaDetails);
         model.addAttribute("title", "Media Details");
         return findPaginated(1, model, title, quality,episode,status);
     }
@@ -186,7 +198,7 @@ public class MediaDetailController {
         model.addAttribute("quality", quality);
         model.addAttribute("episode", episode);
         model.addAttribute("status", status);
-        return "admin_media_detail";
+        return "admin_media_details";
     }
 
 }

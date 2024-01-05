@@ -1,9 +1,8 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -39,7 +38,10 @@ public class Country {
     @MapToDTO
     private Timestamp updatedAt;
 
-    /*@OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @MapToDTO
-    private Set<Media> media;*/
+    private Set<Media> media;
 }

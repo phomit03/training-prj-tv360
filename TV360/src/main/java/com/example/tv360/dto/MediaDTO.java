@@ -49,7 +49,7 @@ public class MediaDTO {
     @MapToModel("cast")
     private Set<CastDTO> cast;
 
-    /*//1-n
+    //1-n
     @MapToModel("mediaDetails")
-    private Set<MediaDetailDTO> mediaDetails;*/
+    private Set<MediaDetailDTO> mediaDetails;
 }
