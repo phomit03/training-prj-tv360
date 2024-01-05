@@ -52,7 +52,7 @@ public class VideoController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesVideo();
         model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
@@ -81,7 +81,7 @@ public class VideoController {
         MediaDTO videoDTO = mediaService.getMediaById(id);
         model.addAttribute("videoDTO", videoDTO);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesVideo();
         model.addAttribute("listCategories", listCategories);
 
         List<CountryDTO> countries = countryService.getAllCountries();

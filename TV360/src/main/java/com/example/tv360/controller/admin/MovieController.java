@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
@@ -52,7 +53,7 @@ public class MovieController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesMovie();
         model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
@@ -77,7 +78,7 @@ public class MovieController {
         return "redirect:/admin/movies";
     }
 
-    @GetMapping("/movie/update/{id}")
+    /*@GetMapping("/movie/update/{id}")
     public String showUpdateMovie(@PathVariable Long id, Model model){
         MediaDTO movieDTO = mediaService.getMediaById(id);
         model.addAttribute("movieDTO", movieDTO);
@@ -96,6 +97,18 @@ public class MovieController {
         }
 
         return "admin_movie_form";
+    }*/
+
+    @GetMapping("/movie/update/{id}")
+    public ModelAndView showUpdateMovie(@PathVariable Long id, Model model){
+        ModelAndView mav = new ModelAndView("admin_movie_form");
+
+        mav.addObject("movieDTO", this.mediaService.getMediaById(id));
+        mav.addObject("listCategories", this.categoryService.getCategoriesMovie());
+        mav.addObject("countries", this.countryService.getAllCountries());
+        mav.addObject("listCast", this.castService.getAllCasts());
+
+        return mav;
     }
 
     @PostMapping("/movie/update/{id}")
@@ -131,7 +144,7 @@ public class MovieController {
                               @RequestParam(name = "status", required = false) Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title,type,status);
+        return findPaginated(1, model, title, type, status);
     }
 
     @GetMapping("/movies/{pageNo}")

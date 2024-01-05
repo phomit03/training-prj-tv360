@@ -14,7 +14,8 @@
         <section class="hero" th:replace="user_fragments::banner"></section>
 
         <!-- content-->
-        <section class="upcoming" style="padding: 30px" th:each="category : ${categoriesWithVideo}"
+        <section class="upcoming" style="padding: 5vh 0;"
+                 th:each="category : ${categoriesWithVideo}"
                  th:if="${category.getType() == 2}">
             <div class="container">
                 <div class="flex-wrapper">
