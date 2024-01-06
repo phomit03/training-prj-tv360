@@ -49,6 +49,20 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    public List<CategoryDTO> getCategoriesMovie(){
+        List<Category> categories = categoryRepository.findByType(1);
+        return categories.stream()
+                .map(categories1 -> modelToDtoConverter.convertToDto(categories1, CategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<CategoryDTO> getCategoriesVideo(){
+        List<Category> categories = categoryRepository.findByType(2);
+        return categories.stream()
+                .map(categories1 -> modelToDtoConverter.convertToDto(categories1, CategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         return modelToDtoConverter.convertToDto(category, CategoryDTO.class);

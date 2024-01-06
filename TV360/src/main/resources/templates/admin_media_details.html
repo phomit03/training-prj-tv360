@@ -114,7 +114,6 @@
                     </td>
                     <td th:text="${mediaDetail.duration}"></td>
                     <td th:text="${mediaDetail.quality}"></td>
-<!--                    <td th:text="${(mediaDetail.episode != null) ? mediaDetail.episode : null}"></td>-->
                     <td>
                       <span style="color: green">
                         <th:block th:if="${mediaDetail.status == 1}">
@@ -152,7 +151,6 @@
                   <!--danh sach cac trang-->
                   <div class = "col-sm-10">
                       <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-<!--                          <a th:if="${currentPage != i}" th:href="@{'/admin/new/' + ${i}}" style="color: #666666">[[${i}]]</a>-->
                           <a th:if="${currentPage != i}"
                              th:href="@{'/admin/media-detail/' + ${i}(title=${title}, quality=${quality} , episode=${episode} ,status=${status})}"
                              style="color: #666666; text-decoration: none">[[${i}]]</a>

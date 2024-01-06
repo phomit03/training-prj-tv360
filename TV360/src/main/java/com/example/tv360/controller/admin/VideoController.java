@@ -5,6 +5,7 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.CountryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CastService;
@@ -24,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -52,7 +55,7 @@ public class VideoController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesVideo();
         model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
@@ -81,7 +84,7 @@ public class VideoController {
         MediaDTO videoDTO = mediaService.getMediaById(id);
         model.addAttribute("videoDTO", videoDTO);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesVideo();
         model.addAttribute("listCategories", listCategories);
 
         List<CountryDTO> countries = countryService.getAllCountries();
@@ -140,16 +143,25 @@ public class VideoController {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Media> result = mediaRepository.searchMedia(title, 3, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title, 3, status).size());
+        Page<Media> page = new PageImpl<>(result, pageable, mediaRepository.searchMedia1(title, 3, status).size());
         List<Media> videos = page.getContent();
+
+        //Lấy danh sách MediaDetail cho mỗi Media
+        Map<Long, List<MediaDetail>> videoDetailMap = new HashMap<>();
+        for (Media video : videos) {
+            List<MediaDetail> mediaDetails = mediaService.getMediaDetails(video.getId());
+            videoDetailMap.put(video.getId(), mediaDetails);
+        }
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("videos", videos);
+        model.addAttribute("videoDetailMap", videoDetailMap);
         model.addAttribute("title", title);
         model.addAttribute("type", type);
         model.addAttribute("status", status);
         return "admin_videos";
     }
+
 }

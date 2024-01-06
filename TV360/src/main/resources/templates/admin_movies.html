@@ -70,7 +70,7 @@
                                     <option value="0">In-active</option>
                                 </select>
                             </label>
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" type="submit" style="z-index: 1">Search</button>
                         </form>
                     </div>
                 </div>
@@ -96,6 +96,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Type</th>
+                    <th>Source</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
@@ -111,82 +112,90 @@
                           <td th:text="${movie.title}"></td>
                           <td th:text="${movie.description}"></td>
                           <td th:text="${#strings.equalsIgnoreCase(movie.type, '1') ? 'Movie' : (#strings.equalsIgnoreCase(movie.type, '2') ? 'Movie Series' : 'Other')}"></td>
+
+                          <td>
+                              <th:block th:if="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0}">
+                                  <div th:each="movieDetail : ${movieDetailMap[movie.id]}">
+                                      <span>
+                                          <a th:href="${movieDetail.sourceUrl}" th:text="${movieDetail.sourceUrl}"></a>
+                                      </span>
+                                  </div>
+                              </th:block>
+
+                              <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0 and (movie.type == 1 or movie.type == 3)}">
+                                  <button class="btn" id="openPopup">
+                                      <a href="#">
+                                          <i class="fas fa-circle-plus"></i>
+                                      </a>
+                                  </button>
+
+                                  <!--pop-up movie-->
+                                  <div th:if="${movie.type == 1}">
+                                      <div class="popup" id="popupForm">
+                                          <div class="popup-content">
+                                              <div class="modal-header" style="padding: 0.5rem 0;">
+                                                  <h2 class="font-weight-bold" style="color: black;">Source movie</h2>
+                                                  <span class="close" id="closePopup">&times;</span>
+                                              </div>
+                                              <div>
+                                                  <form th:action="@{/admin/movie-source/create/save}" th:object="${mediaDetailDTO}"
+                                                        method="post">
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
+                                                                 placeholder="Link Film" required/>
+                                                          <label for="sourceUrl">Media Url</label>
+                                                      </div>
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" id="duration" name="duration" type="text" value="00:00:00" required/>
+                                                          <label for="duration">Duration</label>
+                                                      </div>
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" id="rate" name="rate" min="1" max="5" value="1" type="number" required/>
+                                                          <label for="rate">Rate</label>
+                                                      </div>
+                                                      <div class="form-floating mb-3">
+                                                          <select class="form-control" name="quality" required>
+                                                              <option value="" selected>-- choose type --</option>
+                                                              <option value="SD">SD</option>
+                                                              <option value="HD">HD</option>
+                                                              <option value="2K">2K</option>
+                                                              <option value="4K">4K</option>
+                                                              <option value="8K">8K</option>
+                                                          </select>
+                                                          <label>Quality</label>
+                                                      </div>
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" id="media" name="media" th:value="${movie.id}" type="hidden" readonly/>
+                                                      </div>
+                                                      <div class="d-flex align-items-center justify-content-between mt-4 mb-0" style="float: right">
+                                                          <button type="submit" class="btn btn-success">Create</button>
+                                                      </div>
+                                                  </form>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <!--pop-up movie-series-->
+                                  <div th:if="${movie.type == 2}">
+
+                                  </div>
+                              </th:block>
+                          </td>
+
                           <td>
                             <span style="color: green">
                               <th:block th:if="${movie.status == 1}">
                                 active
                               </th:block>
                             </span>
-                            <span style="color: red">
+                              <span style="color: red">
                               <th:block th:if="${movie.status == 0}">
                                 in-active
                               </th:block>
                             </span>
                           </td>
-                          <!--<td>
-                            <button class="btn" id="openPopup">
-                              <a href="#">
-                                <i class="fas fa-circle-plus"></i>
-                              </a>
-                            </button>
 
-                            &lt;!&ndash;pop-up&ndash;&gt;
-                            <div class="popup" id="popupForm">
-                              <div class="popup-content">
-                                <div class="modal-header" style="padding: 0.5rem 0;">
-                                  <h2 class="font-weight-bold" style="color: black;">Source movie</h2>
-                                  <span class="close" id="closePopup">&times;</span>
-                                </div>
-                                <div>
-                                  <form th:action="@{/admin/media-detail/create/save}" th:object="${mediaDetailDTO}"
-                                      method="post">
-                                    <div class="form-floating mb-3">
-                                      <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
-                                             placeholder="Link Film" required/>
-                                      <label for="sourceUrl">Media Url</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <select class="form-control" id="exampleSelect" name="typeUrl" required>
-                                        <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                        <option value="1">vod</option>
-                                        <option value="2">film</option>
-                                      </select>
-                                      <label>Type Source</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <input class="form-control" id="episode" min="0" value="0" name="episode" type="number"/>
-                                      <label for="episode">Episode</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <input class="form-control" id="duration" name="duration" type="text" value="00:00" required/>
-                                      <label for="episode">Duration</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <input class="form-control" id="rate" name="rate" min="0" max="5" value="1" type="number" required/>
-                                      <label for="rate">Rate</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <select class="form-control" name="quality" required>
-                                        <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>
-                                        <option value="2D">2D</option>
-                                        <option value="3D">3D</option>
-                                        <option value="4K">4K</option>
-                                        <option value="5K">5K</option>
-                                      </select>
-                                      <label>Quality</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                      <input class="form-control" id="mediaId" name="mediaId" th:value="${media.id}" type="number" hidden="hidden" readonly/>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0" style="float: right">
-                                      <button type="submit" class="btn btn-success">Create</button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-                            </div>
-
-                          </td>-->
                           <td>
                             <button class="btn">
                               <a th:href="@{/admin/movie/update/{id} (id=${movie.id})}">
@@ -263,6 +272,30 @@
       }
     })
   })
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const openPopupButton = document.getElementById("openPopup");
+        const closePopupButton = document.getElementById("closePopup");
+        const popupForm = document.getElementById("popupForm");
+
+        const openPopup = () => {
+            popupForm.style.display = "block";
+        };
+        const closePopup = () => {
+            popupForm.style.display = "none";
+        };
+        openPopupButton.addEventListener("click", openPopup);
+
+        closePopupButton.addEventListener("click", closePopup);
+
+        window.addEventListener("click", function(event) {
+            if (event.target === popupForm) {
+                closePopup();
+            }
+        });
+    });
 </script>
 
 </body>

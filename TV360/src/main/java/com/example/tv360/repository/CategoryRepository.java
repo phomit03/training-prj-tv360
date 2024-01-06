@@ -30,4 +30,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "LEFT JOIN FETCH c.media m " +
             "WHERE m IS NOT NULL")
     Set<Category> findAllCategoriesWithMedia();
+
+    List<Category> findByType(Integer type);
 }

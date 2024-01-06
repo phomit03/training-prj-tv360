@@ -50,7 +50,6 @@
                                         <option th:each="category : ${listCategories}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"
-                                                th:if="category.type == 2"
                                                 th:selected="${videoDTO.categories.contains(category.id)}"></option>
                                     </select>
 
@@ -113,7 +112,6 @@
                                 <div class="demo-multiple-select">
                                     <select class="form-control" id="categories" name="selectedCategories" multiple required>
                                         <option th:each="category : ${listCategories}"
-                                                th:if="${category.type == 2}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"></option>
                                     </select>

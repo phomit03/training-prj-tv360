@@ -1,9 +1,9 @@
 package com.example.tv360.entity;
 
 import com.example.tv360.utils.MapToDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -53,6 +53,7 @@ public class MediaDetail {
 
     @ManyToOne
     @JoinColumn(name = "media_id")
+    @JsonIgnore
     @MapToDTO
     private Media media;
 }

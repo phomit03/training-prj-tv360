@@ -2,10 +2,7 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.entity.Cast;
-import com.example.tv360.entity.Category;
-import com.example.tv360.entity.Country;
-import com.example.tv360.entity.Media;
+import com.example.tv360.entity.*;
 import com.example.tv360.repository.CastRepository;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.CountryRepository;
@@ -129,7 +126,6 @@ public class MediaService {
                 media.setThumbnail(thumbnail);
             }
 
-            media.setType(3);
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return mediaRepository.save(media);
         }
@@ -150,36 +146,15 @@ public class MediaService {
         }
     }
 
-    /*public List<MediaDTO> getMediaWithCategory() {
-        List<Media> mediaList = mediaRepository.findAll();
-
-        List<MediaDTO> mediaDTOList = new ArrayList<>();
-
-        for (Media media : mediaList) {
-            MediaDTO mediaDTO = new MediaDTO();
-            Set<CategoryDTO> categoryDTOList = new HashSet<>();
-
-            for (Category category : media.getCategories()) {
-                if (category != null) {
-                    CategoryDTO categoryDTO = new CategoryDTO();
-                    categoryDTO.setId(category.getId());
-                    categoryDTO.setName(category.getName());
-                    categoryDTOList.add(categoryDTO);
-                }
-            }
-
-            mediaDTO.setCategories(categoryDTOList);
-            mediaDTOList.add(mediaDTO);
-        }
-
-        return mediaDTOList;
-    }*/
-
 
     //phan trang
     public Page<Media> findPaginated(int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaRepository.findAll(pageable);
+    }
+
+    public List<MediaDetail> getMediaDetails(Long mediaId) {
+        return mediaRepository.findMediaDetailsByMediaId(mediaId);
     }
 }

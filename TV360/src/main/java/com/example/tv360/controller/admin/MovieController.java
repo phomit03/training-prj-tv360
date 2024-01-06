@@ -5,6 +5,7 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.CountryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CastService;
@@ -21,10 +22,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -52,7 +56,7 @@ public class MovieController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesMovie();
         model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
@@ -77,7 +81,7 @@ public class MovieController {
         return "redirect:/admin/movies";
     }
 
-    @GetMapping("/movie/update/{id}")
+    /*@GetMapping("/movie/update/{id}")
     public String showUpdateMovie(@PathVariable Long id, Model model){
         MediaDTO movieDTO = mediaService.getMediaById(id);
         model.addAttribute("movieDTO", movieDTO);
@@ -96,6 +100,18 @@ public class MovieController {
         }
 
         return "admin_movie_form";
+    }*/
+
+    @GetMapping("/movie/update/{id}")
+    public ModelAndView showUpdateMovie(@PathVariable Long id, Model model){
+        ModelAndView mav = new ModelAndView("admin_movie_form");
+
+        mav.addObject("movieDTO", this.mediaService.getMediaById(id));
+        mav.addObject("listCategories", this.categoryService.getCategoriesMovie());
+        mav.addObject("countries", this.countryService.getAllCountries());
+        mav.addObject("listCast", this.castService.getAllCasts());
+
+        return mav;
     }
 
     @PostMapping("/movie/update/{id}")
@@ -131,7 +147,7 @@ public class MovieController {
                               @RequestParam(name = "status", required = false) Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title,type,status);
+        return findPaginated(1, model, title, type, status);
     }
 
     @GetMapping("/movies/{pageNo}")
@@ -148,10 +164,18 @@ public class MovieController {
         Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title, type, status).size());
         List<Media> movies = page.getContent();
 
+        //Lấy danh sách MediaDetail cho mỗi Media
+        Map<Long, List<MediaDetail>> movieDetailMap = new HashMap<>();
+        for (Media movie : movies) {
+            List<MediaDetail> mediaDetails = mediaService.getMediaDetails(movie.getId());
+            movieDetailMap.put(movie.getId(), mediaDetails);
+        }
+
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("movies", movies);
+        model.addAttribute("movieDetailMap", movieDetailMap);
         model.addAttribute("title", title);
         model.addAttribute("type", type);
         model.addAttribute("status", status);

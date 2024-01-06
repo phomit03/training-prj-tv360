@@ -37,8 +37,6 @@ public class UserMediaDetailController {
         this.mediaRepository = mediaRepository;
     }
 
-
-
     @GetMapping("/media-detail/create")
     public String showCreateMediaDetail(Model model){
         List<MediaDTO> mediaList = mediaService.getAllMedias();
@@ -217,7 +215,7 @@ public class UserMediaDetailController {
         model.addAttribute("quality", quality);
         model.addAttribute("episode", episode);
         model.addAttribute("status", status);
-        return "admin_media_detail";
+        return "admin_media_details";
     }
 
 }
