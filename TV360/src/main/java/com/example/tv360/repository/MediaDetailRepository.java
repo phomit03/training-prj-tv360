@@ -22,7 +22,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
 
     // getall
     @Query("SELECT DISTINCT  new com.example.tv360.dto.response.MediaDetailResponse(" +
-            "m.id, "+
+            "md.id, "+
             "m.title, " +
             "m.thumbnail, " +
             "m.type, " +
@@ -47,8 +47,32 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     List<MediaDetailResponse> getMediaDetails();
 
     // tim theo 1 id media
+//    @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
+//            "m.id, "+
+//            "m.title, " +
+//            "m.thumbnail, " +
+//            "m.type, " +
+//            "m.description, " +
+//            "c.fullName, " +
+//            "c.type, " +
+//            "ct.type, " +
+//            "ct.name, " +
+//            "co.name, " +
+//            "md.sourceUrl, " +
+//            "md.duration, " +
+//            "md.quality, " +
+//            "md.episode) " +
+//            "FROM MediaDetail md " +
+//            "LEFT JOIN md.media m " +
+//            "LEFT JOIN m.cast c " +
+//            "LEFT JOIN m.categories ct " +
+//            "LEFT JOIN m.country co " +
+//            "LEFT JOIN m.categories mct " +
+//            "LEFT JOIN m.cast mcast " +
+//            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) AND m.id = :mediaId")
+//    List<MediaDetailResponse> getMediaDetailsById(@Param("mediaId") Long mediaId);
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
-            "m.id, "+
+            "md.id, " +
             "m.title, " +
             "m.thumbnail, " +
             "m.type, " +
@@ -69,8 +93,10 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.country co " +
             "LEFT JOIN m.categories mct " +
             "LEFT JOIN m.cast mcast " +
-            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) AND m.id = :mediaId")
-    List<MediaDetailResponse> getMediaDetailsById(@Param("mediaId") Long mediaId);
+            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) " +
+            "AND md.id = :mediaDetailId")
+    List<MediaDetailResponse> getMediaDetailById(@Param("mediaDetailId") Long mediaDetailId);
+
 
     // loc theo categoryname
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +

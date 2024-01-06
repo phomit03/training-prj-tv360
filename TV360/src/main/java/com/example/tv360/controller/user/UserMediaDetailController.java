@@ -114,34 +114,30 @@ public class UserMediaDetailController {
     }
 
 
-    @GetMapping("/{mediaId}/4")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
+    @GetMapping("/api/{mediaDetailId}")
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailClientById(@PathVariable Long mediaDetailId) {
         try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailClientById(mediaDetailId);
             return ResponseEntity.ok(mediaDetails);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
         // lam trang details
-    @GetMapping()
-    public String movieDetail(Model model) {
-        model.addAttribute("title", "Movie Detail");
-        return "user_movie_detail";
-    }
-    @GetMapping("/{mediaId}")
-    public String showMediaDetails(@PathVariable Long mediaId, Model model) {
+
+    @GetMapping("/{mediaDetailId}")
+    public String getMediaDetailClientById(@PathVariable Long mediaDetailId, Model model) {
         try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
-            String episode = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getMediaDetailEpisode());
-            String title = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getTitle());
-            String thumbnail = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getThumbnail());
-            String quality = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getQuality());
-            String categoryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCategoryName());
-            String castFullname = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCastFullname());
-            String countryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getCountryName());
-            String duration = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getDuration());
-            String mediaDescription = String.valueOf(mediaDetails.get(Math.toIntExact(mediaId)).getMediaDescription());
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailClientById(mediaDetailId);
+            String episode = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getMediaDetailEpisode());
+            String title = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getTitle());
+                String thumbnail = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getThumbnail());
+            String quality = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getQuality());
+            String categoryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCategoryName());
+            String castFullname = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCastFullname());
+            String countryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCountryName());
+            String duration = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getDuration());
+            String mediaDescription = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getMediaDescription());
             model.addAttribute("mediaDetails", mediaDetails);
             model.addAttribute("episode", episode);
             model.addAttribute("thumbnail", thumbnail);
@@ -157,6 +153,12 @@ public class UserMediaDetailController {
             // Xử lý lỗi nếu cần
             return "error404"; // Trả về trang lỗi
         }
+    }
+
+    @GetMapping()
+    public String movieDetail(Model model) {
+        model.addAttribute("title", "Movie Detail");
+        return "user_movie_detail";
     }
 
     @GetMapping("/by-category/{categoryName}")

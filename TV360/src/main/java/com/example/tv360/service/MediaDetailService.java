@@ -98,9 +98,9 @@ public class MediaDetailService {
         }
     }
     // get by id
-    public List<MediaDetailResponse> getMediaDetailsClientById(Long mediaId) {
+    public List<MediaDetailResponse> getMediaDetailClientById(Long mediaDetailId) {
         try {
-            return mediaDetailRepository.getMediaDetailsById(mediaId);
+            return mediaDetailRepository.getMediaDetailById(mediaDetailId);
         } catch (Exception e) {
             return null;
         }

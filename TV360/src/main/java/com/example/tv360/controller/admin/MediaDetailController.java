@@ -105,31 +105,6 @@ public class MediaDetailController {
         }
     }
 
-
-
-// media detial api
-    @GetMapping("/test")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClient();
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-
-    @GetMapping("/test/{mediaId}")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClientById(mediaId);
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
     @GetMapping("/by-category/{categoryName}")
     public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
         try {
