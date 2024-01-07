@@ -108,13 +108,13 @@
                               <th:block th:if="${video.mediaDetails != null and #lists.size(video.mediaDetails) > 0}">
                                   <div th:each="videoDetail : ${videoDetailMap[video.id]}">
                                       <span>
-                                          <a th:href="${videoDetail.sourceUrl}" th:text="${videoDetail.sourceUrl}"></a>
+                                          <a th:href="${videoDetail.sourceUrl}" th:text="${'sourceUrl'}"></a>
                                       </span>
                                   </div>
                               </th:block>
 
                               <th:block th:unless="${video.mediaDetails != null and #lists.size(video.mediaDetails) > 0}">
-                                  <button class="btn" id="openPopup">
+                                  <button class="btn openPopup" id="openPopup">
                                       <a href="#">
                                           <i class="fas fa-circle-plus"></i>
                                       </a>
@@ -261,27 +261,31 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const openPopupButton = document.getElementById("openPopup");
+        const openPopupButtons = document.querySelectorAll(".openPopup");
         const closePopupButton = document.getElementById("closePopup");
         const popupForm = document.getElementById("popupForm");
 
         const openPopup = () => {
             popupForm.style.display = "block";
         };
-            const closePopup = () => {
+        const closePopup = () => {
             popupForm.style.display = "none";
         };
-            openPopupButton.addEventListener("click", openPopup);
 
-            closePopupButton.addEventListener("click", closePopup);
+        openPopupButtons.forEach(button => {
+            button.addEventListener("click", openPopup);
+        });
 
-            window.addEventListener("click", function(event) {
+        closePopupButton.addEventListener("click", closePopup);
+
+        window.addEventListener("click", function(event) {
             if (event.target === popupForm) {
                 closePopup();
             }
         });
     });
 </script>
+
 
 </body>
 

@@ -129,7 +129,7 @@
                               <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0 and (movie.type == 1 or movie.type == 3)}">
                                   <!--pop-up movie-->
                                   <div th:if="${movie.type == 1}">
-                                      <button class="btn" id="openPopupMovie">
+                                      <button class="btn openPopupMovie" id="openPopupMovie">
                                           <a href="#">
                                               <i class="fas fa-circle-plus"></i>
                                           </a>
@@ -182,7 +182,7 @@
 
                                   <!--pop-up movie-series-->
                                   <div th:if="${movie.type == 2}">
-                                      <button class="btn" id="openPopupMovieSeries">
+                                      <button class="btn openPopupMovieSeries" id="openPopupMovieSeries">
                                           <a href="#">
                                               <i class="fas fa-circle-plus"></i>
                                           </a>
@@ -350,7 +350,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const openPopupButtonMovie = document.getElementById("openPopupMovie");
+        const openPopupButtonMovie = document.querySelectorAll(".openPopupMovie");
         const closePopupButtonMovie = document.getElementById("closePopupMovie");
         const popupFormMovie = document.getElementById("popupFormMovie");
 
@@ -360,7 +360,9 @@
         const closePopupMovie = () => {
             popupFormMovie.style.display = "none";
         };
-        openPopupButtonMovie.addEventListener("click", openPopupMovie);
+        openPopupButtonMovie.forEach(buttonMovie => {
+            buttonMovie.addEventListener("click", openPopupMovie);
+        });
 
         closePopupButtonMovie.addEventListener("click", closePopupMovie);
 
@@ -372,7 +374,7 @@
     });
 
     document.addEventListener("DOMContentLoaded", function() {
-        const openPopupButtonMovieSeries = document.getElementById("openPopupMovieSeries");
+        const openPopupButtonMovieSeries = document.querySelectorAll(".openPopupMovieSeries");
         const closePopupButtonMovieSeries = document.getElementById("closePopupMovieSeries");
         const popupFormMovieSeries = document.getElementById("popupFormMovieSeries");
 
@@ -384,7 +386,9 @@
             popupFormMovieSeries.style.display = "none";
         };
 
-        openPopupButtonMovieSeries.addEventListener("click", openPopupMovieSeries);
+        openPopupButtonMovieSeries.forEach(buttonMovieSeries => {
+            buttonMovieSeries.addEventListener("click", openPopupMovieSeries);
+        });
         closePopupButtonMovieSeries.addEventListener("click", closePopupMovieSeries);
 
         window.addEventListener("click", function(event) {
