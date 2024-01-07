@@ -114,17 +114,19 @@
                           <td th:text="${movie.description}"></td>
                           <td th:text="${#strings.equalsIgnoreCase(movie.type, '1') ? 'Movie' : (#strings.equalsIgnoreCase(movie.type, '2') ? 'Movie Series' : 'Other')}"></td>
 
-                          <td>
+                          <td style="width: 10%;">
                               <th:block th:if="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0}">
-                                  <div th:each="movieDetail : ${movieDetailMap[movie.id]}">
-                                      <span>
-                                          <a th:href="${movieDetail.sourceUrl}" th:text="${movieDetail.sourceUrl}"></a>
+                                  <div th:each="movieDetail, iterStat : ${movieDetailMap[movie.id]}">
+                                      <span th:if="${movie.type == 1}">
+                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'sourceUrl'}"></a>
+                                      </span>
+                                      <span th:if="${movie.type == 2}">
+                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'Episode 0' + (iterStat.index + 1)}"></a>
                                       </span>
                                   </div>
                               </th:block>
 
                               <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0 and (movie.type == 1 or movie.type == 3)}">
-
                                   <!--pop-up movie-->
                                   <div th:if="${movie.type == 1}">
                                       <button class="btn" id="openPopupMovie">
@@ -196,20 +198,14 @@
                                                   <form th:action="@{/admin/media-series/source/create/save}"
                                                         th:object="${mediaDetailDTO}" method="post" id="movieForm">
                                                       <!-- Existing fields -->
-                                                      <div class="form-floating mb-3">
-                                                          <h5>Episode 01</h5>
+                                                      <div class="form-floating mb-3" th:with="sourceByMedia=${movieDetailMap[movie.id]}">
+                                                          <h5 th:text="${'Episode 0' + (#lists.size(sourceByMedia) + 1)}"></h5>
                                                       </div>
                                                       <div class="form-floating mb-3">
                                                           <input class="form-control" name="sourceUrl" type="text" required/>
                                                           <label>Media Url</label>
                                                       </div>
                                                       <div class="row">
-                                                          <div class="col-md-6 mb-3">
-                                                              <div class="form-floating" style="width: 100%">
-                                                                  <input class="form-control" name="episode" type="text" value="1" required disabled readonly/>
-                                                                  <label>Episode</label>
-                                                              </div>
-                                                          </div>
                                                           <div class="col-md-6 mb-3">
                                                               <div class="form-floating" style="width: 100%">
                                                                   <input class="form-control" name="duration" type="text" value="00:00:00" required/>
@@ -222,7 +218,7 @@
                                                                   <label>Rate</label>
                                                               </div>
                                                           </div>
-                                                          <div class="col-md-6 mb-3">
+                                                          <div class="col-md-12 mb-3">
                                                               <div class="form-floating" style="width: 100%">
                                                                   <select class="form-control" name="quality" required>
                                                                       <option value="" selected>-- choose type --</option>
@@ -238,7 +234,7 @@
                                                       </div>
 
                                                       <div class="form-floating mb-3">
-                                                          <input class="form-control" id="media" name="media" th:value="${movie.id}" type="hidden" readonly/>
+                                                          <input class="form-control" id="movieId" name="media" th:value="${movie.id}" type="hidden" readonly/>
                                                       </div>
 
                                                       <!-- Add a wrapper for dynamically added fields -->
@@ -401,61 +397,54 @@
 
 <script>
     $(document).ready(function () {
-        // Counter for dynamic field IDs
-        var fieldEpisodeCounter = 1;
+        var formField = 1;
 
         // Function to add new source fields
         function addSourceField() {
-            fieldEpisodeCounter++;
+            formField++;
 
             var dynamicFieldHtml =
-                '<div class="episodeFields" id="episode_' + fieldEpisodeCounter + '">' +
-                    '<div class="form-floating mb-3">' +
-                        '<hr>' +
-                    '</div>' +
+                '<div class="episodeFields">' +
+                '<div class="form-floating mb-3">' +
+                '<hr>' +
+                '</div>' +
 
-                    '<div class="form-floating mb-3">' +
-                        '<h5>Episode ' + fieldEpisodeCounter + '</h5>' +
-                    '</div>' +
+                '<div class="form-floating mb-3">' +
+                '<h5>Episode next</h5>' +
+                '</div>' +
 
-                    '<div class="form-floating mb-3">' +
-                        '<input class="form-control" name="sourceUrl" type="text" placeholder="Link Film" required/>' +
-                        '<label for="sourceUrl">Media Url</label>' +
-                    '</div>' +
+                '<div class="form-floating mb-3">' +
+                '<input class="form-control" name="sourceUrl" type="text" placeholder="Link Film" required/>' +
+                '<label for="sourceUrl">Media Url</label>' +
+                '</div>' +
 
-                    '<div class="row">' +
-                        '<div class="col-md-6 mb-3">' +
-                            '<div class="form-floating" style="width: 100%">' +
-                                '<input class="form-control" name="episode" type="text" value="' + fieldEpisodeCounter + '" required disabled readonly/>' +
-                                '<label for="episode">Episode</label>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="col-md-6 mb-3">' +
-                            '<div class="form-floating" style="width: 100%">' +
-                                '<input class="form-control" id="duration" name="duration" type="text" value="00:00:00" required/>' +
-                                '<label for="episode">Duration</label>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="col-md-6 mb-3">' +
-                            '<div class="form-floating" style="width: 100%">' +
-                                '<input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>' +
-                                '<label for="episode">Rate</label>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="col-md-6 mb-3">' +
-                            '<div class="form-floating" style="width: 100%">' +
-                                '<select class="form-control" name="quality" required>' +
-                                    '<option value="" selected>-- choose type --</option>' +
-                                    '<option value="SD">SD</option>' +
-                                    '<option value="HD">HD</option>' +
-                                    '<option value="2K">2K</option>' +
-                                    '<option value="4K">4K</option>' +
-                                    '<option value="8K">8K</option>' +
-                                '</select>' +
-                                '<label for="episode">Quality</label>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
+                '<div class="row">' +
+                '<div class="col-md-6 mb-3">' +
+                '<div class="form-floating" style="width: 100%">' +
+                '<input class="form-control" id="duration" name="duration" type="text" value="00:00:00" required/>' +
+                '<label for="episode">Duration</label>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-6 mb-3">' +
+                '<div class="form-floating" style="width: 100%">' +
+                '<input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>' +
+                '<label for="episode">Rate</label>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-12 mb-3">' +
+                '<div class="form-floating" style="width: 100%">' +
+                '<select class="form-control" name="quality" required>' +
+                '<option value="" selected>-- choose type --</option>' +
+                '<option value="SD">SD</option>' +
+                '<option value="HD">HD</option>' +
+                '<option value="2K">2K</option>' +
+                '<option value="4K">4K</option>' +
+                '<option value="8K">8K</option>' +
+                '</select>' +
+                '<label for="episode">Quality</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
                 '</div>';
 
             // Append the new field to the wrapper
@@ -465,7 +454,7 @@
         // Function to remove the last added episode fields
         function removeLastEpisodeFields() {
             $('#dynamicFieldsWrapper .episodeFields:last').remove();
-            fieldEpisodeCounter--;
+            formField--;
         }
 
         // Event listeners for the buttons
@@ -474,12 +463,15 @@
         });
 
         $('#removeFieldBtn').on('click', function () {
-            if (fieldEpisodeCounter > 1) {
+            if (formField > 1) {
                 removeLastEpisodeFields();
             }
         });
     });
+
 </script>
+
+
 
 
 </body>

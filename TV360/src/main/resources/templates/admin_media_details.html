@@ -108,7 +108,7 @@
                     <td th:text="${iterStat.index + 1}"></td>
                     <td th:text="${mediaDetail.media.title}"></td>
                     <td><a th:href="${mediaDetail.sourceUrl}">Source</a></td>
-                    <td th:text="(${mediaDetail.episode}) ? 'Episode ' + ${mediaDetail.episode} : ''"></td>
+                    <td th:text="(${mediaDetail.episode}) ? 'Episode ' + ${mediaDetail.episode} : 'null'"></td>
                     <td>
                       <span style="color: gold" th:utext="${'&#9733;'.repeat(mediaDetail.rate)}"></span>
                     </td>

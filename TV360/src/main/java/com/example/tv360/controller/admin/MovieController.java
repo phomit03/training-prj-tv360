@@ -56,7 +56,7 @@ public class MovieController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CategoryDTO> listCategories = categoryService.getCategoriesMovie();
+        List<CategoryDTO> listCategories = categoryService.getCategoriesForMovie();
         model.addAttribute("listCategories", listCategories);
 
         List<CastDTO> cast = castService.getAllCasts();
@@ -107,7 +107,7 @@ public class MovieController {
         ModelAndView mav = new ModelAndView("admin_movie_form");
 
         mav.addObject("movieDTO", this.mediaService.getMediaById(id));
-        mav.addObject("listCategories", this.categoryService.getCategoriesMovie());
+        mav.addObject("listCategories", this.categoryService.getCategoriesForMovie());
         mav.addObject("countries", this.countryService.getAllCountries());
         mav.addObject("listCast", this.castService.getAllCasts());
 

@@ -49,14 +49,14 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    public List<CategoryDTO> getCategoriesMovie(){
+    public List<CategoryDTO> getCategoriesForMovie(){
         List<Category> categories = categoryRepository.findByType(1);
         return categories.stream()
                 .map(categories1 -> modelToDtoConverter.convertToDto(categories1, CategoryDTO.class))
                 .collect(Collectors.toList());
     }
 
-    public List<CategoryDTO> getCategoriesVideo(){
+    public List<CategoryDTO> getCategoriesForVideo(){
         List<Category> categories = categoryRepository.findByType(2);
         return categories.stream()
                 .map(categories1 -> modelToDtoConverter.convertToDto(categories1, CategoryDTO.class))

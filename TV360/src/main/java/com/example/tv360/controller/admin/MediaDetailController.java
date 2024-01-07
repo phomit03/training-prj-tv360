@@ -42,18 +42,12 @@ public class MediaDetailController {
 
     @GetMapping("/video-source/create")
     public String showCreateVideoSource(Model model){
-        List<MediaDTO> mediaList = mediaService.getAllMedias();
-        model.addAttribute("mediaList", mediaList);
-
         model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
         return "admin_videos";
     }
 
     @GetMapping("/movie-source/create")
     public String showCreateMovieSource(Model model){
-        List<MediaDTO> mediaList = mediaService.getAllMedias();
-        model.addAttribute("mediaList", mediaList);
-
         model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
         return "admin_movies";
     }
@@ -68,7 +62,12 @@ public class MediaDetailController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
-        return "redirect:/admin/videos";
+
+        if (mediaDetailDTO.getMedia().getType() == 1){
+            return "redirect:/admin/movies";
+        } else {
+            return "redirect:/admin/videos";
+        }
     }
 
     @PostMapping("/media-series/source/create/save")
