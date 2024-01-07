@@ -157,4 +157,5 @@ public class MediaService {
     public List<MediaDetail> getMediaDetails(Long mediaId) {
         return mediaRepository.findMediaDetailsByMediaId(mediaId);
     }
+
 }

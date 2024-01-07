@@ -4,34 +4,35 @@
 <head th:replace="admin_fragments::head"></head>
 
 <style>
-  .popup {
-    display: none;
-    position: fixed;
-    top: 51%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    width: 40%;
-  }
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        width: 40%;
+        max-height: 80vh; /* Set a maximum height for the popup */
+        overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    }
 
-  .popup-content {
-    margin: 0 auto;
-  }
+    .popup-content {
+        margin: 0 auto;
+    }
 
-  .close {
-    float: right;
-    font-size: 20px;
-    cursor: pointer;
-  }
+    .close {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+    }
 
-  .btn {
-    cursor: pointer;
-  }
-
+    .btn {
+        cursor: pointer;
+    }
 </style>
 
 <body>
@@ -123,22 +124,23 @@
                               </th:block>
 
                               <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0 and (movie.type == 1 or movie.type == 3)}">
-                                  <button class="btn" id="openPopup">
-                                      <a href="#">
-                                          <i class="fas fa-circle-plus"></i>
-                                      </a>
-                                  </button>
 
                                   <!--pop-up movie-->
                                   <div th:if="${movie.type == 1}">
-                                      <div class="popup" id="popupForm">
+                                      <button class="btn" id="openPopupMovie">
+                                          <a href="#">
+                                              <i class="fas fa-circle-plus"></i>
+                                          </a>
+                                      </button>
+
+                                      <div class="popup" id="popupFormMovie">
                                           <div class="popup-content">
                                               <div class="modal-header" style="padding: 0.5rem 0;">
                                                   <h2 class="font-weight-bold" style="color: black;">Source movie</h2>
-                                                  <span class="close" id="closePopup">&times;</span>
+                                                  <span class="close" id="closePopupMovie">&times;</span>
                                               </div>
                                               <div>
-                                                  <form th:action="@{/admin/movie-source/create/save}" th:object="${mediaDetailDTO}"
+                                                  <form th:action="@{/admin/media/source/create/save}" th:object="${mediaDetailDTO}"
                                                         method="post">
                                                       <div class="form-floating mb-3">
                                                           <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
@@ -165,7 +167,7 @@
                                                           <label>Quality</label>
                                                       </div>
                                                       <div class="form-floating mb-3">
-                                                          <input class="form-control" id="media" name="media" th:value="${movie.id}" type="hidden" readonly/>
+                                                          <input class="form-control" name="media" th:value="${movie.id}" type="hidden" readonly/>
                                                       </div>
                                                       <div class="d-flex align-items-center justify-content-between mt-4 mb-0" style="float: right">
                                                           <button type="submit" class="btn btn-success">Create</button>
@@ -178,7 +180,83 @@
 
                                   <!--pop-up movie-series-->
                                   <div th:if="${movie.type == 2}">
+                                      <button class="btn" id="openPopupMovieSeries">
+                                          <a href="#">
+                                              <i class="fas fa-circle-plus"></i>
+                                          </a>
+                                      </button>
 
+                                      <div class="popup" id="popupFormMovieSeries">
+                                          <div class="popup-content">
+                                              <div class="modal-header mb-3" style="padding: 0.5rem 0;">
+                                                  <h2 class="font-weight-bold" style="color: black;">Source Movie Series</h2>
+                                                  <span class="close" id="closePopupMovieSeries">&times;</span>
+                                              </div>
+                                              <div>
+                                                  <form th:action="@{/admin/media-series/source/create/save}"
+                                                        th:object="${mediaDetailDTO}" method="post" id="movieForm">
+                                                      <!-- Existing fields -->
+                                                      <div class="form-floating mb-3">
+                                                          <h5>Episode 01</h5>
+                                                      </div>
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" name="sourceUrl" type="text" required/>
+                                                          <label>Media Url</label>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-6 mb-3">
+                                                              <div class="form-floating" style="width: 100%">
+                                                                  <input class="form-control" name="episode" type="text" value="1" required disabled readonly/>
+                                                                  <label>Episode</label>
+                                                              </div>
+                                                          </div>
+                                                          <div class="col-md-6 mb-3">
+                                                              <div class="form-floating" style="width: 100%">
+                                                                  <input class="form-control" name="duration" type="text" value="00:00:00" required/>
+                                                                  <label>Duration</label>
+                                                              </div>
+                                                          </div>
+                                                          <div class="col-md-6 mb-3">
+                                                              <div class="form-floating" style="width: 100%">
+                                                                  <input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>
+                                                                  <label>Rate</label>
+                                                              </div>
+                                                          </div>
+                                                          <div class="col-md-6 mb-3">
+                                                              <div class="form-floating" style="width: 100%">
+                                                                  <select class="form-control" name="quality" required>
+                                                                      <option value="" selected>-- choose type --</option>
+                                                                      <option value="SD">SD</option>
+                                                                      <option value="HD">HD</option>
+                                                                      <option value="2K">2K</option>
+                                                                      <option value="4K">4K</option>
+                                                                      <option value="8K">8K</option>
+                                                                  </select>
+                                                                  <label>Quality</label>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+
+                                                      <div class="form-floating mb-3">
+                                                          <input class="form-control" id="media" name="media" th:value="${movie.id}" type="hidden" readonly/>
+                                                      </div>
+
+                                                      <!-- Add a wrapper for dynamically added fields -->
+                                                      <div id="dynamicFieldsWrapper"></div>
+
+                                                      <!-- Add and remove buttons for dynamic fields -->
+                                                      <button type="button" id="addFieldBtn" class="btn">
+                                                          Add episode <i class="fa fa-circle-plus"></i>
+                                                      </button>
+                                                      <button type="button" id="removeFieldBtn" class="btn">
+                                                          Remove episode <i class="fa fa-minus-circle"></i>
+                                                      </button>
+
+                                                      <button type="submit" class="btn btn-success" style="float: right">Create</button>
+                                                  </form>
+                                              </div>
+                                          </div>
+                                      </div>
                                   </div>
                               </th:block>
                           </td>
@@ -276,27 +354,133 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const openPopupButton = document.getElementById("openPopup");
-        const closePopupButton = document.getElementById("closePopup");
-        const popupForm = document.getElementById("popupForm");
+        const openPopupButtonMovie = document.getElementById("openPopupMovie");
+        const closePopupButtonMovie = document.getElementById("closePopupMovie");
+        const popupFormMovie = document.getElementById("popupFormMovie");
 
-        const openPopup = () => {
-            popupForm.style.display = "block";
+        const openPopupMovie = () => {
+            popupFormMovie.style.display = "block";
         };
-        const closePopup = () => {
-            popupForm.style.display = "none";
+        const closePopupMovie = () => {
+            popupFormMovie.style.display = "none";
         };
-        openPopupButton.addEventListener("click", openPopup);
+        openPopupButtonMovie.addEventListener("click", openPopupMovie);
 
-        closePopupButton.addEventListener("click", closePopup);
+        closePopupButtonMovie.addEventListener("click", closePopupMovie);
 
         window.addEventListener("click", function(event) {
-            if (event.target === popupForm) {
-                closePopup();
+            if (event.target === popupFormMovie) {
+                closePopupMovie();
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const openPopupButtonMovieSeries = document.getElementById("openPopupMovieSeries");
+        const closePopupButtonMovieSeries = document.getElementById("closePopupMovieSeries");
+        const popupFormMovieSeries = document.getElementById("popupFormMovieSeries");
+
+        const openPopupMovieSeries = () => {
+            popupFormMovieSeries.style.display = "block";
+        };
+
+        const closePopupMovieSeries = () => {
+            popupFormMovieSeries.style.display = "none";
+        };
+
+        openPopupButtonMovieSeries.addEventListener("click", openPopupMovieSeries);
+        closePopupButtonMovieSeries.addEventListener("click", closePopupMovieSeries);
+
+        window.addEventListener("click", function(event) {
+            if (event.target === popupFormMovieSeries) {
+                closePopupMovieSeries();
             }
         });
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Counter for dynamic field IDs
+        var fieldEpisodeCounter = 1;
+
+        // Function to add new source fields
+        function addSourceField() {
+            fieldEpisodeCounter++;
+
+            var dynamicFieldHtml =
+                '<div class="episodeFields" id="episode_' + fieldEpisodeCounter + '">' +
+                    '<div class="form-floating mb-3">' +
+                        '<hr>' +
+                    '</div>' +
+
+                    '<div class="form-floating mb-3">' +
+                        '<h5>Episode ' + fieldEpisodeCounter + '</h5>' +
+                    '</div>' +
+
+                    '<div class="form-floating mb-3">' +
+                        '<input class="form-control" name="sourceUrl" type="text" placeholder="Link Film" required/>' +
+                        '<label for="sourceUrl">Media Url</label>' +
+                    '</div>' +
+
+                    '<div class="row">' +
+                        '<div class="col-md-6 mb-3">' +
+                            '<div class="form-floating" style="width: 100%">' +
+                                '<input class="form-control" name="episode" type="text" value="' + fieldEpisodeCounter + '" required disabled readonly/>' +
+                                '<label for="episode">Episode</label>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6 mb-3">' +
+                            '<div class="form-floating" style="width: 100%">' +
+                                '<input class="form-control" id="duration" name="duration" type="text" value="00:00:00" required/>' +
+                                '<label for="episode">Duration</label>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6 mb-3">' +
+                            '<div class="form-floating" style="width: 100%">' +
+                                '<input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>' +
+                                '<label for="episode">Rate</label>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-md-6 mb-3">' +
+                            '<div class="form-floating" style="width: 100%">' +
+                                '<select class="form-control" name="quality" required>' +
+                                    '<option value="" selected>-- choose type --</option>' +
+                                    '<option value="SD">SD</option>' +
+                                    '<option value="HD">HD</option>' +
+                                    '<option value="2K">2K</option>' +
+                                    '<option value="4K">4K</option>' +
+                                    '<option value="8K">8K</option>' +
+                                '</select>' +
+                                '<label for="episode">Quality</label>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+            // Append the new field to the wrapper
+            $('#dynamicFieldsWrapper').append(dynamicFieldHtml);
+        }
+
+        // Function to remove the last added episode fields
+        function removeLastEpisodeFields() {
+            $('#dynamicFieldsWrapper .episodeFields:last').remove();
+            fieldEpisodeCounter--;
+        }
+
+        // Event listeners for the buttons
+        $('#addFieldBtn').on('click', function () {
+            addSourceField();
+        });
+
+        $('#removeFieldBtn').on('click', function () {
+            if (fieldEpisodeCounter > 1) {
+                removeLastEpisodeFields();
+            }
+        });
+    });
+</script>
+
 
 </body>
 

@@ -3,6 +3,7 @@ package com.example.tv360.controller.admin;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -55,12 +58,12 @@ public class MediaDetailController {
         return "admin_movies";
     }
 
-    @PostMapping("/video-source/create/save")
-    public String createVideoSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
+    @PostMapping("/media/source/create/save")
+    public String createMediaSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
                                     RedirectAttributes redirectAttributes) {
         try {
             mediaDetailService.createMediaDetail(mediaDetailDTO);
-            redirectAttributes.addFlashAttribute("success", "Add source video successfully!");
+            redirectAttributes.addFlashAttribute("success", "Add source media successfully!");
         }catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
@@ -68,16 +71,48 @@ public class MediaDetailController {
         return "redirect:/admin/videos";
     }
 
-    @PostMapping("/movie-source/create/save")
+    @PostMapping("/media-series/source/create/save")
     public String createMovieSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes,
+                                    HttpServletRequest request) {
         try {
-            mediaDetailService.createMediaDetail(mediaDetailDTO);
-            redirectAttributes.addFlashAttribute("success", "Add source movie successfully!");
-        }catch (Exception e){
+            int maxEpisode = mediaDetailService.getMaxEpisodeByMediaId(mediaDetailDTO.getMedia().getId());
+
+            String[] sourceUrls = request.getParameterValues("sourceUrl");
+            String[] durations = request.getParameterValues("duration");
+            String[] rates = request.getParameterValues("rate");
+            String[] qualities = request.getParameterValues("quality");
+
+            List<MediaDetail> mediaDetails = new ArrayList<>();
+
+            for (int i = 0; i < sourceUrls.length; i++) {
+                MediaDetail mediaDetail = new MediaDetail();
+
+                mediaDetail.setSourceUrl(sourceUrls[i]);
+
+                if (maxEpisode < 1) {
+                    mediaDetail.setEpisode(1);
+                } else {
+                    mediaDetail.setEpisode(maxEpisode + 1 + i);
+                }
+
+                mediaDetail.setDuration(durations[i]);
+                mediaDetail.setRate(Integer.parseInt(rates[i]));
+                mediaDetail.setQuality(qualities[i]);
+                mediaDetail.setStatus(1);
+                mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMedia().getId()).orElse(null));
+
+                mediaDetails.add(mediaDetail);
+            }
+
+            mediaDetailService.createListMediaDetail(mediaDetails);
+
+            redirectAttributes.addFlashAttribute("success", "Add source media series successfully!");
+        } catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
+
         return "redirect:/admin/movies";
     }
 

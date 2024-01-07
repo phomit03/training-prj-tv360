@@ -149,9 +149,8 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
                                          @Param("episode") Integer episode,
                                          @Param("status") Integer status);
 
-
-
-
+    @Query("SELECT MAX(md.episode) FROM MediaDetail md WHERE md.media.id = :mediaId")
+    Integer findMaxEpisodeByMediaId(@Param("mediaId") Long mediaId);
 
 
 }

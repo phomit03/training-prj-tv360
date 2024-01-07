@@ -11214,3 +11214,21 @@ body {
 .active-color {
   color: green;
 }
+
+#addFieldBtn {
+  border: 1px #0d6efd solid;
+  color: #0d6efd;
+}
+#addFieldBtn:hover {
+  color: white;
+  background-color: #0d6efd;
+}
+
+#removeFieldBtn {
+  border: 1px #dc3545 solid;
+  color: #dc3545;
+}
+#removeFieldBtn:hover {
+  color: white;
+  background-color: #dc3545;
+}

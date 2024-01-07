@@ -125,4 +125,13 @@ public class MediaDetailService {
         return this.mediaDetailRepository.findAll(pageable);
     }
 
+
+    public void createListMediaDetail(List<MediaDetail> mediaDetails) {
+        mediaDetailRepository.saveAll(mediaDetails);
+    }
+
+    public int getMaxEpisodeByMediaId(Long mediaId) {
+        Integer maxEpisode = mediaDetailRepository.findMaxEpisodeByMediaId(mediaId);
+        return (maxEpisode != null) ? maxEpisode : 0;
+    }
 }
