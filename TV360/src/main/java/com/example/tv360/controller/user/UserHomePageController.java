@@ -96,7 +96,7 @@ public class UserHomePageController {
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", mediaByCategory.size()); // Cập nhật giá trị totalItems
+        model.addAttribute("totalItems", page.getTotalElements()); // Cập nhật giá trị totalItems
 
         model.addAttribute("mediaList", mediaList);
 
