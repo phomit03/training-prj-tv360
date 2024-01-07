@@ -98,17 +98,6 @@ public class CategoryService {
         }
     }
 
-    //phan trang
-
-    public Page<MediaDTO> findPaginated(int pageNo, int pageSize, Set<MediaDTO> mediaByCategory) {
-        List<MediaDTO> pagedMediaList = mediaByCategory.stream()
-                .skip((long) (pageNo - 1) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaByCategory.size());
-    }
-
 
     public List<CategoryDTO> getAllCategoriesWithMedia() {
         String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL ORDER BY m.createdAt DESC";
@@ -123,12 +112,25 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    public Set<MediaDTO> getMediaByCategoryId(Long categoryId) {
+
+    //phan trang
+
+    public Page<MediaDTO> findPaginated(int pageNo, int pageSize, List<MediaDTO> mediaList) {
+        int startIndex = (pageNo - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, mediaList.size());
+
+        List<MediaDTO> pagedMediaList = mediaList.subList(startIndex, endIndex);
+        return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaList.size());
+    }
+
+    public List<MediaDTO> getMediaByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found."));
 
-        return category.getMedia().stream()
+        List<MediaDTO> mediaList = category.getMedia().stream()
                 .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+
+        return mediaList;
     }
 }

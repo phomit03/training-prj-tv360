@@ -77,6 +77,7 @@ public class UserHomePageController {
     public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
         return findPaginated(1, categoryId,model);
     }
+
     @GetMapping("/media/by-category/{categoryId}/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @PathVariable Long categoryId, Model model) {
@@ -86,18 +87,18 @@ public class UserHomePageController {
         model.addAttribute("title", "Media by " + category.getName());
 
         int pageSize = 3;
-        Set<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
+        List<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
 
         // Sử dụng trang cụ thể và kích thước trang để lấy ra dữ liệu phân trang
         Page<MediaDTO> page = categoryService.findPaginated(pageNo, pageSize, mediaByCategory);
 
-        List<MediaDTO> categories = page.getContent();
+        List<MediaDTO> mediaList = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("categories", categories);
-        model.addAttribute("mediaByCategory", mediaByCategory);
+        model.addAttribute("totalItems", page.getTotalElements()); // Cập nhật giá trị totalItems
+
+        model.addAttribute("mediaList", mediaList);
 
         return "user_media_by_category";
     }
