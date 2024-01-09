@@ -2,7 +2,6 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
-import com.example.tv360.entity.Country;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -92,6 +91,7 @@ public class MediaDetailService {
     // phan media detail
     public List<MediaDetailResponse> getMediaDetailsClient() {
         try {
+
             return mediaDetailRepository.getMediaDetails();
         }
         catch (Exception e){
@@ -99,14 +99,63 @@ public class MediaDetailService {
         }
     }
 
-    // get by id
-    public List<MediaDetailResponse> getMediaDetailClientById(Long mediaDetailId) {
+    // lay ra tat ca categoryname theo mediaDetailID
+    public List<String> getCategoryNamesByMediaDetailId(Long mediaId) {
         try {
-            return mediaDetailRepository.getMediaDetailById(mediaDetailId);
+            return mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
         } catch (Exception e) {
             return null;
         }
     }
+
+    // lay ra tat ca tap phim theo mediaDetailID
+    public List<Integer> getEpisodesByMediaDetailId(Long mediaId) {
+        try {
+            return mediaDetailRepository.getEpisodesByMediaDetailId(mediaId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // lay ra tat ca castfullname theo mediaDetailID
+    public List<String> getCastFullNamesByMediaDetailId(Long mediaId) {
+        try {
+            return mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // get by id
+
+    public MediaDetailResponse getMediaDetailClientById(Long mediaId) {
+        try {
+            // Lấy thông tin cơ bản từ phương thức getMediaDetailById
+            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
+
+            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
+                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
+
+                // Lấy và thiết lập category names
+                mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
+
+                // Lấy và thiết lập episodes
+                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
+
+                // Lấy và thiết lập cast full names
+                mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
+
+                return mediaDetailResponse;
+            }
+
+            return null; // hoặc trả về một giá trị mặc định nếu không có dữ liệu
+        } catch (Exception e) {
+            // Xử lý exception nếu có
+            return null;
+        }
+    }
+
+
 
     // get theo categoy name
     public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {

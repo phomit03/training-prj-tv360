@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/TV360/TV360.iml" filepath="$PROJECT_DIR$/TV360/TV360.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/training-prj-tv360.iml" filepath="$PROJECT_DIR$/.idea/training-prj-tv360.iml" />
     </modules>
   </component>
