@@ -46,11 +46,10 @@
                               method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="categories" name="selectedCategories" multiple required>
+                                    <select class="form-control" id="categories" th:field="*{categories}" name="selectedCategories" multiple="multiple" required>
                                         <option th:each="category : ${listCategories}"
                                                 th:value="${category.id}"
-                                                th:text="${category.name}"
-                                                th:selected="${movieDTO.categories.contains(category.id)}"></option>
+                                                th:text="${category.name}"></option>
                                     </select>
 
                                     <input class="form-control" id="categories-input"
@@ -96,7 +95,7 @@
 
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="actor" name="selectedCast" multiple required>
+                                    <select class="form-control" id="actor" name="selectedCast" th:field="*{cast}" multiple="multiple" required>
                                         <option th:each="cast : ${listCast}" th:value="${cast.id}"
                                                 th:text="${cast.fullName}"
                                                 th:if="${cast.getType() == 1}"></option>
@@ -111,7 +110,7 @@
 
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="director" name="selectedCast" multiple required>
+                                    <select class="form-control" id="director" name="selectedCast" th:field="*{cast}" multiple="multiple" required>
                                         <option th:each="cast : ${listCast}" th:value="${cast.id}"
                                                 th:text="${cast.fullName}"
                                                 th:if="${cast.getType() == 2}"></option>

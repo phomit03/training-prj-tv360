@@ -99,9 +99,11 @@ public class VideoController {
 
     @PostMapping("/video/update/{id}")
     public String updateVideo(@PathVariable Long id, @ModelAttribute("videoDTO") MediaDTO videoDTO,
-                              @RequestParam(value = "logo", required = false) MultipartFile logo, RedirectAttributes attributes){
+                              @RequestParam(value = "logo", required = false) MultipartFile logo,
+                              @RequestParam("selectedCategories") Long[] selectedCategories,
+                              RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(id, videoDTO, logo);
+            mediaService.updateVideo(id, videoDTO, logo, selectedCategories);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();

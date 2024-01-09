@@ -46,7 +46,7 @@
                               method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="categories" name="selectedCategories" multiple required>
+                                    <select class="form-control" id="categories" name="selectedCategories" th:field="*{categories}"  multiple="multiple" required>
                                         <option th:each="category : ${listCategories}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"
@@ -110,7 +110,7 @@
                         <form th:if="${videoDTO.id == null}" th:action="@{/admin/video/create/save}" th:object="${videoDTO}" method="post" enctype="multipart/form-data">
                             <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="categories" name="selectedCategories" multiple required>
+                                    <select class="form-control" id="categories" name="selectedCategories" multiple="multiple" required>
                                         <option th:each="category : ${listCategories}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"></option>
