@@ -50,10 +50,10 @@
                             <h2  style="color:var(--citrine); font-weight: bold">Type</h2>
                             <a th:each="mediaDetail : ${mediaDetails}" th:text="${categoryName}"></a>
                         </div>
-<!--                        <div class="ganre-wrapper">-->
-<!--                            <h2  style="color:var(&#45;&#45;citrine); font-weight: bold">Cast</h2>-->
-<!--                            <a th:each="mediaDetail : ${mediaDetails}" th:text="${mediaDetail.castFullname}"></a>-->
-<!--                        </div>-->
+                        <div class="ganre-wrapper">
+                            <h2  style="color:var(--citrine); font-weight: bold">Cast</h2>
+                            <a th:each="mediaDetail : ${mediaDetails}" th:text="${castFullname}"></a>
+                        </div>
 
                         <div class="date-time">
 

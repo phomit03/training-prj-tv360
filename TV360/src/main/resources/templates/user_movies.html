@@ -33,14 +33,14 @@
                     <li th:each="media : ${category.media}" th:if="${media.getType() == 1 || media.getType() == 2}">
                         <div class="movie-card">
 
-                            <a href="">
+                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
                                 <figure class="card-banner">
                                     <img th:src="${media.getThumbnail()}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
-                                <a href="">
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
                                     <h3 class="card-title align-content-center" th:text="${media.getTitle()}"></h3>
                                 </a>
                             </div>

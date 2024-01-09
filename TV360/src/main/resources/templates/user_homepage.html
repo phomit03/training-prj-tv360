@@ -38,16 +38,18 @@
                 <ul class="movies-list movies-release-tab has-scrollbar">
                     <li th:each="releaseMedia : ${releaseMediaList}" th:if="${releaseMedia.getMedia().getType() == 1 || releaseMedia.getMedia().getType() == 3}">
                         <div class="movie-card">
-                            <a href="">
+                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${releaseMedia.media.id})}">
                                 <figure class="card-banner">
-                                    <img th:src="${releaseMedia.getMedia().getThumbnail()}">
+                                    <img
+                                         th:src="${releaseMedia.getMedia().getThumbnail()}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
-                                <a href="">
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${releaseMedia.media.id})}">
                                     <h3 class="card-title" th:text="${releaseMedia.getMedia().getTitle()}"></h3>
                                 </a>
+
 
                                 <div class="badge badge-outline" th:text="${releaseMedia.getQuality()}"></div>
                             </div>
