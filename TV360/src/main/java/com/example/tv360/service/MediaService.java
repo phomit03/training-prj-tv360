@@ -115,18 +115,78 @@ public class MediaService {
     }
 
 
-    public Media updateMedia(Long id,MediaDTO mediaDTO,MultipartFile logo){
+    public Media updateVideo(Long id, MediaDTO mediaDTO,
+                             MultipartFile logo,
+                             Long[] selectedCategories){
         try {
             Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
             Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+
             updateMedia1.setThumbnail(media.getThumbnail());
+
             BeanUtils.copyProperties(updateMedia1, media);
             if (!logo.isEmpty()) {
                 String thumbnail = helper.uploadImage(logo);
                 media.setThumbnail(thumbnail);
             }
 
+            Set<Category> categories = new LinkedHashSet<>();
+            for (Long categoryId : selectedCategories) {
+                Category category = categoryRepository.findById(categoryId).orElse(null);
+                if (category != null) {
+                    categories.add(category);
+                }
+            }
+            media.setCategories(categories);
+
+            media.setType(3);
             media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+            return mediaRepository.save(media);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Media updateMovie(Long id, MediaDTO mediaDTO,
+                             MultipartFile logo,
+                             Long[] selectedCategories, Long[] selectedCast){
+        try {
+            Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+            Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+
+            updateMedia1.setThumbnail(media.getThumbnail());
+
+            BeanUtils.copyProperties(updateMedia1, media);
+            if (!logo.isEmpty()) {
+                String thumbnail = helper.uploadImage(logo);
+                media.setThumbnail(thumbnail);
+            }
+
+            Set<Category> categories = new LinkedHashSet<>();
+            for (Long categoryId : selectedCategories) {
+                Category category = categoryRepository.findById(categoryId).orElse(null);
+                if (category != null) {
+                    categories.add(category);
+                }
+            }
+            media.setCategories(categories);
+
+            Set<Cast> listCast = new LinkedHashSet<>();
+            for (Long castId : selectedCast) {
+                Cast cast = castRepository.findById(castId).orElse(null);
+                if (cast != null) {
+                    listCast.add(cast);
+                }
+            }
+            media.setCast(listCast);
+
+            media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
             return mediaRepository.save(media);
         }
         catch (Exception e){

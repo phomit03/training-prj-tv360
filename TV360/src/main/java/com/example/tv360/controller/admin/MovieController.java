@@ -81,7 +81,7 @@ public class MovieController {
         return "redirect:/admin/movies";
     }
 
-    /*@GetMapping("/movie/update/{id}")
+    @GetMapping("/movie/update/{id}")
     public String showUpdateMovie(@PathVariable Long id, Model model){
         MediaDTO movieDTO = mediaService.getMediaById(id);
         model.addAttribute("movieDTO", movieDTO);
@@ -100,26 +100,16 @@ public class MovieController {
         }
 
         return "admin_movie_form";
-    }*/
-
-    @GetMapping("/movie/update/{id}")
-    public ModelAndView showUpdateMovie(@PathVariable Long id, Model model){
-        ModelAndView mav = new ModelAndView("admin_movie_form");
-
-        mav.addObject("movieDTO", this.mediaService.getMediaById(id));
-        mav.addObject("listCategories", this.categoryService.getCategoriesForMovie());
-        mav.addObject("countries", this.countryService.getAllCountries());
-        mav.addObject("listCast", this.castService.getAllCasts());
-
-        return mav;
     }
 
     @PostMapping("/movie/update/{id}")
     public String updateMovie(@PathVariable Long id, @ModelAttribute("movieDTO") MediaDTO movieDTO,
                               @RequestParam(value = "logo", required = false) MultipartFile logo,
+                              @RequestParam("selectedCategories") Long[] selectedCategories,
+                              @RequestParam("selectedCast") Long[] selectedCast,
                               RedirectAttributes attributes){
         try {
-            mediaService.updateMedia(id, movieDTO, logo);
+            mediaService.updateMovie(id, movieDTO, logo, selectedCategories, selectedCast);
             attributes.addFlashAttribute("success", "Update Successfully!");
         }catch (Exception e){
             e.printStackTrace();
