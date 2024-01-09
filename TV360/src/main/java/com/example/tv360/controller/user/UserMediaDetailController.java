@@ -152,36 +152,36 @@ public class UserMediaDetailController {
     }
     // lam trang details
 
-//    @GetMapping("/{mediaId}")
-//    public String getMediaDetailClientById(@PathVariable Long mediaId, Model model) {
-//        try {
-//            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById(mediaId);
-////            String episode = String.valueOf(mediaDetails.getMediaDetailEpisode());
-////            String episode = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getMediaDetailEpisode());
-////            String title = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getTitle());
-////            String thumbnail = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getThumbnail());
-////            String quality = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getQuality());
-////            String categoryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCategoryNames());
-////            String castFullname = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCastFullNames());
-////            String countryName = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getCountryName());
-////            String duration = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getDuration());
-////            String mediaDescription = String.valueOf(mediaDetails.get(Math.toIntExact(mediaDetailId)).getMediaDescription());
-////            model.addAttribute("mediaDetails", mediaDetails);
-////            model.addAttribute("episode", episode);
-////            model.addAttribute("thumbnail", thumbnail);
-////            model.addAttribute("title", title);
-////            model.addAttribute("quality", quality);
-////            model.addAttribute("categoryName", categoryName);
-////            model.addAttribute("castFullname", castFullname);
-////            model.addAttribute("countryName", countryName);
-////            model.addAttribute("duration", duration);
-////            model.addAttribute("mediaDescription", mediaDescription);
-//            return "user_movie_detail";
-//        } catch (Exception e) {
-//            // Xử lý lỗi nếu cần
-//            return "error404"; // Trả về trang lỗi
-//        }
-//    }
+    @GetMapping("/{mediaId}")
+    public String getMediaDetailClientById(@PathVariable Long mediaId, Model model) {
+        try {
+            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById(mediaId);
+
+            String episode = String.valueOf(mediaDetails.getEpisodes());
+            String title = String.valueOf(mediaDetails.getTitle());
+            String thumbnail = String.valueOf(mediaDetails.getThumbnail());
+            String quality = String.valueOf(mediaDetails.getQuality());
+            String categoryName = String.valueOf(mediaDetails.getCategoryNames());
+            String castFullname = String.valueOf(mediaDetails.getCastFullNames());
+            String countryName = String.valueOf(mediaDetails.getCountryName());
+            String duration = String.valueOf(mediaDetails.getDuration());
+            String mediaDescription = String.valueOf(mediaDetails.getMediaDescription());
+            model.addAttribute("mediaDetails", mediaDetails);
+            model.addAttribute("episode", episode);
+            model.addAttribute("thumbnail", thumbnail);
+            model.addAttribute("title", title);
+            model.addAttribute("quality", quality);
+            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("castFullname", castFullname);
+            model.addAttribute("countryName", countryName);
+            model.addAttribute("duration", duration);
+            model.addAttribute("mediaDescription", mediaDescription);
+            return "user_movie_detail";
+        } catch (Exception e) {
+            // Xử lý lỗi nếu cần
+            return "error404"; // Trả về trang lỗi
+        }
+    }
 
     @GetMapping()
     public String movieDetail(Model model) {
