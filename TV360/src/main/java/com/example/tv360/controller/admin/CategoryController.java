@@ -1,6 +1,7 @@
 package com.example.tv360.controller.admin;
 
 
+import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
@@ -31,43 +32,26 @@ public class CategoryController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("/category/create")
-    public String showCreateCategory(Model model){
-        model.addAttribute("categoryDTO", new CategoryDTO());
-        return "admin_category_form";
-    }
-
-    @PostMapping("/category/create/save")
-    public String createCategory(@ModelAttribute CategoryDTO categoryDTO, RedirectAttributes redirectAttributes) {
-        try {
-            categoryService.createCategory(categoryDTO);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/categories";
-    }
-
-    @GetMapping("/category/update/{id}")
-    public String showUpdateCategory(@PathVariable Long id, Model model){
-        CategoryDTO categoryDTO = categoryService.getCategoryById(id);
-        if (categoryDTO == null){
-            return "redirect:/admin/category";
-        }
-
+    @GetMapping({"/category/form", "/category/form/{id}"})
+    public String showCategoryForm(@PathVariable(required = false) Long id, Model model) {
+        CategoryDTO categoryDTO = (id != null) ? categoryService.getCategoryById(id) : new CategoryDTO();
         model.addAttribute("categoryDTO", categoryDTO);
+
         return "admin_category_form";
     }
-
-    @PostMapping("/category/update/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, RedirectAttributes attributes){
+    @PostMapping("/category/save")
+    public String createOrUpdateCategory(@ModelAttribute("categoryDTO") CategoryDTO categoryDTO, RedirectAttributes redirectAttributes) {
         try {
-            categoryService.updateCategory(id,categoryDTO);
-            attributes.addFlashAttribute("success", "Update Successfully!");
+            if (categoryDTO.getId() == null) {
+                categoryService.createCategory(categoryDTO);
+                redirectAttributes.addFlashAttribute("success", "Create successfully!");
+            } else {
+                categoryService.updateCategory(categoryDTO.getId(), categoryDTO);
+                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+            }
         }catch (Exception e){
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
+            redirectAttributes.addFlashAttribute("error", "Failed!");
         }
         return "redirect:/admin/categories";
     }

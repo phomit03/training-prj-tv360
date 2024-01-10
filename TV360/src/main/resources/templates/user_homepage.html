@@ -55,6 +55,12 @@
                             </div>
 
                             <div class="card-meta">
+                                <div class="episode" th:if="${releaseMedia.getEpisode() != null}">
+                                    <ion-icon name="film-outline"></ion-icon>
+
+                                    <data th:text="${'Episode ' + '0' + releaseMedia.getEpisode()}"></data>
+                                </div>
+
                                 <div class="duration">
                                     <ion-icon name="time-outline"></ion-icon>
 
@@ -148,6 +154,12 @@
                             </div>
 
                             <div class="card-meta">
+                                <div class="episode" th:if="${topRatedMedia.getEpisode() != null}">
+                                    <ion-icon name="film-outline"></ion-icon>
+
+                                    <data th:text="${'Episode ' + '0' + topRatedMedia.getEpisode()}"></data>
+                                </div>
+
                                 <div class="duration">
                                     <ion-icon name="time-outline"></ion-icon>
 

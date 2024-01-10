@@ -75,7 +75,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of video
 
-              <a th:href="@{/admin/video/create}">
+              <a th:href="@{/admin/video/form}">
                 <button type="button" class="btn btn-primary" style="float: right">+ video</button>
               </a>
 
@@ -108,7 +108,7 @@
                               <th:block th:if="${video.mediaDetails != null and #lists.size(video.mediaDetails) > 0}">
                                   <div th:each="videoDetail : ${videoDetailMap[video.id]}">
                                       <span>
-                                          <a th:href="${videoDetail.sourceUrl}" th:text="${'sourceUrl'}"></a>
+                                          <a th:href="${videoDetail.sourceUrl}" th:text="${'sourceUrl'}" target="_blank"></a>
                                       </span>
                                   </div>
                               </th:block>
@@ -128,7 +128,7 @@
                                               <span class="close" id="closePopup">&times;</span>
                                           </div>
                                           <div>
-                                              <form th:action="@{/admin/media/source/create/save}" th:object="${mediaDetailDTO}"
+                                              <form th:action="@{/admin/media/source/save}" th:object="${mediaDetailDTO}"
                                                     method="post">
                                                   <div class="form-floating mb-3">
                                                       <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
@@ -183,7 +183,7 @@
 
                           <td>
                             <button class="btn">
-                              <a th:href="@{/admin/video/update/{id} (id=${video.id})}">
+                              <a th:href="@{/admin/video/form/{id} (id=${video.id})}">
                                 <i class="fas fa-pencil-alt"></i>
                               </a>
                             </button>

@@ -127,8 +127,13 @@
                       </span>
                     </td>
                     <td>
-                      <button class="btn">
-                        <a th:href="@{/admin/media-detail/update/{id} (id=${mediaDetail.id})}">
+                      <button class="btn" th:if="${mediaDetail.media.type == 1 || mediaDetail.media.type == 2}">
+                        <a th:href="@{/admin/movie-source/form/{id} (id=${mediaDetail.id})}">
+                          <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </button>
+                      <button class="btn" th:if="${mediaDetail.media.type == 3}">
+                        <a th:href="@{/admin/video-source/form/{id} (id=${mediaDetail.id})}">
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>
