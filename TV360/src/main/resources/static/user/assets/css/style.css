@@ -1574,7 +1574,7 @@ body.active { overflow: hidden; }
 
   .movie-detail { padding-bottom: var(--section-padding); }
 
-  .movie-detail-content { max-width: 620px; }
+  .movie-detail-content { max-width: 800px; }
 
   .detail-title { --fs-1: 60px; }
 
