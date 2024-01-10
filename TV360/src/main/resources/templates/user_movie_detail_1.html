@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="user_fragments::head"></head>
+
+<body>
+<!-- header Start -->
+<header th:replace="user_fragments::header" class="header" data-header></header>
+<!-- header End -->
+
+<main>
+    <article>
+        <!-- content-->
+        <section class="movie-detail">
+            <div class="container">
+                <figure class="movie-detail-banner">
+                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="${mediaDetails.thumbnail}">
+                    <button class="play-btn">
+                        <ion-icon name="play-circle-outline"></ion-icon>
+                    </button>
+                </figure>
+
+                <div class="movie-detail-content">
+                    <p class="detail-subtitle" th:text="'Episode ' + ${mediaDetails.episodes}"></p>
+                    <h3 class="h1 detail-title" th:text="${mediaDetails.title}"></h3>
+
+                    <div class="meta-wrapper">
+                        <div class="badge-wrapper">
+                            <div class="badge badge-fill">12 +</div>
+                            <div class="badge badge-outline" th:text="${mediaDetails.quality}">HD</div>
+                        </div>
+
+                        <div class="ganre-wrapper">
+                            <h2 style="color:var(--citrine); font-weight: bold">Type</h2>
+                            <a th:each="categoryName : ${mediaDetails.categoryNames}" th:text="${categoryName}"></a>
+                        </div>
+                        <div class="ganre-wrapper">
+                            <h2 style="color:var(--citrine); font-weight: bold">Cast</h2>
+                            <a th:each="castFullName : ${mediaDetails.castFullNames}" th:text="${castFullName}"></a>
+                        </div>
+
+                        <div class="date-time">
+                            <div>
+                                <ion-icon name="earth-outline"></ion-icon>
+                                <span th:text="${mediaDetails.countryName}"></span>
+                            </div>
+                            <div>
+                                <ion-icon name="time-outline"></ion-icon>
+                                <time th:text="${mediaDetails.duration}"></time>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p th:text="${mediaDetails.mediaDescription}" class="storyline"></p>
+
+                    <div class="details-actions">
+                        <button class="share">
+                            <ion-icon name="share-social"></ion-icon>
+                            <span>Share</span>
+                        </button>
+
+                        <div class="title-wrapper">
+                            <p class="title">Prime Video</p>
+                            <p class="text">Streaming Channels</p>
+                        </div>
+
+                        <button class="btn btn-primary">
+                            <ion-icon name="play"></ion-icon>
+                            <span>Watch Now</span>
+                        </button>
+                    </div>
+
+                    <a href="./assets/images/movie-4.png" download class="download-btn">
+                        <span>Download</span>
+                        <ion-icon name="download-outline"></ion-icon>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- end content-->
+        <section class="top-rated tv-series" style="padding-top: 50px; padding-bottom: 150px">
+            <!-- Your existing code for top-rated TV series section -->
+        </section>
+
+        <!-- contact -->
+        <section class="cta" th:replace="user_fragments::contact"></section>
+    </article>
+</main>
+
+<footer class="footer" th:replace="user_fragments::footer"></footer>
+
+<a th:replace="user_fragments::back-to-top"></a>
+
+<div th:replace="user_fragments::script"></div>
+
+<script>
+    // Your existing script for tab change
+</script>
+
+</body>
+
+</html>

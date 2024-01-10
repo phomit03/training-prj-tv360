@@ -73,12 +73,20 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "WHERE  m.id = :mediaId")
     List<MediaDetailResponse> getMediaDetailById(@Param("mediaId") Long mediaId);
 
+
     // lay ra tat ca castfullname theo mediaDetailID
     @Query("SELECT DISTINCT c.fullName FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c " +
             "WHERE  m.id = :mediaId")
     List<String> getCastFullNamesByMediaDetailId(@Param("mediaId") Long mediaId);
+
+    // lay ra cac id mediaDetails
+
+    @Query("SELECT md.id FROM MediaDetail md " +
+            "LEFT JOIN md.media m " +
+            "WHERE (m.id = :mediaId)")
+    List<Long> getIdMediaDetailByMediaId(@Param("mediaId") Long mediaId);
 
     // lay ra tat ca cap tap
 

@@ -4,8 +4,10 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Media;
+import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
+import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +22,16 @@ import java.util.Set;
 @RequestMapping()
 public class UserMovieController {
     private final CategoryService categoryService;
+    private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
 
     public UserMovieController(CategoryService categoryService,
+                               MediaDetailService mediaDetailService,
                                MediaService mediaService,
                                CategoryRepository categoryRepository) {
         this.categoryService = categoryService;
+        this.mediaDetailService = mediaDetailService;
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
     }
@@ -37,7 +42,6 @@ public class UserMovieController {
 
         List<CategoryDTO> categoriesWithMovie = categoryService.getAllCategoriesWithMedia();
         model.addAttribute("categoriesWithMovie", categoriesWithMovie);
-
         return "user_movies";
     }
 

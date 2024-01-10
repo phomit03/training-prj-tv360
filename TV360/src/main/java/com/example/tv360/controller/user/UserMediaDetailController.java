@@ -1,13 +1,16 @@
 package com.example.tv360.controller.user;
 
+import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,17 +23,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
 @RequestMapping("/movie/detail")
 public class UserMediaDetailController {
+
+    private final CategoryService categoryService;
     private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
     private final MediaRepository mediaRepository;
     private final MediaDetailRepository mediaDetailRepository;
 
-    public UserMediaDetailController(MediaDetailRepository mediaDetailRepository , MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
+    public UserMediaDetailController(CategoryService categoryService, MediaDetailRepository mediaDetailRepository , MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
+        this.categoryService = categoryService;
         this.mediaDetailRepository = mediaDetailRepository;
         this.mediaDetailService = mediaDetailService;
         this.mediaService = mediaService;
@@ -154,28 +161,12 @@ public class UserMediaDetailController {
 
     @GetMapping("/{mediaId}")
     public String getMediaDetailClientById(@PathVariable Long mediaId, Model model) {
+        List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
+        model.addAttribute("categoriesWithMovie", categories);
         try {
             MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById(mediaId);
-
-            String episode = String.valueOf(mediaDetails.getEpisodes());
-            String title = String.valueOf(mediaDetails.getTitle());
-            String thumbnail = String.valueOf(mediaDetails.getThumbnail());
-            String quality = String.valueOf(mediaDetails.getQuality());
-            String categoryName = String.valueOf(mediaDetails.getCategoryNames());
-            String castFullname = String.valueOf(mediaDetails.getCastFullNames());
-            String countryName = String.valueOf(mediaDetails.getCountryName());
-            String duration = String.valueOf(mediaDetails.getDuration());
-            String mediaDescription = String.valueOf(mediaDetails.getMediaDescription());
             model.addAttribute("mediaDetails", mediaDetails);
-            model.addAttribute("episode", episode);
-            model.addAttribute("thumbnail", thumbnail);
-            model.addAttribute("title", title);
-            model.addAttribute("quality", quality);
-            model.addAttribute("categoryName", categoryName);
-            model.addAttribute("castFullname", castFullname);
-            model.addAttribute("countryName", countryName);
-            model.addAttribute("duration", duration);
-            model.addAttribute("mediaDescription", mediaDescription);
+
             return "user_movie_detail";
         } catch (Exception e) {
             // Xử lý lỗi nếu cần
@@ -183,6 +174,20 @@ public class UserMediaDetailController {
         }
     }
 
+
+    @GetMapping("/{mediaId}/{mdId}")
+    public String getMediaDetailClientById1(@PathVariable Long mediaId, @PathVariable Long mdId, Model model) {
+        try {
+            List<Long> mdIdList = Collections.singletonList(mdId);
+            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById1(mediaId, mdIdList);
+            model.addAttribute("mediaDetails", mediaDetails);
+
+            return "user_movie_detail_1";
+        } catch (Exception e) {
+            // Xử lý lỗi nếu cần
+            return "error404"; // Trả về trang lỗi
+        }
+    }
     @GetMapping()
     public String movieDetail(Model model) {
         model.addAttribute("title", "Movie Detail");

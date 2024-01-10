@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MediaDetailResponse {
     private Long id;
+    private List<Long> mediaDetailId;
     private String title;
     private String thumbnail;
     private String mediaDescription;

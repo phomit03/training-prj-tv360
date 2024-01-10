@@ -34,6 +34,7 @@
                         <div class="movie-card">
 
                             <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+<!--                            <a th:href="@{/movie/detail/{mediaId}/{mdId} (mediaId=${media.id}, mdId=${releaseMediaList.media.id})}">-->
                                 <figure class="card-banner">
                                     <img th:src="${media.getThumbnail()}">
                                 </figure>

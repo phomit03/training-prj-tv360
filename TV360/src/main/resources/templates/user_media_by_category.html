@@ -24,8 +24,9 @@
                 <ul class="movies-list">
                     <li th:each="media : ${mediaList}">
                         <div class="movie-card">
-                            <a href="./movie-details.html">
-                                <figure class="card-banner"
+                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+
+                            <figure class="card-banner"
                                         th:style="${media.getType() == 3 ? 'aspect-ratio: 8/5;' : 'aspect-ratio: 2/3;'}"
                                 >
                                     <img th:src="${media.getThumbnail()}">
@@ -33,8 +34,9 @@
                             </a>
 
                             <div class="title-wrapper">
-                                <a href="./movie-details.html">
-                                    <h3 class="card-title" th:text="${media.getTitle()}"></h3>
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+
+                                <h3 class="card-title" th:text="${media.getTitle()}"></h3>
                                 </a>
                             </div>
                         </div>

@@ -1,7 +1,9 @@
 package com.example.tv360.service;
 
+import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.Category;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -14,10 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +34,8 @@ public class MediaDetailService {
     private final MediaRepository mediaRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     public MediaDetailService(MediaDetailRepository mediaDetailRepository, MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter , DtoToModelConverter dtoToModelConverter ) {
         this.mediaDetailRepository = mediaDetailRepository;
@@ -130,31 +138,64 @@ public class MediaDetailService {
 
     public MediaDetailResponse getMediaDetailClientById(Long mediaId) {
         try {
-            // Lấy thông tin cơ bản từ phương thức getMediaDetailById
+            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
+
+            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
+                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
+                mediaDetailResponse.setMediaDetailId(mediaDetailRepository.getIdMediaDetailByMediaId(mediaId));
+                mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
+                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
+                mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
+
+                return mediaDetailResponse;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
+        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
+
+        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
+
+        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
+        query.setParameter("categoryNames", categoryNames);
+        query.setMaxResults(15);
+
+        List<Category> categories = query.getResultList();
+
+        return categories.stream()
+                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
+
+    public MediaDetailResponse getMediaDetailClientById1(Long mediaId, List<Long> mdIdList) {
+        try {
             List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
 
             if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
                 MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
 
-                // Lấy và thiết lập category names
-                mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
-
-                // Lấy và thiết lập episodes
-                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
-
-                // Lấy và thiết lập cast full names
-                mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
+                // Assuming you want to handle multiple mdIds in some way
+                for (Long mdId : mdIdList) {
+                    // Your logic for processing each mdId
+                    mediaDetailResponse.setMediaDetailId(mediaDetailResponse.getMediaDetailId());
+                    mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mdId));
+                    mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mdId));
+                    mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mdId));
+                    // You may want to accumulate results or handle them in a different way based on your use case
+                }
 
                 return mediaDetailResponse;
             }
-
-            return null; // hoặc trả về một giá trị mặc định nếu không có dữ liệu
+            return null;
         } catch (Exception e) {
-            // Xử lý exception nếu có
             return null;
         }
     }
-
 
 
     // get theo categoy name
