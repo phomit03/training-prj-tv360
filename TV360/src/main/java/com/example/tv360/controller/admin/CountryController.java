@@ -35,6 +35,25 @@ public class CountryController {
         return "admin_country_form";
     }
 
+    @PostMapping("/country/save")
+    public String createOrUpdateCountry(@ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
+        try {
+            if (countryDTO.getId() == null) {
+                countryService.createCountry(countryDTO);
+                redirectAttributes.addFlashAttribute("success", "Create Successfully!");
+            } else {
+                countryService.updateCountry(countryDTO.getId(), countryDTO);
+                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+            }
+        } catch (Exception e) {
+            // Handle exceptions more gracefully, log them, and provide user-friendly messages
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to create/update!");
+        }
+        return "redirect:/admin/countries";
+    }
+
+
     @GetMapping("/country/update/{id}")
     public String showCreateOrUpdateCountry(@PathVariable Long id, Model model) {
         CountryDTO countryDTO = countryService.getCountryById(id);
@@ -46,29 +65,18 @@ public class CountryController {
         return "admin_country_form";
     }
 
-    @PostMapping("/country/create/save")
-    public String createOrUpdateCountry(@ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
-        try {
-            countryService.createCountry(countryDTO);
-            redirectAttributes.addFlashAttribute("success", "Create Successfully!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/countries";
-    }
 
-    @PostMapping("/country/update/{id}")
-    public String updateCountry(@PathVariable Long id, @ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
-        try {
-            countryService.updateCountry(id, countryDTO);
-            redirectAttributes.addFlashAttribute("success", "Update Successfully!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to update!");
-        }
-        return "redirect:/admin/countries";
-    }
+//    @PostMapping("/country/update/{id}")
+//    public String updateCountry(@PathVariable Long id, @ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
+//        try {
+//            countryService.updateCountry(id, countryDTO);
+//            redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            redirectAttributes.addFlashAttribute("error", "Failed to update!");
+//        }
+//        return "redirect:/admin/countries";
+//    }
 
     @GetMapping("/country/delete/{id}")
     public ResponseEntity<String> deleteCountry(@PathVariable Long id){

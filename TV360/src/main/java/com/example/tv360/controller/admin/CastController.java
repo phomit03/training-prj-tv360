@@ -96,7 +96,7 @@ public class CastController {
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
                                 @RequestParam(name = "fullName", required = false) String fullName,
-                                @RequestParam(name = "type", required = false) Integer type,
+                                @RequestParam(name = "type", required = false, defaultValue = "1") Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
         int pageSize = 6;

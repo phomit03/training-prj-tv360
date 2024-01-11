@@ -80,7 +80,7 @@ public class MovieController {
         }
         return "redirect:/admin/movies";
     }
-
+    // chua sua
     @GetMapping("/movie/update/{id}")
     public String showUpdateMovie(@PathVariable Long id, Model model){
         MediaDTO movieDTO = mediaService.getMediaById(id);

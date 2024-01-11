@@ -154,22 +154,6 @@ public class MediaDetailService {
             return null;
         }
     }
-    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
-        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
-
-        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
-
-        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
-        query.setParameter("categoryNames", categoryNames);
-        query.setMaxResults(15);
-
-        List<Category> categories = query.getResultList();
-
-        return categories.stream()
-                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
-                .collect(Collectors.toList());
-    }
-
 
 
     public MediaDetailResponse getMediaDetailClientById1(Long mediaId, List<Long> mdIdList) {
@@ -179,14 +163,11 @@ public class MediaDetailService {
             if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
                 MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
 
-                // Assuming you want to handle multiple mdIds in some way
                 for (Long mdId : mdIdList) {
-                    // Your logic for processing each mdId
                     mediaDetailResponse.setMediaDetailId(mediaDetailResponse.getMediaDetailId());
                     mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mdId));
                     mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mdId));
                     mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mdId));
-                    // You may want to accumulate results or handle them in a different way based on your use case
                 }
 
                 return mediaDetailResponse;
@@ -214,7 +195,7 @@ public class MediaDetailService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaDetailRepository.findAll(pageable);
     }
-
+    // loc
 
     public void createListMediaDetail(List<MediaDetail> mediaDetails) {
         mediaDetailRepository.saveAll(mediaDetails);
@@ -224,4 +205,22 @@ public class MediaDetailService {
         Integer maxEpisode = mediaDetailRepository.findMaxEpisodeByMediaId(mediaId);
         return (maxEpisode != null) ? maxEpisode : 0;
     }
+
+    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
+        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
+
+        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
+
+        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
+        query.setParameter("categoryNames", categoryNames);
+        query.setMaxResults(15);
+
+        List<Category> categories = query.getResultList();
+
+        return categories.stream()
+                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
