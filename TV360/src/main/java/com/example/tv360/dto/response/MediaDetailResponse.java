@@ -15,6 +15,7 @@ public class MediaDetailResponse {
     private String title;
     private String thumbnail;
     private String mediaDescription;
+    private List<Integer> castTypes; // List of cast full names
     private List<String> castFullNames; // List of cast full names
     private List<String> categoryNames; // List of category names
     private String countryName;

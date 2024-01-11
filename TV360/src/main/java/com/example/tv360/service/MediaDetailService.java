@@ -143,6 +143,7 @@ public class MediaDetailService {
             if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
                 MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
                 mediaDetailResponse.setMediaDetailId(mediaDetailRepository.getIdMediaDetailByMediaId(mediaId));
+                mediaDetailResponse.setCastTypes(mediaDetailRepository.getCastTypesByMediaDetailId(mediaId));
                 mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
                 mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
                 mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));

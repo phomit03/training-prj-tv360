@@ -31,25 +31,27 @@
 
                     <h3 class="h2 detail-title" th:text="${mediaDetails.title}"></h3>
 
+<!--                    chua fix chua lay duoc category id-->
                     <div class="meta-wrapper">
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Category:</h4>
-                            <a th:each="category, iterStat : ${mediaDetails.categoryNames}"
+                                <a th:each="category, iterStat : ${mediaDetails.categoryNames}"
                                 th:text="${category + (iterStat.last ? '' : ', ')}"
                                 th:href="@{'/media/by-category/' + category.id}"></a>
+
                         </div>
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Director:</h4>
                             <a th:each="director, iterStat : ${mediaDetails.castFullNames}"
+                               th:if="${mediaDetails.castTypes.contains(1)}"
                                th:text="${director + (iterStat.last ? '' : ', ')}"></a>
                         </div>
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Actor:</h4>
-                            <a th:each="actor, iterStat : ${mediaDetails.castFullNames}"
-                                th:text="${actor + (iterStat.last ? '' : ', ')}"></a>
-                            </a>
+                            <a th:each="actor, iterStat : ${mediaDetails.castFullNames}" th:if="${mediaDetails.castTypes.contains(2)}"
+                               th:text="${actor + (iterStat.last ? '' : ', ')}"></a>
                         </div>
 
 

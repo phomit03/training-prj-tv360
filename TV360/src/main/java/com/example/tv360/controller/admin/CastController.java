@@ -72,21 +72,53 @@ public class CastController {
         }
     }
 
-    @GetMapping("/casts")
-    public String getAllCasts(Model model,
-                              @RequestParam(name = "fullName", required = false) String fullName,
-                              @RequestParam(name = "type", required = false) Integer type,
-                              @RequestParam(name = "status", required = false) Integer status
-    ) {
-        model.addAttribute("title", "Cast");
-        return findPaginated(1, model, fullName,type,status);
-    }
+//    @GetMapping("/casts")
+//    public String getAllCasts(Model model,
+//                              @RequestParam(name = "fullName", required = false) String fullName,
+//                              @RequestParam(name = "type", required = false) Integer type,
+//                              @RequestParam(name = "status", required = false) Integer status
+//    ) {
+//        model.addAttribute("title", "Cast");
+//        return findPaginated(1, model, fullName,type,status);
+//    }
+//
+//    @GetMapping("/casts/{pageNo}")
+//    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+//                                Model model,
+//                                @RequestParam(name = "fullName", required = false) String fullName,
+//                                @RequestParam(name = "type", required = false, defaultValue = "1") Integer type,
+//                                @RequestParam(name = "status", required = false) Integer status
+//    ) {
+//
+//        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+//        List<Cast> result = castRepository.searchCasts(fullName,type,status, pageable);
+//        Page<Cast> page = new PageImpl<>(result, pageable,castRepository.searchCasts1(fullName,type, status).size());
+//        List<Cast> casts = page.getContent();
+//
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+//        model.addAttribute("casts", casts);
+//        model.addAttribute("fullName", fullName);
+//        model.addAttribute("type", type);
+//        model.addAttribute("status", status);
+//        return "admin_cast";
+//    }
+@GetMapping("/casts")
+public String getAllCasts(Model model,
+                          @RequestParam(name = "fullName", required = false) String fullName,
+                          @RequestParam(name = "type", required = false) Integer type,
+                          @RequestParam(name = "status", required = false) Integer status
+) {
+    model.addAttribute("title", "Cast");
+    return findPaginated(1, model, fullName,type,status);
+}
 
     @GetMapping("/casts/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
                                 @RequestParam(name = "fullName", required = false) String fullName,
-                                @RequestParam(name = "type", required = false, defaultValue = "1") Integer type,
+                                @RequestParam(name = "type", required = false) Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
 

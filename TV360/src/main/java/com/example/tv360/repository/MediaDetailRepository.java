@@ -32,30 +32,6 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.country co ")
     List<MediaDetailResponse> getMediaDetails();
-//    // get mediadetail byid
-//    @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
-//            "m.id, " +
-//            "m.title, " +
-//            "m.thumbnail, " +
-//            "m.type, " +
-//            "m.description, " +
-//            "c.type, " +
-//            "ct.type, " +
-//            "co.name, " +
-//            "md.sourceUrl, " +
-//            "md.duration, " +
-//            "md.quality, " +
-//            "md.episode) " +
-//            "FROM MediaDetail md " +
-//            "LEFT JOIN md.media m " +
-//            "LEFT JOIN m.cast c " +
-//            "LEFT JOIN m.categories ct " +
-//            "LEFT JOIN m.country co " +
-//            "LEFT JOIN m.categories mct " +
-//            "LEFT JOIN m.cast mcast " +
-//            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) " +
-//            "AND m.id = :mediaId")
-//    MediaDetailResponse getMediaDetailById(@Param("mediaId") Long mediaId);
 
     // tim theo 1 id media
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
@@ -72,6 +48,13 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.country co "+
             "WHERE  m.id = :mediaId")
     List<MediaDetailResponse> getMediaDetailById(@Param("mediaId") Long mediaId);
+
+    // lay ra tat  castTypes theo mediaDetailID
+    @Query("SELECT DISTINCT c.type FROM MediaDetail md " +
+            "LEFT JOIN md.media m " +
+            "LEFT JOIN m.cast c " +
+            "WHERE  m.id = :mediaId")
+    List<Integer> getCastTypesByMediaDetailId(@Param("mediaId") Long mediaId);
 
 
     // lay ra tat ca castfullname theo mediaDetailID
