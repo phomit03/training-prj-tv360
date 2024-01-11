@@ -43,7 +43,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of countries
 
-              <a th:href="@{/admin/country/create}">
+              <a th:href="@{/admin/country/form}">
                 <button type="button" class="btn btn-primary" style="float: right">+ countries</button>
               </a>
 
@@ -76,7 +76,7 @@
                     </td>
                     <td>
                       <button class="btn">
-                        <a th:href="@{/admin/country/update/{id} (id=${country.id})}">
+                        <a th:href="@{/admin/country/form/{id} (id=${country.id})}">
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>

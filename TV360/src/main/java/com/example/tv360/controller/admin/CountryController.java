@@ -5,6 +5,7 @@ import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Country;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.service.CountryService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CountryController {
+    @Value("${page.size}")
+    private int pageSize;
     private final CountryService countryService;
     private final CountryRepository countryRepository;
 
@@ -29,9 +32,10 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
-    @GetMapping("/country/create")
-    public String showCreateOrUpdateCountry(Model model) {
-        model.addAttribute("countryDTO", new CountryDTO());
+    @GetMapping({"/country/form","/country/form/{id}"})
+    public String showCountryForm(Model model,@PathVariable(required = false) Long id) {
+        CountryDTO countryDTO = (id != null) ? countryService.getCountryById(id): new CountryDTO();
+        model.addAttribute("countryDTO", countryDTO);
         return "admin_country_form";
     }
 
@@ -53,30 +57,6 @@ public class CountryController {
         return "redirect:/admin/countries";
     }
 
-
-    @GetMapping("/country/update/{id}")
-    public String showCreateOrUpdateCountry(@PathVariable Long id, Model model) {
-        CountryDTO countryDTO = countryService.getCountryById(id);
-        if (countryDTO == null) {
-            return "redirect:/admin/countries";
-        }
-
-        model.addAttribute("countryDTO", countryDTO);
-        return "admin_country_form";
-    }
-
-
-//    @PostMapping("/country/update/{id}")
-//    public String updateCountry(@PathVariable Long id, @ModelAttribute CountryDTO countryDTO, RedirectAttributes redirectAttributes) {
-//        try {
-//            countryService.updateCountry(id, countryDTO);
-//            redirectAttributes.addFlashAttribute("success", "Update Successfully!");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            redirectAttributes.addFlashAttribute("error", "Failed to update!");
-//        }
-//        return "redirect:/admin/countries";
-//    }
 
     @GetMapping("/country/delete/{id}")
     public ResponseEntity<String> deleteCountry(@PathVariable Long id){
@@ -105,7 +85,6 @@ public class CountryController {
                                 @RequestParam(name = "name", required = false) String name,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Country> result = countryRepository.searchCategories(name, status, pageable);

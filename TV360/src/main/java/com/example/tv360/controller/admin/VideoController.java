@@ -12,6 +12,7 @@ import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class VideoController {
+
+    @Value("${page.size}")
+    private int pageSize;
     private final MediaService mediaService;
     private final CountryService countryService;
     private final CategoryService categoryService;
@@ -48,40 +52,9 @@ public class VideoController {
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/video/create")
-    public String showCreateVideo(Model model){
-        model.addAttribute("videoDTO", new MediaDTO());
-
-        List<CountryDTO> countries = countryService.getAllCountries();
-        model.addAttribute("countries", countries);
-
-        List<CategoryDTO> listCategories = categoryService.getCategoriesForVideo();
-        model.addAttribute("listCategories", listCategories);
-
-        List<CastDTO> cast = castService.getAllCasts();
-        model.addAttribute("listCast", cast);
-
-        return "admin_video_form";
-    }
-
-    @PostMapping("/video/create/save")
-    public String createVideo(@ModelAttribute MediaDTO videoDTO,
-                              @RequestParam("logo") MultipartFile logo,
-                              @RequestParam("selectedCategories") Long[] selectedCategories,
-                              RedirectAttributes redirectAttributes) {
-        try {
-            mediaService.createVideo(videoDTO, logo, selectedCategories);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/videos";
-    }
-
-    @GetMapping("/video/update/{id}")
-    public String showUpdateVideo(@PathVariable Long id, Model model){
-        MediaDTO videoDTO = mediaService.getMediaById(id);
+    @GetMapping({"/video/form", "/video/form/{id}"})
+    public String showVideoForm(@PathVariable(required = false) Long id, Model model) {
+        MediaDTO videoDTO = (id != null) ? mediaService.getMediaById(id) : new MediaDTO();
         model.addAttribute("videoDTO", videoDTO);
 
         List<CategoryDTO> listCategories = categoryService.getCategoriesForVideo();
@@ -90,24 +63,28 @@ public class VideoController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        if (videoDTO == null){
-            return "redirect:/admin/videos";
-        }
+        List<CastDTO> cast = castService.getAllCasts();
+        model.addAttribute("listCast", cast);
 
         return "admin_video_form";
     }
 
-    @PostMapping("/video/update/{id}")
-    public String updateVideo(@PathVariable Long id, @ModelAttribute("videoDTO") MediaDTO videoDTO,
-                              @RequestParam(value = "logo", required = false) MultipartFile logo,
+    @PostMapping("/video/save")
+    public String createOrUpdateVideo(@ModelAttribute("videoDTO") MediaDTO videoDTO,
+                              @RequestParam("logo") MultipartFile logo,
                               @RequestParam("selectedCategories") Long[] selectedCategories,
-                              RedirectAttributes attributes){
+                              RedirectAttributes redirectAttributes) {
         try {
-            mediaService.updateVideo(id, videoDTO, logo, selectedCategories);
-            attributes.addFlashAttribute("success", "Update Successfully!");
+            if (videoDTO.getId() == null) {
+                mediaService.createVideo(videoDTO, logo, selectedCategories);
+                redirectAttributes.addFlashAttribute("success", "Create successfully!");
+            } else {
+                mediaService.updateVideo(videoDTO.getId(), videoDTO, logo, selectedCategories);
+                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+            }
         }catch (Exception e){
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
+            redirectAttributes.addFlashAttribute("error", "Failed to create!");
         }
         return "redirect:/admin/videos";
     }
@@ -141,7 +118,6 @@ public class VideoController {
                                 @RequestParam(name = "type", required = false) Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Media> result = mediaRepository.searchMedia(title, 3, status, pageable);

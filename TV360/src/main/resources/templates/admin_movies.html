@@ -83,7 +83,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of movie
 
-              <a th:href="@{/admin/movie/create}">
+              <a th:href="@{/admin/movie/form}">
                 <button type="button" class="btn btn-primary" style="float: right">+ Movie</button>
               </a>
 
@@ -118,10 +118,10 @@
                               <th:block th:if="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0}">
                                   <div th:each="movieDetail, iterStat : ${movieDetailMap[movie.id]}">
                                       <span th:if="${movie.type == 1}">
-                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'sourceUrl'}"></a>
+                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'sourceUrl'}" target="_blank"></a>
                                       </span>
                                       <span th:if="${movie.type == 2}">
-                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'Episode 0' + (iterStat.index + 1)}"></a>
+                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'Episode 0' + (iterStat.index + 1)}" target="_blank"></a>
                                       </span>
                                   </div>
                               </th:block>
@@ -142,7 +142,7 @@
                                                   <span class="close" id="closePopupMovie">&times;</span>
                                               </div>
                                               <div>
-                                                  <form th:action="@{/admin/media/source/create/save}" th:object="${mediaDetailDTO}"
+                                                  <form th:action="@{/admin/media/source/save}" th:object="${mediaDetailDTO}"
                                                         method="post">
                                                       <div class="form-floating mb-3">
                                                           <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
@@ -195,7 +195,7 @@
                                                   <span class="close" id="closePopupMovieSeries">&times;</span>
                                               </div>
                                               <div>
-                                                  <form th:action="@{/admin/media-series/source/create/save}"
+                                                  <form th:action="@{/admin/media-series/source/save}"
                                                         th:object="${mediaDetailDTO}" method="post" id="movieForm">
                                                       <!-- Existing fields -->
                                                       <div class="form-floating mb-3" th:with="sourceByMedia=${movieDetailMap[movie.id]}">
@@ -272,7 +272,7 @@
 
                           <td>
                             <button class="btn">
-                              <a th:href="@{/admin/movie/update/{id} (id=${movie.id})}">
+                              <a th:href="@{/admin/movie/form/{id} (id=${movie.id})}">
                                 <i class="fas fa-pencil-alt"></i>
                               </a>
                             </button>

@@ -1,9 +1,13 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.CastDTO;
+import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.repository.CastRepository;
 import com.example.tv360.service.CastService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +25,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CastController {
+    @Value("${page.size}")
+    private int pageSize;
     private final CastService castService;
     private final CastRepository castRepository;
 
@@ -29,43 +35,27 @@ public class CastController {
         this.castRepository = castRepository;
     }
 
-    @GetMapping("/cast/create")
-    public String showCreateCast(Model model){
-        model.addAttribute("castDTO", new CastDTO());
-        return "admin_cast_form";
-    }
-
-    @PostMapping("/cast/create/save")
-    public String createCast(@ModelAttribute CastDTO castDTO, RedirectAttributes redirectAttributes) {
-        try {
-            castService.createCast(castDTO);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/casts";
-    }
-
-    @GetMapping("/cast/update/{id}")
-    public String showUpdateCast(@PathVariable Long id, Model model){
-        CastDTO castDTO = castService.getCastById(id);
-        if (castDTO == null){
-            return "redirect:/admin/cast";
-        }
-
+    @GetMapping({"/cast/form", "/cast/form/{id}"})
+    public String showCastForm(@PathVariable(required = false) Long id, Model model) {
+        CastDTO castDTO = (id != null) ? castService.getCastById(id) : new CastDTO();
         model.addAttribute("castDTO", castDTO);
+
         return "admin_cast_form";
     }
 
-    @PostMapping("/cast/update/{id}")
-    public String updateCast(@PathVariable Long id, @ModelAttribute("castDTO") CastDTO castDTO, RedirectAttributes attributes){
+    @PostMapping("/cast/save")
+    public String createOrUpdateCast(@ModelAttribute("castDTO") CastDTO castDTO, RedirectAttributes redirectAttributes) {
         try {
-            castService.updateCast(id ,castDTO);
-            attributes.addFlashAttribute("success", "Update Successfully!");
+            if (castDTO.getId() == null) {
+                castService.createCast(castDTO);
+                redirectAttributes.addFlashAttribute("success", "Create successfully!");
+            } else {
+                castService.updateCast(castDTO.getId() ,castDTO);
+                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+            }
         }catch (Exception e){
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
+            redirectAttributes.addFlashAttribute("error", "Failed!");
         }
         return "redirect:/admin/casts";
     }
@@ -99,7 +89,6 @@ public class CastController {
                                 @RequestParam(name = "type", required = false, defaultValue = "1") Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Cast> result = castRepository.searchCasts(fullName,type,status, pageable);

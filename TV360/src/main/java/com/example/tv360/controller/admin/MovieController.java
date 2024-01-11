@@ -12,6 +12,7 @@ import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class MovieController {
+
+    @Value("${page.size}")
+    private int pageSize;
     private final MediaService mediaService;
     private final CountryService countryService;
     private final CategoryService categoryService;
@@ -49,71 +53,40 @@ public class MovieController {
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/movie/create")
-    public String showCreateMovie(Model model){
-        model.addAttribute("movieDTO", new MediaDTO());
-
-        List<CountryDTO> countries = countryService.getAllCountries();
-        model.addAttribute("countries", countries);
+    @GetMapping({"/movie/form", "/movie/form/{id}"})
+    public String showMovieForm(@PathVariable(required = false) Long id, Model model) {
+        MediaDTO movieDTO = (id != null) ? mediaService.getMediaById(id) : new MediaDTO();
+        model.addAttribute("movieDTO", movieDTO);
 
         List<CategoryDTO> listCategories = categoryService.getCategoriesForMovie();
         model.addAttribute("listCategories", listCategories);
 
-        List<CastDTO> cast = castService.getAllCasts();
-        model.addAttribute("listCast", cast);
-
-        return "admin_movie_form";
-    }
-
-    @PostMapping("/movie/create/save")
-    public String createMovie(@ModelAttribute MediaDTO movieDTO,
-                              @RequestParam("logo") MultipartFile logo,
-                              @RequestParam("selectedCategories") Long[] selectedCategories,
-                              @RequestParam("selectedCast") Long[] selectedCast,
-                              RedirectAttributes redirectAttributes) {
-        try {
-            mediaService.createMovie(movieDTO, logo, selectedCategories, selectedCast);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/movies";
-    }
-    // chua sua
-    @GetMapping("/movie/update/{id}")
-    public String showUpdateMovie(@PathVariable Long id, Model model){
-        MediaDTO movieDTO = mediaService.getMediaById(id);
-        model.addAttribute("movieDTO", movieDTO);
-
-        List<CategoryDTO> listCategories = categoryService.getAllCategories();
-        model.addAttribute("listCategories", listCategories);
-
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
         List<CastDTO> cast = castService.getAllCasts();
         model.addAttribute("listCast", cast);
 
-        if (movieDTO == null){
-            return "redirect:/admin/movies";
-        }
-
         return "admin_movie_form";
     }
 
-    @PostMapping("/movie/update/{id}")
-    public String updateMovie(@PathVariable Long id, @ModelAttribute("movieDTO") MediaDTO movieDTO,
-                              @RequestParam(value = "logo", required = false) MultipartFile logo,
-                              @RequestParam("selectedCategories") Long[] selectedCategories,
-                              @RequestParam("selectedCast") Long[] selectedCast,
-                              RedirectAttributes attributes){
+    @PostMapping("/movie/save")
+    public String createOrUpdateMovie(@ModelAttribute("movieDTO") MediaDTO movieDTO,
+                                      @RequestParam("logo") MultipartFile logo,
+                                      @RequestParam("selectedCategories") Long[] selectedCategories,
+                                      @RequestParam("selectedCast") Long[] selectedCast,
+                                      RedirectAttributes redirectAttributes) {
         try {
-            mediaService.updateMovie(id, movieDTO, logo, selectedCategories, selectedCast);
-            attributes.addFlashAttribute("success", "Update Successfully!");
+            if (movieDTO.getId() == null) {
+                mediaService.createMovie(movieDTO, logo, selectedCategories, selectedCast);
+                redirectAttributes.addFlashAttribute("success", "Create successfully!");
+            } else {
+                mediaService.updateMovie(movieDTO.getId(), movieDTO, logo, selectedCategories, selectedCast);
+                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+            }
         }catch (Exception e){
             e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
+            redirectAttributes.addFlashAttribute("error", "Failed!");
         }
         return "redirect:/admin/movies";
     }
@@ -147,7 +120,6 @@ public class MovieController {
                                 @RequestParam(name = "type", required = false) Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Media> result = mediaRepository.searchMedia(title, type, status, pageable);

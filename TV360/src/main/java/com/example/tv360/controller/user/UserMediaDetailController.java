@@ -11,6 +11,7 @@ import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/movie/detail")
 public class UserMediaDetailController {
+
+    @Value("${page.size}")
+    private int pageSize;
 
     private final CategoryService categoryService;
     private final MediaDetailService mediaDetailService;
@@ -235,7 +239,6 @@ public class UserMediaDetailController {
                                 @RequestParam(name = "episode", required = false) Integer episode,
                                 @RequestParam(name = "status", required = false) Integer  status
     ) {
-        int pageSize = 11;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<MediaDetail> result = mediaDetailRepository.searchMediaDetails(title, quality,episode,status, pageable);

@@ -50,7 +50,7 @@
                 <i class="fas fa-table "></i>
                 List of casts
 
-              <a th:href="@{/admin/cast/create}">
+              <a th:href="@{/admin/cast/form}">
                 <button type="button" class="btn btn-primary" style="float: right">+ cast</button>
               </a>
 
@@ -85,7 +85,7 @@
                     </td>
                     <td>
                       <button class="btn">
-                        <a th:href="@{/admin/cast/update/{id} (id=${cast.id})}">
+                        <a th:href="@{/admin/cast/form/{id} (id=${cast.id})}">
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>

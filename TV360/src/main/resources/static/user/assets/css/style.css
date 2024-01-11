@@ -350,6 +350,23 @@ body.active { overflow: hidden; }
   color: var(--citrine);
 }
 
+.movie-card .episode { margin-left: auto; }
+
+.movie-card :is(.episode, .rating) {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--gainsboro);
+  font-size: var(--fs-11);
+  font-weight: var(--fw-500);
+}
+
+.movie-card :is(.episode, .rating) ion-icon {
+  font-size: 13px;
+  --ionicon-stroke-width: 50px;
+  color: var(--citrine);
+}
+
 /**
  * CUSTOM SLIDER & SCROLLBAR
  */
@@ -1574,7 +1591,7 @@ body.active { overflow: hidden; }
 
   .movie-detail { padding-bottom: var(--section-padding); }
 
-  .movie-detail-content { max-width: 620px; }
+  .movie-detail-content { max-width: 800px; }
 
   .detail-title { --fs-1: 60px; }
 

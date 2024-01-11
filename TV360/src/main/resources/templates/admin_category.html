@@ -51,7 +51,7 @@
                 <i class="fas fa-table me-1"></i>
                 List of categories
 
-              <a th:href="@{/admin/category/create}">
+              <a th:href="@{/admin/category/form}">
                 <button type="button" class="btn btn-primary" style="float: right">+ category</button>
               </a>
 
@@ -86,7 +86,7 @@
                     </td>
                     <td>
                       <button class="btn">
-                        <a th:href="@{/admin/category/update/{id} (id=${category.id})}">
+                        <a th:href="@{/admin/category/form/{id} (id=${category.id})}">
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>
