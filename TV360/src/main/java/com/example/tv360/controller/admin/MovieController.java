@@ -12,6 +12,7 @@ import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
+import com.example.tv360.service.exception.AssociationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -92,6 +93,8 @@ public class MovieController {
         try {
             mediaService.softDeleteMedia(id);
             return ResponseEntity.ok("Delete movie successfully");
+        } catch (AssociationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {

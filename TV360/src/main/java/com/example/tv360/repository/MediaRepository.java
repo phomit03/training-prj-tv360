@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
+
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
             "AND (:type is null or type like CONCAT('%', :type, '%')) " +
@@ -31,4 +33,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT md FROM MediaDetail md WHERE md.media.id = :mediaId")
     List<MediaDetail> findMediaDetailsByMediaId(@Param("mediaId") Long mediaId);
 
+    //soft-delete media (check media-details)
+    Optional<Media> findByIdAndStatus(Long id, String status);
+    @Query("SELECT COUNT(m) FROM MediaDetail m JOIN m.media c WHERE c.id = :mediaId")
+    int countMediaDetailByMediaId(@Param("mediaId") Long mediaId);
 }

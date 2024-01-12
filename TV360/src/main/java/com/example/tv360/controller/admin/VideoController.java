@@ -12,6 +12,7 @@ import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.CountryService;
 import com.example.tv360.service.MediaService;
+import com.example.tv360.service.exception.AssociationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -50,8 +49,12 @@ public class VideoController {
 
     @GetMapping({"/video/form", "/video/form/{id}"})
     public String showVideoForm(@PathVariable(required = false) Long id, Model model) {
-        MediaDTO videoDTO = (id != null) ? mediaService.getMediaById(id) : new MediaDTO();
-        model.addAttribute("videoDTO", videoDTO);
+        if (id != null) {
+            MediaDTO videoDTO = mediaService.getMediaById(id);
+            model.addAttribute("videoDTO", videoDTO);
+        } else {
+            model.addAttribute("videoDTO", new MediaDTO());
+        }
 
         List<CategoryDTO> listCategories = categoryService.getCategoriesForVideo();
         model.addAttribute("listCategories", listCategories);
@@ -59,16 +62,13 @@ public class VideoController {
         List<CountryDTO> countries = countryService.getAllCountries();
         model.addAttribute("countries", countries);
 
-        List<CastDTO> cast = castService.getAllCasts();
-        model.addAttribute("listCast", cast);
-
         return "admin_video_form";
     }
 
     @PostMapping("/video/save")
     public String createOrUpdateVideo(@ModelAttribute("videoDTO") MediaDTO videoDTO,
                               @RequestParam("logo") MultipartFile logo,
-                              @RequestParam("selectedCategories") Long[] selectedCategories,
+                              @RequestParam("selectedCategories") Set<Long> selectedCategories,
                               RedirectAttributes redirectAttributes) {
         try {
             if (videoDTO.getId() == null) {
@@ -80,7 +80,7 @@ public class VideoController {
             }
         }catch (Exception e){
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
+            redirectAttributes.addFlashAttribute("error", "Failed!");
         }
         return "redirect:/admin/videos";
     }
@@ -90,6 +90,8 @@ public class VideoController {
         try {
             mediaService.softDeleteMedia(id);
             return ResponseEntity.ok("Delete video successfully");
+        } catch (AssociationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {

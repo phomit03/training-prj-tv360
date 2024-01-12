@@ -2,7 +2,9 @@ package com.example.tv360.service;
 
 import com.example.tv360.dto.CastDTO;
 import com.example.tv360.entity.Cast;
+import com.example.tv360.entity.Category;
 import com.example.tv360.repository.CastRepository;
+import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,11 +67,21 @@ public class CastService {
         Optional<Cast> optionalCast = castRepository.findById(id);
         if (optionalCast.isPresent()) {
             Cast cast = optionalCast.get();
+
+            if (isCastUsedInMedia(cast)) {
+                throw new AssociationException("Cannot delete cast as it is associated with media.");
+            }
+
             cast.setStatus(0);
             castRepository.save(cast);
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
+    }
+
+    private boolean isCastUsedInMedia(Cast cast) {
+        int mediaCount = castRepository.countMediaByCastId(cast.getId());
+        return mediaCount > 0;
     }
 
     //phan trang

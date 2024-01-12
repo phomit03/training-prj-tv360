@@ -36,7 +36,7 @@
                 </div>
 
                 <ul class="movies-list movies-release-tab has-scrollbar">
-                    <li th:each="releaseMedia : ${releaseMediaList}" th:if="${releaseMedia.getMedia().getType() == 1 || releaseMedia.getMedia().getType() == 3}">
+                    <li th:each="releaseMedia : ${releaseMediaList}" th:if="${releaseMedia.getMedia().getType() == 1 || releaseMedia.getMedia().getType() == 2}">
                         <div class="movie-card">
                             <a th:href="@{/movie/detail/{mediaId}/{mdId} (mediaId=${releaseMedia.media.id}, mdId=${releaseMedia.id} )}">
                                 <figure class="card-banner">
@@ -79,7 +79,7 @@
                 </ul>
 
                 <ul class="videos-list videos-release-tab has-scrollbar">
-                    <li th:each="releaseMedia : ${releaseMediaList}" th:if="${releaseMedia.getMedia().getType() == 2}">
+                    <li th:each="releaseMedia : ${releaseMediaList}" th:if="${releaseMedia.getMedia().getType() == 3}">
                         <div class="movie-card" style="width: 250px;">
                             <a href="">
                                 <figure class="card-banner" style="aspect-ratio: 5/3;">
@@ -136,7 +136,7 @@
 
                 <ul class="movies-list movies-rate-tab">
                     <li th:each="topRatedMedia : ${topRatedMediaList}"
-                         th:if="${topRatedMedia.getMedia().getType() == 1 || topRatedMedia.getMedia().getType() == 3}">
+                         th:if="${topRatedMedia.getMedia().getType() == 1 || topRatedMedia.getMedia().getType() == 2}">
                         <div class="movie-card">
 
                             <a href="">
@@ -153,7 +153,7 @@
                                 <div class="badge badge-outline" th:text="${topRatedMedia.getQuality()}"></div>
                             </div>
 
-                            <div class="card-meta">
+                            <div class="card-meta" style="gap: 5px">
                                 <div class="episode" th:if="${topRatedMedia.getEpisode() != null}">
                                     <ion-icon name="film-outline"></ion-icon>
 
@@ -178,11 +178,10 @@
                 </ul>
 
                 <ul class="videos-list videos-rate-tab">
-                    <li  th:each="topRatedMedia : ${topRatedMediaList}" th:if="${topRatedMedia.getMedia().getType() == 2}">
+                    <li  th:each="topRatedMedia : ${topRatedMediaList}" th:if="${topRatedMedia.getMedia().getType() == 3}">
                         <div class="movie-card">
-
                             <a href="">
-                                <figure class="card-banner">
+                                <figure class="card-banner" style="aspect-ratio: 5/3;">
                                     <img th:src="${topRatedMedia.getMedia().getThumbnail()}">
                                 </figure>
                             </a>
@@ -208,7 +207,6 @@
                                     <data th:text="${topRatedMedia.getRate()}"></data>
                                 </div>
                             </div>
-
                         </div>
                     </li >
                 </ul>

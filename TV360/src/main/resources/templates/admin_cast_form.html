@@ -47,8 +47,8 @@
                                 </select>
                                 <label>Type</label>
                             </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-control" th:if="${castDTO.id != null}" th:field="*{status}" required>
+                            <div class="form-floating mb-3" th:if="${castDTO.id != null}">
+                                <select class="form-control" th:field="*{status}" required>
                                     <option value="" selected>-- choose type --</option>
                                     <option value="0" th:selected="${castDTO.status == 0}">in-active</option>
                                     <option value="1" th:selected="${castDTO.status == 1}">active</option>

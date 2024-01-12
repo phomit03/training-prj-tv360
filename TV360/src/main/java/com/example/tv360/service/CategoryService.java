@@ -5,6 +5,7 @@ import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CategoryRepository;
+import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,10 +88,15 @@ public class CategoryService {
         }
     }
 
-    public void softDeleteCategory(Long id){
+    public void softDeleteCategory(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
+
+            if (isCategoryUsedInMedia(category)) {
+                throw new AssociationException("Cannot delete category as it is associated with media.");
+            }
+
             category.setStatus(0);
             categoryRepository.save(category);
         } else {
@@ -98,6 +104,10 @@ public class CategoryService {
         }
     }
 
+    private boolean isCategoryUsedInMedia(Category category) {
+        int mediaCount = categoryRepository.countMediaByCategoryId(category.getId());
+        return mediaCount > 0;
+    }
 
     public List<CategoryDTO> getAllCategoriesWithMedia() {
         String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL ORDER BY m.createdAt DESC";

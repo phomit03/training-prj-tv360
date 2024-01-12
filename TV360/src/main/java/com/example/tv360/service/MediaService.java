@@ -7,6 +7,7 @@ import com.example.tv360.repository.CastRepository;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
@@ -92,7 +93,7 @@ public class MediaService {
     }
 
     public Media createVideo(MediaDTO mediaDTO, MultipartFile logo,
-                             Long[] selectedCategories) throws IOException {
+                             Set<Long> selectedCategories) throws IOException {
         Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
 
         Set<Category> categories = new LinkedHashSet<>();
@@ -114,22 +115,16 @@ public class MediaService {
         return mediaRepository.save(media);
     }
 
-
-    public Media updateVideo(Long id, MediaDTO mediaDTO,
+    public Media updateVideo(Long id,
+                             MediaDTO mediaDTO,
                              MultipartFile logo,
-                             Long[] selectedCategories){
+                             Set<Long> selectedCategories) throws IOException {
+
         try {
-            Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            Media existingMedia = mediaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Video with id " + id + " not found"));
 
-            Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
-
-            updateMedia1.setThumbnail(media.getThumbnail());
-
-            BeanUtils.copyProperties(updateMedia1, media);
-            if (!logo.isEmpty()) {
-                String thumbnail = helper.uploadImage(logo);
-                media.setThumbnail(thumbnail);
-            }
+            Media updateMedia = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
 
             Set<Category> categories = new LinkedHashSet<>();
             for (Long categoryId : selectedCategories) {
@@ -138,12 +133,18 @@ public class MediaService {
                     categories.add(category);
                 }
             }
-            media.setCategories(categories);
+            existingMedia.setCategories(categories);
 
-            media.setType(3);
-            media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            updateMedia.setThumbnail(existingMedia.getThumbnail());
+            BeanUtils.copyProperties(updateMedia, existingMedia);
+            if (!logo.isEmpty()) {
+                String thumbnail = helper.uploadImage(logo);
+                existingMedia.setThumbnail(thumbnail);
+            }
 
-            return mediaRepository.save(media);
+            existingMedia.setType(3);
+            existingMedia.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            return mediaRepository.save(existingMedia);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -199,11 +200,21 @@ public class MediaService {
         Optional<Media> optionalMedia = mediaRepository.findById(id);
         if (optionalMedia.isPresent()) {
             Media media = optionalMedia.get();
+
+            if (isMediaUsedInMedia(media)) {
+                throw new AssociationException("Cannot delete media as it is associated with media.");
+            }
+
             media.setStatus(0);
             mediaRepository.save(media);
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
+    }
+
+    private boolean isMediaUsedInMedia(Media media) {
+        int mediaCount = mediaRepository.countMediaDetailByMediaId(media.getId());
+        return mediaCount > 0;
     }
 
 

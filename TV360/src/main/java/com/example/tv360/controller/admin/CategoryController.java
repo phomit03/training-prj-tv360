@@ -7,6 +7,7 @@ import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
+import com.example.tv360.service.exception.AssociationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -57,10 +58,12 @@ public class CategoryController {
     }
 
     @GetMapping("/category/delete/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<String> softDeleteCategory(@PathVariable Long id){
         try {
             categoryService.softDeleteCategory(id);
             return ResponseEntity.ok("Delete category successfully");
+        } catch (AssociationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {

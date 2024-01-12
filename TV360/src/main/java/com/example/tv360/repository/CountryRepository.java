@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
     @Query(value = "SELECT * FROM country WHERE (:name is null or name like CONCAT('%',:name,'%')) "+
@@ -20,4 +21,8 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     List<Country> searchCategories1(@Param("name") String name,
                                    @Param("status") Integer status);
 
+    //soft-delete country (check media)
+    Optional<Country> findByIdAndStatus(Long id, String status);
+    @Query("SELECT COUNT(m) FROM Media m JOIN m.country c WHERE c.id = :countryId")
+    int countMediaByCountryId(@Param("countryId") Long countryId);
 }

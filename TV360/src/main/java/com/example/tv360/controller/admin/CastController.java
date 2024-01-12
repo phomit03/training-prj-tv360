@@ -7,6 +7,7 @@ import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.repository.CastRepository;
 import com.example.tv360.service.CastService;
+import com.example.tv360.service.exception.AssociationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +55,7 @@ public class CastController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed!");
         }
-        return "redirect:/admin/casts";
+        return "redirect:/admin/cast";
     }
 
     @GetMapping("/cast/delete/{id}")
@@ -62,6 +63,8 @@ public class CastController {
         try {
             castService.softDeleteCast(id);
             return ResponseEntity.ok("Delete cast successfully");
+        } catch (AssociationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {
@@ -69,7 +72,7 @@ public class CastController {
         }
     }
 
-    @GetMapping("/casts")
+    @GetMapping("/cast")
     public String getAllCasts(Model model,
                               @RequestParam(name = "fullName", required = false) String fullName,
                               @RequestParam(name = "type", required = false) Integer type,
@@ -79,7 +82,7 @@ public class CastController {
         return findPaginated(1, model, fullName,type,status);
     }
 
-    @GetMapping("/casts/{pageNo}")
+    @GetMapping("/cast/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
                                 @RequestParam(name = "fullName", required = false) String fullName,

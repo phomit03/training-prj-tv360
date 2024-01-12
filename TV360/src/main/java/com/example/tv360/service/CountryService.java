@@ -1,9 +1,11 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Country;
 import com.example.tv360.repository.CountryRepository;
+import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,11 +70,21 @@ public class CountryService {
         Optional<Country> optionalCountry = countryRepository.findById(id);
         if (optionalCountry.isPresent()) {
             Country country = optionalCountry.get();
+
+            if (isCountryUsedInMedia(country)) {
+                throw new AssociationException("Cannot delete country as it is associated with media.");
+            }
+
             country.setStatus(0);
             countryRepository.save(country);
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
+    }
+
+    private boolean isCountryUsedInMedia(Country country) {
+        int mediaCount = countryRepository.countMediaByCountryId(country.getId());
+        return mediaCount > 0;
     }
 
     //phan trang

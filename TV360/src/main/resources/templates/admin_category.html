@@ -133,7 +133,6 @@
 <script>
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      console.log(123)
       var id = $(this).data('id');
       var newRow = $('.category-' + id);
       Swal.fire({
@@ -157,15 +156,23 @@
               ).then(() => {
                 location.reload();
               });
+            },
+            error: function (xhr, status, error) {
+              Swal.fire(
+                      'Error',
+                      'Delete failed! Cannot delete category as it is associated with media.',
+                      'error'
+              );
             }
-          })
+          });
         }
-      })
-    })
-  })
+      });
+    });
+  });
 </script>
 
 <div th:replace="admin_fragments::script"></div>
+
 </body>
 
 </html>

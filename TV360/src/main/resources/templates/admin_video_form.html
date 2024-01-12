@@ -45,9 +45,9 @@
                         <form th:action="@{/admin/video/save}" th:object="${videoDTO}" method="post" enctype="multipart/form-data">
                             <input type="hidden" th:field="*{id}"/>
 
-                            <!--<div class="form-floating mb-3">
+                            <div class="form-floating mb-3">
                                 <div class="demo-multiple-select">
-                                    <select class="form-control" id="categories" name="selectedCategories" th:field="*{categories}"  multiple="multiple" required>
+                                    <select class="form-control" id="categories" name="selectedCategories" multiple="multiple" required>
                                         <option th:each="category : ${listCategories}"
                                                 th:value="${category.id}"
                                                 th:text="${category.name}"></option>
@@ -58,13 +58,12 @@
                                            placeholder="Please select categories..." data-dropdown="true"
                                            data-input-style="outline" data-label-style="stacked" data-tags="true"/>
                                 </div>
-                            </div>-->
+                            </div>
 
                             <div class="form-floating mb-3"
                                  style="height: 100px; display: flex; align-items: center">
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="file" id="thumbnail"
-                                           name="logo">
+                                    <input class="form-control" type="file" id="thumbnail" name="logo">
                                 </div>
                                 <div class="col-md-4">
                                     <img id="previewImage" style="width: 90px; margin: 10px 50px"
@@ -73,8 +72,7 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input class="form-control" th:field="*{title}" name="title" type="text"
-                                       placeholder="Title" required />
+                                <input class="form-control" th:field="*{title}" name="title" type="text" required />
                                 <label>Title</label>
                             </div>
 
@@ -83,19 +81,8 @@
                                 <label>Description</label>
                             </div>
 
-                            <div class="form-floating mb-3">
-                                <select class="form-control" id="country" name="country" aria-label="type"
-                                        th:field="*{country.id}">
-                                    <option value="">-- choose option --</option>
-                                    <option th:each="country1 : ${countries}"
-                                            th:selected="*{country.id == country.id}" th:value="${country1.id}"
-                                            th:text="${country1.name}"></option>
-                                </select>
-                                <label>Country</label>
-                            </div>
-
-                            <div class="form-floating mb-3">
-                                <select class="form-control" name="status" th:if="${videoDTO.id != null}" th:field="*{status}" required>
+                            <div class="form-floating mb-3" th:if="${videoDTO.id != null}">
+                                <select class="form-control" name="status" th:field="*{status}" required>
                                     <option value="" selected>-- choose type --</option>
                                     <option value="0" th:selected="${videoDTO.status == 0}">in-active</option>
                                     <option value="1" th:selected="${videoDTO.status == 1}">active</option>

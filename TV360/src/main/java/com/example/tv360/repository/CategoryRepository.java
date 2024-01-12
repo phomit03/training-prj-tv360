@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
@@ -25,11 +26,15 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                                 @Param("type") Integer type,
                                 @Param("status") Integer status);
 
-
     @Query("SELECT c FROM Category c " +
             "LEFT JOIN FETCH c.media m " +
             "WHERE m IS NOT NULL")
     Set<Category> findAllCategoriesWithMedia();
 
     List<Category> findByType(Integer type);
+
+    //soft-delete category (check media)
+    Optional<Category> findByIdAndStatus(Long id, String status);
+    @Query("SELECT COUNT(m) FROM Media m JOIN m.categories c WHERE c.id = :categoryId")
+    int countMediaByCategoryId(@Param("categoryId") Long categoryId);
 }
