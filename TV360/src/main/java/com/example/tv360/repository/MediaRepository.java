@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
+
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
             "AND (:type is null or type like CONCAT('%', :type, '%')) " +

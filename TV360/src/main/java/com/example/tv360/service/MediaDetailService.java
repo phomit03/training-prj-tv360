@@ -142,11 +142,11 @@ public class MediaDetailService {
 
             if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
                 MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
-                mediaDetailResponse.setMediaDetailId(mediaDetailRepository.getIdMediaDetailByMediaId(mediaId));
-                mediaDetailResponse.setCastTypes(mediaDetailRepository.getCastTypesByMediaDetailId(mediaId));
-                mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
-                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
-                mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
+//                mediaDetailResponse.setMediaDetailId(mediaDetailRepository.getIdMediaDetailByMediaId(mediaId));
+                mediaDetailResponse.setListCastTypes(mediaDetailRepository.getCastTypesByMediaDetailId(mediaId));
+                mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
+//                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
+                mediaDetailResponse.setListCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
 
                 return mediaDetailResponse;
             }
@@ -157,27 +157,27 @@ public class MediaDetailService {
     }
 
 
-    public MediaDetailResponse getMediaDetailClientById1(Long mediaId, List<Long> mdIdList) {
-        try {
-            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
-
-            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
-                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
-
-                for (Long mdId : mdIdList) {
-                    mediaDetailResponse.setMediaDetailId(mediaDetailResponse.getMediaDetailId());
-                    mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mdId));
-                    mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mdId));
-                    mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mdId));
-                }
-
-                return mediaDetailResponse;
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//    public MediaDetailResponse getMediaDetailClientById1(Long mediaId, List<Long> mdIdList) {
+//        try {
+//            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
+//
+//            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
+//                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
+//
+//                for (Long mdId : mdIdList) {
+//                    mediaDetailResponse.setMediaDetailId(mediaDetailResponse.getMediaDetailId());
+//                    mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mdId));
+//                    mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mdId));
+//                    mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mdId));
+//                }
+//
+//                return mediaDetailResponse;
+//            }
+//            return null;
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
 
     // get theo categoy name

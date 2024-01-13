@@ -14,44 +14,44 @@
         <section class="movie-detail">
             <div class="container">
                 <figure class="movie-detail-banner">
-                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="${mediaDetails.thumbnail}">
+                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="${firstMediaDetail.thumbnail}">
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
                     </button>
                 </figure>
 
                 <div class="movie-detail-content">
-                    <p class="detail-subtitle" th:text="'Episode ' + ${mediaDetails.episodes}"></p>
-                    <h3 class="h1 detail-title" th:text="${mediaDetails.title}"></h3>
+                    <p class="detail-subtitle" th:text="'Episode ' + ${firstMediaDetail.episode}"></p>
+                    <h3 class="h1 detail-title" th:text="${firstMediaDetail.title}"></h3>
 
                     <div class="meta-wrapper">
                         <div class="badge-wrapper">
                             <div class="badge badge-fill">12 +</div>
-                            <div class="badge badge-outline" th:text="${mediaDetails.quality}">HD</div>
+                            <div class="badge badge-outline" th:text="${firstMediaDetail.quality}">HD</div>
                         </div>
 
                         <div class="ganre-wrapper">
                             <h2 style="color:var(--citrine); font-weight: bold">Type</h2>
-                            <a th:each="categoryName : ${mediaDetails.categoryNames}" th:text="${categoryName}"></a>
+                            <a th:each="categoryName : ${firstMediaDetail.listCategoryNames}" th:text="${categoryName}"></a>
                         </div>
                         <div class="ganre-wrapper">
                             <h2 style="color:var(--citrine); font-weight: bold">Cast</h2>
-                            <a th:each="castFullName : ${mediaDetails.castFullNames}" th:text="${castFullName}"></a>
+                            <a th:each="castFullName : ${firstMediaDetail.listCastFullNames}" th:text="${castFullName}"></a>
                         </div>
 
                         <div class="date-time">
                             <div>
                                 <ion-icon name="earth-outline"></ion-icon>
-                                <span th:text="${mediaDetails.countryName}"></span>
+                                <span th:text="${firstMediaDetail.countryName}"></span>
                             </div>
                             <div>
                                 <ion-icon name="time-outline"></ion-icon>
-                                <time th:text="${mediaDetails.duration}"></time>
+                                <time th:text="${firstMediaDetail.duration}"></time>
                             </div>
                         </div>
                     </div>
 
-                    <p th:text="${mediaDetails.mediaDescription}" class="storyline"></p>
+                    <p th:text="${firstMediaDetail.mediaDescription}" class="storyline"></p>
 
                     <div class="details-actions">
                         <button class="share">

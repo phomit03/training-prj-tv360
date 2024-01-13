@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Detail</title>
+  <!-- Thêm các thẻ head cần thiết cho trang web của bạn -->
+</head>
+<body>
+<!-- Hiển thị thông tin của firstMediaDetail -->
+<h2 th:text="${firstMediaDetail.title}"></h2>
+<img th:src="${firstMediaDetail.thumbnail}" alt="Thumbnail">
+<p th:text="${firstMediaDetail.duration}"></p>
+<p th:text="${firstMediaDetail.episode}"></p>
+<p th:text="${firstMediaDetail.listCategoryNames}"></p>
+<p th:text="${firstMediaDetail.listCastFullNames}"></p>
+<p th:text="${firstMediaDetail.listCastTypes}"></p>
+<p th:text="${firstMediaDetail.duration}"></p>
+
+<!-- Hiển thị danh sách mediaDetails -->
+<h3>Other Episodes:</h3>
+<ul>
+  <li th:each="mediaDetail : ${mediaDetails}">
+    <br>
+    <span th:text="${mediaDetail.title}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.thumbnail}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.episode}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.mediaDescription}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.listCastTypes}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.listCastFullNames}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.listCategoryNames}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.countryName}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.sourceUrl}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.duration}"></span>
+    <br>
+
+    <span th:text="${mediaDetail.quality}"></span>
+    <br>
+
+    <span th:text="${mediaDetail}"></span>
+    <!-- Thêm các thông tin khác của mediaDetail nếu cần -->
+  </li>
+</ul>
+
+<!-- Thêm các phần khác cho trang web của bạn -->
+</body>
+</html>

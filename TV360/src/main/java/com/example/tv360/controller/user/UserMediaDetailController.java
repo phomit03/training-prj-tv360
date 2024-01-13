@@ -4,6 +4,7 @@ import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/movie/detail")
@@ -122,71 +125,34 @@ public class UserMediaDetailController {
         }
     }
 
-    @GetMapping("/fullname/{mediaId}")
-    public ResponseEntity<List<String>> getCastFullNamesByMediaDetailId(@PathVariable Long mediaId) {
+    @GetMapping("/test{mediaId}")
+    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
         try {
-            List<String> listFullName = mediaDetailService.getCastFullNamesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-    @GetMapping("/episode/{mediaId}")
-    public ResponseEntity<List<Integer>> getEpisodesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<Integer> listFullName = mediaDetailService.getEpisodesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @GetMapping("/categoryname/{mediaId}")
-    public ResponseEntity<List<String>> getCategoryNamesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<String> listFullName = mediaDetailService.getCategoryNamesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-
-    @GetMapping("/api/{mediaId}")
-    public ResponseEntity<MediaDetailResponse>getMediaDetailClientById(@PathVariable Long mediaId) {
-        try {
-           MediaDetailResponse mediaDetails =  mediaDetailService.getMediaDetailClientById(mediaId);
+            List<MediaDetailResponse> mediaDetails = mediaService.getMediaDetailByIdASCEpisodes1(mediaId);
             return ResponseEntity.ok(mediaDetails);
         } catch (Exception e) {
+            // Handle exceptions or return an appropriate response
             return ResponseEntity.status(500).body(null);
         }
     }
-    // lam trang details
 
-    @GetMapping("/{mediaId}")
-    public String getMediaDetailClientById(@PathVariable Long mediaId, Model model) {
+    @GetMapping("/api/{mediaId}")
+    public String getMediaDetailByIdASCEpisodes1(@PathVariable Long mediaId, Model model) {
         List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
         model.addAttribute("categoriesWithMovie", categories);
         try {
-            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById(mediaId);
-            model.addAttribute("mediaDetails", mediaDetails);
+            List<MediaDetailResponse> mediaDetails = mediaService.getMediaDetailByIdASCEpisodes1(mediaId);
 
+            if (!mediaDetails.isEmpty()) {
+                // Lấy record đầu tiên của MediaDetail
+                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
+
+                model.addAttribute("firstMediaDetail", firstMediaDetail);
+                model.addAttribute("mediaDetails", mediaDetails);
+            } else {
+                return null;
+            }
             return "user_movie_detail";
-        } catch (Exception e) {
-            // Xử lý lỗi nếu cần
-            return "error404"; // Trả về trang lỗi
-        }
-    }
-
-
-    @GetMapping("/{mediaId}/{mdId}")
-    public String getMediaDetailClientById1(@PathVariable Long mediaId, @PathVariable Long mdId, Model model) {
-        try {
-            List<Long> mdIdList = Collections.singletonList(mdId);
-            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById1(mediaId, mdIdList);
-            model.addAttribute("mediaDetails", mediaDetails);
-
-            return "user_movie_detail_1";
         } catch (Exception e) {
             // Xử lý lỗi nếu cần
             return "error404"; // Trả về trang lỗi

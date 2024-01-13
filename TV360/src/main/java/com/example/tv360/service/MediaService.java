@@ -1,12 +1,10 @@
 package com.example.tv360.service;
 
-import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
+import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.*;
-import com.example.tv360.repository.CastRepository;
-import com.example.tv360.repository.CategoryRepository;
-import com.example.tv360.repository.CountryRepository;
-import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.repository.*;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
@@ -30,6 +28,7 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
     private final CountryRepository countryRepository;
     private final CastRepository castRepository;
     private final CategoryRepository categoryRepository;
@@ -39,10 +38,11 @@ public class MediaService {
     @Autowired
     public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
                         CountryRepository countryRepository, CategoryService categoryService,
-                        CastRepository castRepository, CategoryRepository categoryRepository, DtoToModelConverter dtoToModelConverter) {
+                        MediaDetailRepository mediaDetailRepository, CastRepository castRepository, CategoryRepository categoryRepository, DtoToModelConverter dtoToModelConverter) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
+        this.mediaDetailRepository = mediaDetailRepository;
         this.castRepository = castRepository;
         this.categoryRepository = categoryRepository;
         this.countryRepository = countryRepository;
@@ -57,6 +57,31 @@ public class MediaService {
     public MediaDTO getMediaById(Long id) {
         Media media = mediaRepository.findById(id).orElse(null);
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
+    }
+
+    public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(Long mediaId) {
+        return mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
+    }
+
+    public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes1(Long mediaId) {
+        try {
+            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
+
+            for (MediaDetailResponse mediaDetailResponse : mediaDetailResponseList) {
+                updateMediaDetailResponse(mediaDetailResponse, mediaId);
+            }
+
+            return mediaDetailResponseList;
+        } catch (Exception e) {
+            // Log lỗi hoặc xử lý lỗi theo nhu cầu của bạn
+            return Collections.emptyList();
+        }
+    }
+
+    private void updateMediaDetailResponse(MediaDetailResponse mediaDetailResponse, Long mediaId) {
+        mediaDetailResponse.setListCastTypes(mediaDetailRepository.getCastTypesByMediaDetailId(mediaId));
+        mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
+        mediaDetailResponse.setListCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
     }
 
     public Media createMovie(MediaDTO mediaDTO, MultipartFile logo,
