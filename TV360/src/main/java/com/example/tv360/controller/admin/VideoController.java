@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -68,17 +69,17 @@ public class VideoController {
     @PostMapping("/video/save")
     public String createOrUpdateVideo(@ModelAttribute("videoDTO") MediaDTO videoDTO,
                               @RequestParam("logo") MultipartFile logo,
-                              @RequestParam("selectedCategories") Set<Long> selectedCategories,
+                              @RequestParam("categories") HashSet<Long> categories,
                               RedirectAttributes redirectAttributes) {
         try {
             if (videoDTO.getId() == null) {
-                mediaService.createVideo(videoDTO, logo, selectedCategories);
+                mediaService.createMedia(videoDTO, logo, categories, null, 3);
                 redirectAttributes.addFlashAttribute("success", "Create successfully!");
             } else {
-                mediaService.updateVideo(videoDTO.getId(), videoDTO, logo, selectedCategories);
+                mediaService.updateMedia(videoDTO.getId(), videoDTO, logo, categories, null, 3);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed!");
         }

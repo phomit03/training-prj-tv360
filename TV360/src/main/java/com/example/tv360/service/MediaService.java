@@ -31,7 +31,6 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
-    private final CountryRepository countryRepository;
     private final CastRepository castRepository;
     private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
@@ -39,14 +38,13 @@ public class MediaService {
 
     @Autowired
     public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
-                        CountryRepository countryRepository, CategoryService categoryService,
-                        CastRepository castRepository, CategoryRepository categoryRepository, DtoToModelConverter dtoToModelConverter) {
+                        CastRepository castRepository, CategoryRepository categoryRepository,
+                        DtoToModelConverter dtoToModelConverter) {
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
         this.castRepository = castRepository;
         this.categoryRepository = categoryRepository;
-        this.countryRepository = countryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
     }
 
@@ -60,11 +58,19 @@ public class MediaService {
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
     }
 
-    public Media createMovie(MediaDTO mediaDTO, MultipartFile logo,
-                             Long[] selectedCategories, Long[] selectedCast
-                             ) throws IOException {
+    public Media createMedia(MediaDTO mediaDTO, MultipartFile logo,
+                             HashSet<Long> selectedCategories,
+                             HashSet<Long> selectedCast,
+                             Integer type
+    ) throws IOException {
         Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
 
+        if (!logo.isEmpty()) {
+            String thumbnail = helper.uploadImage(logo);
+            media.setThumbnail(thumbnail);
+        }
+
+        //create multiple select
         Set<Category> categories = new LinkedHashSet<>();
         for (Long categoryId : selectedCategories) {
             Category category = categoryRepository.findById(categoryId).orElse(null);
@@ -74,109 +80,10 @@ public class MediaService {
         }
         media.setCategories(categories);
 
-        if (!logo.isEmpty()) {
-            String thumbnail = helper.uploadImage(logo);
-            media.setThumbnail(thumbnail);
-        }
-
-        Set<Cast> listCast = new LinkedHashSet<>();
-        for (Long castId : selectedCast) {
-            Cast cast = castRepository.findById(castId).orElse(null);
-            if (cast != null) {
-                listCast.add(cast);
-            }
-        }
-        media.setCast(listCast);
-
-        media.setStatus(1);
-        return mediaRepository.save(media);
-    }
-
-    public Media createVideo(MediaDTO mediaDTO, MultipartFile logo,
-                             Set<Long> selectedCategories) throws IOException {
-        Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
-
-        Set<Category> categories = new LinkedHashSet<>();
-        for (Long categoryId : selectedCategories) {
-            Category category = categoryRepository.findById(categoryId).orElse(null);
-            if (category != null) {
-                categories.add(category);
-            }
-        }
-        media.setCategories(categories);
-
-        if (!logo.isEmpty()) {
-            String thumbnail = helper.uploadImage(logo);
-            media.setThumbnail(thumbnail);
-        }
-
-        media.setType(3);
-        media.setStatus(1);
-        return mediaRepository.save(media);
-    }
-
-    public Media updateVideo(Long id,
-                             MediaDTO mediaDTO,
-                             MultipartFile logo,
-                             Set<Long> selectedCategories) throws IOException {
-
-        try {
-            Media existingMedia = mediaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Video with id " + id + " not found"));
-
-            Media updateMedia = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
-
-            Set<Category> categories = new LinkedHashSet<>();
-            for (Long categoryId : selectedCategories) {
-                Category category = categoryRepository.findById(categoryId).orElse(null);
-                if (category != null) {
-                    categories.add(category);
-                }
-            }
-            existingMedia.setCategories(categories);
-
-            updateMedia.setThumbnail(existingMedia.getThumbnail());
-            BeanUtils.copyProperties(updateMedia, existingMedia);
-            if (!logo.isEmpty()) {
-                String thumbnail = helper.uploadImage(logo);
-                existingMedia.setThumbnail(thumbnail);
-            }
-
-            existingMedia.setType(3);
-            existingMedia.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            return mediaRepository.save(existingMedia);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public Media updateMovie(Long id, MediaDTO mediaDTO,
-                             MultipartFile logo,
-                             Long[] selectedCategories, Long[] selectedCast){
-        try {
-            Media media = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-
-            Media updateMedia1 = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
-
-            updateMedia1.setThumbnail(media.getThumbnail());
-
-            BeanUtils.copyProperties(updateMedia1, media);
-            if (!logo.isEmpty()) {
-                String thumbnail = helper.uploadImage(logo);
-                media.setThumbnail(thumbnail);
-            }
-
-            Set<Category> categories = new LinkedHashSet<>();
-            for (Long categoryId : selectedCategories) {
-                Category category = categoryRepository.findById(categoryId).orElse(null);
-                if (category != null) {
-                    categories.add(category);
-                }
-            }
-            media.setCategories(categories);
-
+        if (selectedCast == null) {
+            media.setCast(null);
+        } else {
+            //create multiple select
             Set<Cast> listCast = new LinkedHashSet<>();
             for (Long castId : selectedCast) {
                 Cast cast = castRepository.findById(castId).orElse(null);
@@ -185,10 +92,48 @@ public class MediaService {
                 }
             }
             media.setCast(listCast);
+        }
 
-            media.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        media.setType(type);
+        media.setStatus(1);
 
-            return mediaRepository.save(media);
+        return mediaRepository.save(media);
+    }
+
+    public Media updateMedia(Long id, MediaDTO mediaDTO,
+                             MultipartFile logo,
+                             HashSet<Long> selectedCategories,
+                             HashSet<Long> selectedCast,
+                             Integer type){
+        try {
+            Media existingMedia = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+            Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
+
+            media.setThumbnail(existingMedia.getThumbnail());
+
+            BeanUtils.copyProperties(media, existingMedia);
+            if (!logo.isEmpty()) {
+                String thumbnail = helper.uploadImage(logo);
+                existingMedia.setThumbnail(thumbnail);
+            }
+
+            //update multiple select
+            List<Category> updateCategories = categoryRepository.findAllById(selectedCategories);
+            existingMedia.setCategories(new HashSet<>(updateCategories));
+
+            if (selectedCast == null) {
+                existingMedia.setCast(null);
+            } else {
+                //update multiple select
+                List<Cast> updateCast = castRepository.findAllById(selectedCast);
+                existingMedia.setCast(new HashSet<>(updateCast));
+            }
+
+            existingMedia.setType(type);
+            existingMedia.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+            return mediaRepository.save(existingMedia);
         }
         catch (Exception e){
             e.printStackTrace();

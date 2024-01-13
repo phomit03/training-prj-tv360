@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -70,15 +71,16 @@ public class MovieController {
     @PostMapping("/movie/save")
     public String createOrUpdateMovie(@ModelAttribute("movieDTO") MediaDTO movieDTO,
                                       @RequestParam("logo") MultipartFile logo,
-                                      @RequestParam("selectedCategories") Long[] selectedCategories,
-                                      @RequestParam("selectedCast") Long[] selectedCast,
+                                      @RequestParam("categories") HashSet<Long> categories,
+                                      @RequestParam("cast") HashSet<Long> cast,
+                                      @RequestParam("type") Integer type,
                                       RedirectAttributes redirectAttributes) {
         try {
             if (movieDTO.getId() == null) {
-                mediaService.createMovie(movieDTO, logo, selectedCategories, selectedCast);
+                mediaService.createMedia(movieDTO, logo, categories, cast, type);
                 redirectAttributes.addFlashAttribute("success", "Create successfully!");
             } else {
-                mediaService.updateMovie(movieDTO.getId(), movieDTO, logo, selectedCategories, selectedCast);
+                mediaService.updateMedia(movieDTO.getId(), movieDTO, logo, categories, cast, type);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
         }catch (Exception e){
