@@ -52,4 +52,8 @@ public class MediaDTO {
     //1-n
     @MapToModel("mediaDetails")
     private Set<MediaDetailDTO> mediaDetails;
+
+
+    private MediaDetailDTO firstMediaDetail;
+//    private Set<MediaDetailDTO> mediaDetails;
 }

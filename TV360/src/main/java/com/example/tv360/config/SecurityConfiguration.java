@@ -61,16 +61,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	                "/fonts/**",
 	                "/images/**").permitAll()
 				.antMatchers("/admin/**").hasAnyRole("ADMIN")
-//				.antMatchers("/videos/**",
-//							"/movies").hasAnyRole("USER")
+				.antMatchers("/videosss/**",
+							"/movie/detail/**").hasAnyRole("USER")
 		.anyRequest().permitAll()
 				.and()
-//				.formLogin()
-//				.loginPage("/admin/login")
-//				.failureUrl("/admin/login?error=true")
-//				.successHandler(authenticationSuccessHandler())
-//				.permitAll()
-//				.and()
 				.formLogin()
 				.loginPage("/login")
 				.failureUrl("/login?error=true")

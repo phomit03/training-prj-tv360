@@ -7,6 +7,7 @@ import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.repository.CastRepository;
 import com.example.tv360.service.CastService;
+import org.springframework.beans.factory.annotation.Value;
 import com.example.tv360.service.exception.AssociationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +26,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CastController {
+    @Value("${page.size}")
+    private int pageSize;
     private final CastService castService;
     private final CastRepository castRepository;
 
@@ -89,7 +92,6 @@ public class CastController {
                                 @RequestParam(name = "type", required = false) Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Cast> result = castRepository.searchCasts(fullName,type,status, pageable);

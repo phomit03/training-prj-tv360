@@ -1,12 +1,9 @@
 package com.example.tv360.service;
 
-import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
+import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.*;
-import com.example.tv360.repository.CastRepository;
-import com.example.tv360.repository.CategoryRepository;
-import com.example.tv360.repository.CountryRepository;
-import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.repository.*;
 import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;

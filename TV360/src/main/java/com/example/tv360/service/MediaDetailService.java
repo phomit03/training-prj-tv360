@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,107 +97,6 @@ public class MediaDetailService {
         return mediaDetailRepository.findTopRated(pageable);
     }
 
-    // phan media detail
-    public List<MediaDetailResponse> getMediaDetailsClient() {
-        try {
-
-            return mediaDetailRepository.getMediaDetails();
-        }
-        catch (Exception e){
-            return null;
-        }
-    }
-
-    // lay ra tat ca categoryname theo mediaDetailID
-    public List<String> getCategoryNamesByMediaDetailId(Long mediaId) {
-        try {
-            return mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // lay ra tat ca tap phim theo mediaDetailID
-    public List<Integer> getEpisodesByMediaDetailId(Long mediaId) {
-        try {
-            return mediaDetailRepository.getEpisodesByMediaDetailId(mediaId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // lay ra tat ca castfullname theo mediaDetailID
-    public List<String> getCastFullNamesByMediaDetailId(Long mediaId) {
-        try {
-            return mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // get by id
-
-    public MediaDetailResponse getMediaDetailClientById(Long mediaId) {
-        try {
-            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
-
-            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
-                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
-                mediaDetailResponse.setMediaDetailId(mediaDetailRepository.getIdMediaDetailByMediaId(mediaId));
-                mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
-                mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mediaId));
-                mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
-
-                return mediaDetailResponse;
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
-        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
-
-        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
-
-        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
-        query.setParameter("categoryNames", categoryNames);
-        query.setMaxResults(15);
-
-        List<Category> categories = query.getResultList();
-
-        return categories.stream()
-                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-
-    public MediaDetailResponse getMediaDetailClientById1(Long mediaId, List<Long> mdIdList) {
-        try {
-            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailById(mediaId);
-
-            if (mediaDetailResponseList != null && !mediaDetailResponseList.isEmpty()) {
-                MediaDetailResponse mediaDetailResponse = mediaDetailResponseList.get(0);
-
-                // Assuming you want to handle multiple mdIds in some way
-                for (Long mdId : mdIdList) {
-                    // Your logic for processing each mdId
-                    mediaDetailResponse.setMediaDetailId(mediaDetailResponse.getMediaDetailId());
-                    mediaDetailResponse.setCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mdId));
-                    mediaDetailResponse.setEpisodes(mediaDetailRepository.getEpisodesByMediaDetailId(mdId));
-                    mediaDetailResponse.setCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mdId));
-                    // You may want to accumulate results or handle them in a different way based on your use case
-                }
-
-                return mediaDetailResponse;
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 
     // get theo categoy name
     public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
@@ -214,7 +114,7 @@ public class MediaDetailService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaDetailRepository.findAll(pageable);
     }
-
+    // loc
 
     public void createListMediaDetail(List<MediaDetail> mediaDetails) {
         mediaDetailRepository.saveAll(mediaDetails);
@@ -224,4 +124,43 @@ public class MediaDetailService {
         Integer maxEpisode = mediaDetailRepository.findMaxEpisodeByMediaId(mediaId);
         return (maxEpisode != null) ? maxEpisode : 0;
     }
+
+    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
+        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
+
+        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
+
+        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
+        query.setParameter("categoryNames", categoryNames);
+        query.setMaxResults(15);
+
+        List<Category> categories = query.getResultList();
+
+        return categories.stream()
+                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    //service details (le-cuong)
+    public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(Long mediaId) {
+        try {
+            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
+
+            for (MediaDetailResponse mediaDetailResponse : mediaDetailResponseList) {
+                updateMediaDetailResponse(mediaDetailResponse, mediaId);
+            }
+
+            return mediaDetailResponseList;
+        } catch (Exception e) {
+            // Log lỗi hoặc xử lý lỗi theo nhu cầu của bạn
+            return Collections.emptyList();
+        }
+    }
+
+    private void updateMediaDetailResponse(MediaDetailResponse mediaDetailResponse, Long mediaId) {
+        mediaDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+        mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
+        mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
+    }
+
 }

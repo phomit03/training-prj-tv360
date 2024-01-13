@@ -10,6 +10,7 @@ import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class MediaDetailController {
+    @Value("${page.size}")
+    private int pageSize;
     private final MediaDetailService mediaDetailService;
     private final MediaService mediaService;
     private final MediaRepository mediaRepository;
@@ -195,7 +198,6 @@ public class MediaDetailController {
                                 @RequestParam(name = "episode", required = false) Integer episode,
                                 @RequestParam(name = "status", required = false) Integer  status
     ) {
-        int pageSize = 11;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<MediaDetail> result = mediaDetailRepository.searchMediaDetails(title, quality,episode,status, pageable);

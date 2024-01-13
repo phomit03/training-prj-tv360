@@ -1,40 +1,29 @@
 package com.example.tv360.controller.admin;
 
-import com.example.tv360.dto.CastDTO;
-import com.example.tv360.dto.CategoryDTO;
-import com.example.tv360.dto.CountryDTO;
-import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.entity.Media;
-import com.example.tv360.entity.MediaDetail;
-import com.example.tv360.repository.MediaDetailRepository;
-import com.example.tv360.repository.MediaRepository;
-import com.example.tv360.service.CastService;
-import com.example.tv360.service.CategoryService;
-import com.example.tv360.service.CountryService;
-import com.example.tv360.service.MediaService;
+import com.example.tv360.dto.*;
+import com.example.tv360.entity.*;
+import com.example.tv360.repository.*;
+import com.example.tv360.service.*;
 import com.example.tv360.service.exception.AssociationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
 public class MovieController {
+
+    @Value("${page.size}")
+    private int pageSize;
     private final MediaService mediaService;
     private final CountryService countryService;
     private final CategoryService categoryService;
@@ -43,7 +32,7 @@ public class MovieController {
 
     public MovieController(MediaService mediaService, CountryService countryService,
                            CategoryService categoryService, CastService castService,
-                           MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository) {
+                           MediaRepository mediaRepository) {
         this.mediaService = mediaService;
         this.countryService = countryService;
         this.categoryService = categoryService;
@@ -121,11 +110,12 @@ public class MovieController {
                                 @RequestParam(name = "type", required = false) Integer type,
                                 @RequestParam(name = "status", required = false) Integer status
     ) {
-        int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+
         List<Media> result = mediaRepository.searchMovie(title, type, status, pageable);
         Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, type, status).size());
+
         List<Media> movies = page.getContent();
 
         //Lấy danh sách MediaDetail cho mỗi Media

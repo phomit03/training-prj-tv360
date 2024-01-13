@@ -8,6 +8,7 @@ import com.example.tv360.entity.Category;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.exception.AssociationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CategoryController {
+
+    @Value("${page.size}")
+    private int pageSize;
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
 
@@ -82,27 +86,26 @@ public class CategoryController {
         return findPaginated(1, model, name,type,status);
     }
 
-    @GetMapping("/categories/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
-                                Model model,
-                                @RequestParam(name = "name", required = false) String name,
-                                @RequestParam(name = "type", required = false) Integer type,
-                                @RequestParam(name = "status", required = false) Integer status
-    ) {
-        int pageSize = 6;
+        @GetMapping("/categories/{pageNo}")
+        public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                    Model model,
+                                    @RequestParam(name = "name", required = false) String name,
+                                    @RequestParam(name = "type", required = false) Integer type,
+                                    @RequestParam(name = "status", required = false) Integer status
+        ) {
 
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<Category> result = categoryRepository.searchCategories(name,type,status, pageable);
-        Page<Category> page = new PageImpl<>(result, pageable,categoryRepository.searchCategories1(name,type, status).size());
-        List<Category> categories = page.getContent();
+            Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+            List<Category> result = categoryRepository.searchCategories(name,type,status, pageable);
+            Page<Category> page = new PageImpl<>(result, pageable,categoryRepository.searchCategories1(name,type, status).size());
+            List<Category> categories = page.getContent();
 
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("categories", categories);
-        model.addAttribute("name", name);
-        model.addAttribute("type", type);
-        model.addAttribute("status", status);
-        return "admin_category";
-    }
+            model.addAttribute("currentPage", pageNo);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("categories", categories);
+            model.addAttribute("name", name);
+            model.addAttribute("type", type);
+            model.addAttribute("status", status);
+            return "admin_category";
+        }
 }

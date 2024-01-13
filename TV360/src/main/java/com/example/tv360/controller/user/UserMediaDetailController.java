@@ -1,9 +1,13 @@
 package com.example.tv360.controller.user;
 
+import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.CastItem;
+import com.example.tv360.dto.response.CategoryItem;
 import com.example.tv360.dto.response.MediaDetailResponse;
+import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -11,6 +15,7 @@ import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +28,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/movie/detail")
 public class UserMediaDetailController {
+
+    @Value("${page.size}")
+    private int pageSize;
 
     private final CategoryService categoryService;
     private final MediaDetailService mediaDetailService;
@@ -104,85 +114,24 @@ public class UserMediaDetailController {
         }
     }
 
-
-
-    // media detial api
-    @GetMapping("/test")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClient();
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @GetMapping("/fullname/{mediaId}")
-    public ResponseEntity<List<String>> getCastFullNamesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<String> listFullName = mediaDetailService.getCastFullNamesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-    @GetMapping("/episode/{mediaId}")
-    public ResponseEntity<List<Integer>> getEpisodesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<Integer> listFullName = mediaDetailService.getEpisodesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @GetMapping("/categoryname/{mediaId}")
-    public ResponseEntity<List<String>> getCategoryNamesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<String> listFullName = mediaDetailService.getCategoryNamesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(listFullName);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-
-    @GetMapping("/api/{mediaId}")
-    public ResponseEntity<MediaDetailResponse>getMediaDetailClientById(@PathVariable Long mediaId) {
-        try {
-           MediaDetailResponse mediaDetails =  mediaDetailService.getMediaDetailClientById(mediaId);
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-    // lam trang details
-
+    // media detail
     @GetMapping("/{mediaId}")
-    public String getMediaDetailClientById(@PathVariable Long mediaId, Model model) {
+    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId, Model model) {
         List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
         model.addAttribute("categoriesWithMovie", categories);
         try {
-            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById(mediaId);
-            model.addAttribute("mediaDetails", mediaDetails);
+            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
 
+            if (!mediaDetails.isEmpty()) {
+                // Lấy record đầu tiên của MediaDetail
+                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
+
+                model.addAttribute("firstMediaDetail", firstMediaDetail);
+                model.addAttribute("mediaDetails", mediaDetails);
+            } else {
+                return null;
+            }
             return "user_movie_detail";
-        } catch (Exception e) {
-            // Xử lý lỗi nếu cần
-            return "error404"; // Trả về trang lỗi
-        }
-    }
-
-
-    @GetMapping("/{mediaId}/{mdId}")
-    public String getMediaDetailClientById1(@PathVariable Long mediaId, @PathVariable Long mdId, Model model) {
-        try {
-            List<Long> mdIdList = Collections.singletonList(mdId);
-            MediaDetailResponse mediaDetails = mediaDetailService.getMediaDetailClientById1(mediaId, mdIdList);
-            model.addAttribute("mediaDetails", mediaDetails);
-
-            return "user_movie_detail_1";
         } catch (Exception e) {
             // Xử lý lỗi nếu cần
             return "error404"; // Trả về trang lỗi
@@ -220,9 +169,6 @@ public class UserMediaDetailController {
                                 @RequestParam(name = "episode", required = false) Integer episode,
                                 @RequestParam(name = "status", required = false) Integer  status
     ) {
-//        List<MediaDetailDTO> mediaDetails = mediaDetailService.getAllMediaDetails();
-//
-//        model.addAttribute("mediaDetails", mediaDetails);
         model.addAttribute("title", "Media Details");
         return findPaginated(1, model, title, quality,episode,status);
     }
@@ -235,7 +181,6 @@ public class UserMediaDetailController {
                                 @RequestParam(name = "episode", required = false) Integer episode,
                                 @RequestParam(name = "status", required = false) Integer  status
     ) {
-        int pageSize = 11;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<MediaDetail> result = mediaDetailRepository.searchMediaDetails(title, quality,episode,status, pageable);
