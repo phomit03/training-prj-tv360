@@ -136,7 +136,7 @@ public class UserMediaDetailController {
         }
     }
 
-    @GetMapping("/api/{mediaId}")
+    @GetMapping("/{mediaId}")
     public String getMediaDetailByIdASCEpisodes1(@PathVariable Long mediaId, Model model) {
         List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
         model.addAttribute("categoriesWithMovie", categories);
