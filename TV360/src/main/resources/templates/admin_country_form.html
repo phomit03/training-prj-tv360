@@ -30,26 +30,6 @@
                         </a>
                     </div>
                     <div class="card-body">
-<!--                        <form th:if="${countryDTO.id != null}" th:action="@{/admin/country/update/{id}(id=${countryDTO.id})}"-->
-<!--                              th:object="${countryDTO}" method="post">-->
-<!--                            &lt;!&ndash; Form fields for update &ndash;&gt;-->
-<!--                            <div class="form-floating mb-3">-->
-<!--                                <input class="form-control" th:field="*{name}" name="name" type="text"-->
-<!--                                       placeholder="Name Country" required />-->
-<!--                                <label>Name</label>-->
-<!--                            </div>-->
-<!--                            <div class="form-floating mb-3">-->
-<!--                                <select class="form-control" name="status" th:field="*{status}" required>-->
-<!--                                    <option value="" selected>&#45;&#45; choose type &#45;&#45;</option>-->
-<!--                                    <option value="0" th:selected="${countryDTO.status == 0}">in-active</option>-->
-<!--                                    <option value="1" th:selected="${countryDTO.status == 1}">active</option>-->
-<!--                                </select>-->
-<!--                                <label>Status</label>-->
-<!--                            </div>-->
-<!--                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">-->
-<!--                                <button type="submit" class="btn btn-success">Update</button>-->
-<!--                            </div>-->
-<!--                        </form>-->
                         <form th:action="@{/admin/country/save}" th:object="${countryDTO}" method="post">
                             <input type="hidden" th:field="*{id}">
                             <!-- Form fields for create -->

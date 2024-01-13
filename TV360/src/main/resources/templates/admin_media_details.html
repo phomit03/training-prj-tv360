@@ -54,7 +54,7 @@
               <div class="input-group">
                 <form th:action="@{/admin/media-details}" method="get">
                   <label><input placeholder="Title Media" class="form-control" type="text" name="title" th:value="${title}" /></label>
-                  <label><input placeholder="Episode" class="form-control" type="number" name="episode" th:value="${episode}" /></label>
+                  <label><input placeholder="Episode" class="form-control" min="1" type="number" name="episode" th:value="${episode}" /></label>
                   <label>
                     <select class="form-control" name="quality">
                       <option value="" selected>Choose Type</option>
@@ -83,10 +83,6 @@
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
                 List of media details
-
-              <a th:href="@{/admin/media-detail/create}">
-                <button type="button" class="btn btn-primary" style="float: right">+ media detail</button>
-              </a>
             </div>
             <div class="card-body">
               <table class="datatable-table">
@@ -137,7 +133,7 @@
                           <i class="fas fa-pencil-alt"></i>
                         </a>
                       </button>
-                      <button class="btn" th:if="${mediaDetail.status == 1}">
+                      <button class="btn" th:if="${mediaDetail.status == 1 and mediaDetail.media.type == 2}">
                         <a th:data-id="${mediaDetail.id}" class="delete-btn">
                           <i class="fas fa-trash"></i>
                         </a>
@@ -147,7 +143,7 @@
                 </tbody>
               </table>
 
-              <!--               phan trang-->
+              <!--phan trang-->
               <div th:if = "${totalPages > 1}">
                 <div class = "row col-sm-12">
                   <div class = "col-sm-2">
@@ -157,7 +153,7 @@
                   <div class = "col-sm-10">
                       <span th:each="i: ${#numbers.sequence(1, totalPages)}">
                           <a th:if="${currentPage != i}"
-                             th:href="@{'/admin/media-detail/' + ${i}(title=${title}, quality=${quality} , episode=${episode} ,status=${status})}"
+                             th:href="@{'/admin/media-details/' + ${i}(title=${title}, quality=${quality} , episode=${episode} ,status=${status})}"
                              style="color: #666666; text-decoration: none">[[${i}]]</a>
                           <span th:unless="${currentPage != i}"
                                 style="color: #ca0f33; text-decoration: underline">[[${i}]]</span> &nbsp;

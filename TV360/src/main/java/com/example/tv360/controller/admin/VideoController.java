@@ -79,12 +79,10 @@ public class VideoController {
     }
 
     @GetMapping("/video/delete/{id}")
-    public ResponseEntity<String> deleteVideo(@PathVariable Long id){
+    public ResponseEntity<String> softDeleteVideo(@PathVariable Long id){
         try {
             mediaService.softDeleteMedia(id);
             return ResponseEntity.ok("Delete video successfully");
-        } catch (AssociationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
         } catch (Exception e) {

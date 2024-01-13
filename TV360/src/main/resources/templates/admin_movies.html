@@ -83,7 +83,7 @@
                 List of movie
 
               <a th:href="@{/admin/movie/form}">
-                <button type="button" class="btn btn-primary" style="float: right">+ Movie</button>
+                <button type="button" class="btn btn-primary" style="float: right">+ movie</button>
               </a>
 
             </div>
@@ -142,7 +142,7 @@
                                                   <span class="close" id="closePopupMovie">&times;</span>
                                               </div>
                                               <div>
-                                                  <form th:action="@{/admin/media/source/save}" th:object="${mediaDetailDTO}"
+                                                  <form th:action="@{/admin/source/save}" th:object="${mediaDetailDTO}"
                                                         method="post">
                                                       <div class="form-floating mb-3">
                                                           <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
@@ -195,7 +195,7 @@
                                                   <span class="close" id="closePopupMovieSeries">&times;</span>
                                               </div>
                                               <div>
-                                                  <form th:action="@{/admin/media-series/source/save}"
+                                                  <form th:action="@{/admin/source/save}"
                                                         th:object="${mediaDetailDTO}" method="post" id="movieForm">
                                                       <!-- Existing fields -->
                                                       <div class="form-floating mb-3" th:with="sourceByMedia=${movieDetailMap[movie.id]}">
