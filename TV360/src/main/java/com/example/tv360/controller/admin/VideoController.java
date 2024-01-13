@@ -103,11 +103,9 @@ public class VideoController {
     @GetMapping("/videos")
     public String getAllVideos(Model model,
                               @RequestParam(name = "title", required = false) String title,
-                              @RequestParam(name = "type", required = false) Integer type,
-                              @RequestParam(name = "status", required = false) Integer status
-    ) {
+                               @RequestParam(name = "status", required = false) Integer status) {
         model.addAttribute("title", "videos");
-        return findPaginated(1, model, title,type,status);
+        return findPaginated(1, model, title, 3, status);
     }
 
     @GetMapping("/videos/{pageNo}")
@@ -120,8 +118,9 @@ public class VideoController {
         int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<Media> result = mediaRepository.searchMedia(title, 3, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable, mediaRepository.searchMedia1(title, 3, status).size());
+        List<Media> result = mediaRepository.searchVideo(title, 3, status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable, mediaRepository.searchVideo1(title, 3, status).size());
+
         List<Media> videos = page.getContent();
 
         //Lấy danh sách MediaDetail cho mỗi Media

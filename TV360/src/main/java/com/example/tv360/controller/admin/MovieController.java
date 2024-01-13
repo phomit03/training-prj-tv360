@@ -124,8 +124,8 @@ public class MovieController {
         int pageSize = 6;
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<Media> result = mediaRepository.searchMedia(title, type, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMedia1(title, type, status).size());
+        List<Media> result = mediaRepository.searchMovie(title, type, status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, type, status).size());
         List<Media> movies = page.getContent();
 
         //Lấy danh sách MediaDetail cho mỗi Media

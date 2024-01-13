@@ -18,16 +18,30 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
             "AND (:type is null or type like CONCAT('%', :type, '%')) " +
             " AND (:status is null or status like CONCAT('%',:status,'%')) ", nativeQuery = true)
-    List<Media> searchMedia(@Param("title") String title,
+    List<Media> searchMovie(@Param("title") String title,
                               @Param("type") Integer type,
                               @Param("status") Integer status, Pageable pageable);
 
     @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
             "AND (:type is null or type like CONCAT('%', :type, '%')) " +
-            " AND (:status is null or status like CONCAT('%',:status,'%')) ", nativeQuery = true)
-    List<Media> searchMedia1(@Param("title") String title,
+            "AND (:status is null or status like CONCAT('%',:status,'%')) ", nativeQuery = true)
+    List<Media> searchMovie1(@Param("title") String title,
                            @Param("type") Integer type,
                            @Param("status") Integer status);
+
+    @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
+            "AND (:type is null or type like CONCAT('%', :type, '%')) " +
+            " AND (:status is null or status like CONCAT('%',:status,'%')) ", nativeQuery = true)
+    List<Media> searchVideo(@Param("title") String title,
+                            @Param("type") Integer type,
+                            @Param("status") Integer status, Pageable pageable);
+
+    @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
+            "AND (:type is null or type like CONCAT('%', :type, '%')) " +
+            " AND (:status is null or status like CONCAT('%',:status,'%')) ", nativeQuery = true)
+    List<Media> searchVideo1(@Param("title") String title,
+                             @Param("type") Integer type,
+                             @Param("status") Integer status);
     List<Media> findByCategoriesId(Long categoryId);
 
     @Query("SELECT md FROM MediaDetail md WHERE md.media.id = :mediaId")
