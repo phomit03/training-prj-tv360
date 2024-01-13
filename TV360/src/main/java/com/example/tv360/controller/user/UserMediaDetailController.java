@@ -1,8 +1,11 @@
 package com.example.tv360.controller.user;
 
+import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.CastItem;
+import com.example.tv360.dto.response.CategoryItem;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
@@ -111,37 +114,13 @@ public class UserMediaDetailController {
         }
     }
 
-
-
-    // media detial api
-    @GetMapping("/test")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient() {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsClient();
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @GetMapping("/test{mediaId}")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsClient(@PathVariable Long mediaId) {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaService.getMediaDetailByIdASCEpisodes1(mediaId);
-            return ResponseEntity.ok(mediaDetails);
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
+    // media detail
     @GetMapping("/{mediaId}")
-    public String getMediaDetailByIdASCEpisodes1(@PathVariable Long mediaId, Model model) {
+    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId, Model model) {
         List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
         model.addAttribute("categoriesWithMovie", categories);
         try {
-            List<MediaDetailResponse> mediaDetails = mediaService.getMediaDetailByIdASCEpisodes1(mediaId);
+            List<MediaDetailResponse> mediaDetails = mediaService.getMediaDetailByIdASCEpisodes(mediaId);
 
             if (!mediaDetails.isEmpty()) {
                 // Lấy record đầu tiên của MediaDetail

@@ -35,25 +35,33 @@
                     <div class="meta-wrapper">
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Category:</h4>
-                                <a th:each="category, iterStat : ${firstMediaDetail.listCategoryNames}"
-                                th:text="${category + (iterStat.last ? '' : ', ')}"
-                                th:href="@{'/media/by-category/' + id}"></a>
+                                <a th:each="category, iterStat : ${firstMediaDetail.categoryList}"
+                                th:text="${category.name + (iterStat.last ? '' : ', ')}"
+                                th:href="@{'/media/by-category/' + ${category.categoryId}}">
+                                </a>
 
                         </div>
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Director:</h4>
-                            <a th:each="director, iterStat : ${firstMediaDetail.listCastFullNames}"
-                               th:if="${firstMediaDetail.listCastTypes.contains(1)}"
-                               th:text="${director + (iterStat.last ? '' : ', ')}"></a>
+                            <a th:each="director, iterStat : ${firstMediaDetail.castList}"
+                               th:if="${director.type == 1}"
+                               th:text="${director.fullName + (iterStat.last ? '' : ', ')}"></a>
                         </div>
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Actor:</h4>
-                            <a th:each="actor, iterStat : ${firstMediaDetail.listCastFullNames}"
-                               th:if="${firstMediaDetail.listCastTypes.contains(2)}"
-                               th:text="${actor + (iterStat.last ? '' : ', ')}"></a>
+                            <a th:each="actor, iterStat : ${firstMediaDetail.castList}"
+                               th:if="${actor.type == 2}"
+                               th:text="${actor.fullName + (iterStat.last ? '' : ', ')}"></a>
                         </div>
+
+<!--                        <div class="ganre-wrapper">-->
+<!--                            <h4 style="color:var(&#45;&#45;citrine); font-weight: bold">Actor:</h4>-->
+<!--                            <a th:each="actor, iterStat : ${firstMediaDetail.listCastFullNames}"-->
+<!--                               th:if="${firstMediaDetail.listCastTypes.contains(2)}"-->
+<!--                               th:text="${actor + (iterStat.last ? '' : ', ')}"></a>-->
+<!--                        </div>-->
 
 
                         <div class="date-time">

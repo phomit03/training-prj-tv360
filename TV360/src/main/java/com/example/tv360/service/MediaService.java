@@ -1,7 +1,10 @@
 package com.example.tv360.service;
 
+import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
+import com.example.tv360.dto.response.CastItem;
+import com.example.tv360.dto.response.CategoryItem;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.*;
 import com.example.tv360.repository.*;
@@ -58,12 +61,9 @@ public class MediaService {
         Media media = mediaRepository.findById(id).orElse(null);
         return modelToDtoConverter.convertToDto(media, MediaDTO.class);
     }
+    // service của media detail
 
     public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(Long mediaId) {
-        return mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
-    }
-
-    public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes1(Long mediaId) {
         try {
             List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
 
@@ -79,10 +79,12 @@ public class MediaService {
     }
 
     private void updateMediaDetailResponse(MediaDetailResponse mediaDetailResponse, Long mediaId) {
-        mediaDetailResponse.setListCastTypes(mediaDetailRepository.getCastTypesByMediaDetailId(mediaId));
+        mediaDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+        mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
         mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
-        mediaDetailResponse.setListCastFullNames(mediaDetailRepository.getCastFullNamesByMediaDetailId(mediaId));
     }
+
+
 
     public Media createMovie(MediaDTO mediaDTO, MultipartFile logo,
                              Long[] selectedCategories, Long[] selectedCast
