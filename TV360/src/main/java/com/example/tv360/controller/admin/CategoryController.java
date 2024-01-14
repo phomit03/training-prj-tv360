@@ -54,9 +54,13 @@ public class CategoryController {
                 categoryService.updateCategory(categoryDTO.getId(), categoryDTO);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
-        }catch (Exception e){
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (EntityNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Entity not found!");
+        } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed!");
+            redirectAttributes.addFlashAttribute("error", "Failed to create/update!");
         }
         return "redirect:/admin/categories";
     }

@@ -76,16 +76,16 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long id,CategoryDTO categoryDTO){
-        try {
-            Category category = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-            Category updateCategory1 = dtoToModelConverter.convertToModel(categoryDTO, Category.class);
-            category.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            category = updateCategory1;
-            return categoryRepository.save(category);
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Category updateCategory1 = dtoToModelConverter.convertToModel(categoryDTO, Category.class);
+        category.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        category = updateCategory1;
+
+        if (updateCategory1.getStatus() == 0 && isCategoryUsedInMedia(updateCategory1)) {
+            throw new IllegalStateException("Cannot update category status to in-active when it is associated with media.");
         }
+
+        return categoryRepository.save(category);
     }
 
     public void softDeleteCategory(Long id) {

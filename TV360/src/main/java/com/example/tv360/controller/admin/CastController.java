@@ -54,15 +54,19 @@ public class CastController {
                 castService.updateCast(castDTO.getId() ,castDTO);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
-        }catch (Exception e){
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (EntityNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Entity not found!");
+        } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed!");
+            redirectAttributes.addFlashAttribute("error", "Failed to create/update!");
         }
         return "redirect:/admin/cast";
     }
 
     @GetMapping("/cast/delete/{id}")
-    public ResponseEntity<String> deleteCast(@PathVariable Long id){
+    public ResponseEntity<String> softDeleteCast(@PathVariable Long id){
         try {
             castService.softDeleteCast(id);
             return ResponseEntity.ok("Delete cast successfully");

@@ -50,17 +50,16 @@ public class CastService {
     }
 
     public Cast updateCast(Long id,CastDTO castDTO){
-        try {
-            Cast cast = castRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-            Cast updateCast1 = dtoToModelConverter.convertToModel(castDTO, Cast.class);
-            cast.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            cast = updateCast1;
-            return castRepository.save(cast);
+        Cast cast = castRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Cast updateCast1 = dtoToModelConverter.convertToModel(castDTO, Cast.class);
+        cast.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        cast = updateCast1;
+
+        if (updateCast1.getStatus() == 0 && isCastUsedInMedia(updateCast1)) {
+            throw new IllegalStateException("Cannot update cast status to in-active when it is associated with media.");
         }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+
+        return castRepository.save(cast);
     }
 
     public void softDeleteCast(Long id){

@@ -53,17 +53,16 @@ public class CountryService {
     }
 
     public Country updateCountry(Long id, CountryDTO countryDTO){
-        try {
-            Country country = countryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-            Country updateCountry1 = dtoToModelConverter.convertToModel(countryDTO, Country.class);
-            country.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            country = updateCountry1;
-            return countryRepository.save(country);
+        Country country = countryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Country updateCountry1 = dtoToModelConverter.convertToModel(countryDTO, Country.class);
+        country.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        country = updateCountry1;
+
+        if (updateCountry1.getStatus() == 0 && isCountryUsedInMedia(updateCountry1)) {
+            throw new IllegalStateException("Cannot update country status to in-active when it is associated with media.");
         }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+
+        return countryRepository.save(country);
     }
 
     public void softDeleteCountry(Long id){

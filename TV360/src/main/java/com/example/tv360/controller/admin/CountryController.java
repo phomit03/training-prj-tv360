@@ -50,11 +50,15 @@ public class CountryController {
                 countryService.updateCountry(countryDTO.getId(), countryDTO);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (EntityNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Entity not found!");
         } catch (Exception e) {
-            // Handle exceptions more gracefully, log them, and provide user-friendly messages
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to create/update!");
         }
+
         return "redirect:/admin/countries";
     }
 
