@@ -1,7 +1,6 @@
 package com.example.tv360.controller.admin;
 
 import com.example.tv360.dto.CountryDTO;
-import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Country;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.service.CountryService;
@@ -33,20 +32,11 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
-    @GetMapping("/country/create")
-    public String showCreateOrUpdateCountry(Model model) {
-        model.addAttribute("countryDTO", new CountryDTO());
-        return "admin_country_form";
-    }
-
-    @GetMapping("/country/update/{id}")
-    public String showCreateOrUpdateCountry(@PathVariable Long id, Model model) {
-        CountryDTO countryDTO = countryService.getCountryById(id);
-        if (countryDTO == null) {
-            return "redirect:/admin/countries";
-        }
-
+    @GetMapping({"/country/form", "/country/form/{id}"})
+    public String showCreateOrUpdateCountry(@PathVariable(required = false) Long id, Model model) {
+        CountryDTO countryDTO = (id != null) ? countryService.getCountryById(id) : new CountryDTO();
         model.addAttribute("countryDTO", countryDTO);
+
         return "admin_country_form";
     }
 
@@ -67,7 +57,6 @@ public class CountryController {
         }
         return "redirect:/admin/countries";
     }
-
 
     @GetMapping("/country/delete/{id}")
     public ResponseEntity<String> deleteCountry(@PathVariable Long id){

@@ -31,7 +31,9 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/admin/country/save}" th:object="${countryDTO}" method="post">
+
                             <input type="hidden" th:field="*{id}">
+
                             <!-- Form fields for create -->
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{name}" name="name" type="text"
@@ -47,7 +49,8 @@
                                 <label>Status</label>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="submit" class="btn btn-success"
+                                        th:text="${(countryDTO.id == null) ? 'Create' : 'Update'}"></button>
                             </div>
                         </form>
                     </div>

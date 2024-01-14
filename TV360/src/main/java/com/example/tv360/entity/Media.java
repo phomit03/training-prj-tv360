@@ -87,7 +87,6 @@ public class Media {
     private Set<Cast> cast;
 
     @OneToMany(mappedBy = "media", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @MapToDTO
