@@ -39,7 +39,6 @@ public class Country {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "country")
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @MapToDTO

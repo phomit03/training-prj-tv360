@@ -133,7 +133,7 @@ public class MediaService {
             existingMedia = mediaRepository.save(existingMedia);
 
             // update status of MediaDetails
-            Set<MediaDetail> mediaDetails = existingMedia.getMediaDetails();
+            List<MediaDetail> mediaDetails = mediaRepository.findMediaDetailsByMediaId(existingMedia.getId());
             if (mediaDetails != null && !mediaDetails.isEmpty()) {
                 for (MediaDetail mediaDetail : mediaDetails) {
                     mediaDetail.setStatus(existingMedia.getStatus());

@@ -3,6 +3,48 @@
 
 <head th:replace="user_fragments::head"></head>
 
+<style>
+    .close-btn {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .youtube-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .youtube-popup {
+        position: relative;
+        max-width: 800px;
+        max-height: 70vh;
+        width: 100%;
+        height: 100%;
+    }
+
+    .youtube-popup iframe {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Active class to show the overlay */
+    .active {
+        display: flex;
+    }
+</style>
+
 <body>
 <!-- header Start -->
 <header th:replace="user_fragments::header" class="header" data-header></header>
@@ -13,14 +55,27 @@
         <!-- content-->
         <section class="movie-detail">
             <div class="container">
-                <figure class="movie-detail-banner">
-                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="@{${selectedMediaDetail.thumbnail}}">
-
+                <figure class="movie-detail-banner" onclick="showVideoPopup()">
+                    <img style="max-width: 450px; max-height: 450px" th:src="@{${selectedMediaDetail.thumbnail}}">
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
                     </button>
-
                 </figure>
+
+                <!--pop-up video-->
+                <div class="youtube-overlay" id="videoOverlay" onclick="closeVideoPopup()">
+                    <div class="youtube-popup">
+                        <span class="close-btn" onclick="closeVideoPopup()">&times;</span>
+                        <!--sourceUrl-->
+                        <iframe
+                                th:src="${selectedMediaDetail.sourceUrl}"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write;
+                                encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
 
                 <div class="movie-detail-content">
                     <div class="badge-wrapper">
@@ -366,6 +421,23 @@
             videoList.style.display = 'grid';
         }
     }
+</script>
+
+<script>
+    function showVideoPopup() {
+        var videoOverlay = document.getElementById("videoOverlay");
+        videoOverlay.classList.add("active");
+    }
+
+    function closeVideoPopup() {
+        var videoOverlay = document.getElementById("videoOverlay");
+        videoOverlay.classList.remove("active");
+    }
+
+    // Prevent closing when clicking inside the popup
+    document.querySelector('.youtube-popup').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
 </script>
 
 </body>
