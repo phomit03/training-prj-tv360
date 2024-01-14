@@ -115,28 +115,59 @@ public class UserMediaDetailController {
     }
 
     // media detail
+//    @GetMapping("/{mediaId}")
+//    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId,
+//                                                @RequestParam(name = "episode", required = false) Integer episode,
+//                                                Model model) {
+//        List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
+//        model.addAttribute("categoriesWithMovie", categories);
+//        try {
+//            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
+//
+//            if (!mediaDetails.isEmpty()) {
+//                // Lấy record đầu tiên của MediaDetail
+//                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
+//
+//                model.addAttribute("firstMediaDetail", firstMediaDetail);
+//                model.addAttribute("mediaDetails", mediaDetails);
+//            } else {
+//                return null;
+//            }
+//            return "user_movie_detail";
+//        } catch (Exception e) {
+//            // Xử lý lỗi nếu cần
+//            return "error404"; // Trả về trang lỗi
+//        }
+//    }
+
+    // media detail
     @GetMapping("/{mediaId}")
-    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId, Model model) {
+    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId,
+                                                @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
+                                                Model model) {
         List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
         model.addAttribute("categoriesWithMovie", categories);
+
         try {
             List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
-
-            if (!mediaDetails.isEmpty()) {
-                // Lấy record đầu tiên của MediaDetail
-                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
-
-                model.addAttribute("firstMediaDetail", firstMediaDetail);
-                model.addAttribute("mediaDetails", mediaDetails);
+                if (!mediaDetails.isEmpty()) {
+                    int selectedEpisodeIndex = episode - 1;
+//                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
+//                model.addAttribute("firstMediaDetail", firstMediaDetail);
+                MediaDetailResponse selectedMediaDetail = mediaDetails.get(selectedEpisodeIndex);
+                model.addAttribute("selectedMediaDetail", selectedMediaDetail);
             } else {
                 return null;
             }
+
+            model.addAttribute("mediaDetails", mediaDetails);
             return "user_movie_detail";
         } catch (Exception e) {
             // Xử lý lỗi nếu cần
             return "error404"; // Trả về trang lỗi
         }
     }
+
     @GetMapping()
     public String movieDetail(Model model) {
         model.addAttribute("title", "Movie Detail");
