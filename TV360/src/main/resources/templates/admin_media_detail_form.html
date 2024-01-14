@@ -32,17 +32,9 @@
                            style="float: right">back list <</a>
                     </div>
                     <div class="card-body">
-                        <form th:if="${mediaDetailDTO.id != null}" th:action="@{/admin/media-detail/update/{id} (id = ${mediaDetailDTO.id})}"
+                        <form th:action="@{/admin/source/save}"
                               th:object="${mediaDetailDTO}" method="post">
-                            <div class="form-floating mb-3">
-                                <select class="form-control" id="media" name="media" aria-label="type"
-                                        th:field="*{media.id}" required>
-                                    <option value="">-- choose option --</option>
-                                    <option th:each="media : ${mediaList}" th:selected="*{media.id == media.id}"
-                                            th:value="${media.id}" th:text="${media.title}"></option>
-                                </select>
-                                <label>Media</label>
-                            </div>
+                            <input type="hidden" th:field="*{id}"/>
 
                             <div class="form-floating mb-3">
                                 <input class="form-control" th:field="*{sourceUrl}" name="sourceUrl" type="text"
@@ -72,7 +64,10 @@
                                 </select>
                                 <label>Quality</label>
                             </div>
-                            <div class="form-floating mb-3">
+
+                            <input class="form-control" name="media" th:value="${mediaDetailDTO.media.id}" type="hidden" readonly/>
+
+                            <div class="form-floating mb-3" th:if="${mediaDetailDTO.media.type == 2 and mediaDetailDTO.media.status == 1}">
                                 <select class="form-control" name="status" th:field="*{status}" required>
                                     <option value="" selected>-- choose type --</option>
                                     <option value="0" th:selected="${mediaDetailDTO.status == 0}">in-active</option>

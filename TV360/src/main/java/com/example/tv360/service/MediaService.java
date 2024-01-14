@@ -1,10 +1,8 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.*;
 import com.example.tv360.repository.*;
-import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
@@ -28,16 +26,18 @@ public class MediaService {
 
     private Helper helper;
     private final MediaRepository mediaRepository;
+    private final MediaDetailRepository mediaDetailRepository;
     private final CastRepository castRepository;
     private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
+    public MediaService(MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
                         CastRepository castRepository, CategoryRepository categoryRepository,
                         DtoToModelConverter dtoToModelConverter) {
         this.mediaRepository = mediaRepository;
+        this.mediaDetailRepository = mediaDetailRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.helper = helper;
         this.castRepository = castRepository;
@@ -92,7 +92,7 @@ public class MediaService {
         }
 
         media.setType(type);
-        media.setStatus(1);
+        media.setStatus(0);     //No source yet so status in-active
 
         return mediaRepository.save(media);
     }
@@ -106,7 +106,6 @@ public class MediaService {
             Media existingMedia = mediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
             Media media = dtoToModelConverter.convertToModel(mediaDTO, Media.class);
-
             media.setThumbnail(existingMedia.getThumbnail());
 
             BeanUtils.copyProperties(media, existingMedia);
@@ -130,7 +129,19 @@ public class MediaService {
             existingMedia.setType(type);
             existingMedia.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-            return mediaRepository.save(existingMedia);
+            // save media
+            existingMedia = mediaRepository.save(existingMedia);
+
+            // update status of MediaDetails
+            Set<MediaDetail> mediaDetails = existingMedia.getMediaDetails();
+            if (mediaDetails != null && !mediaDetails.isEmpty()) {
+                for (MediaDetail mediaDetail : mediaDetails) {
+                    mediaDetail.setStatus(existingMedia.getStatus());
+                    mediaDetailRepository.save(mediaDetail);
+                }
+            }
+
+            return existingMedia;
         }
         catch (Exception e){
             e.printStackTrace();
@@ -143,16 +154,21 @@ public class MediaService {
         if (optionalMedia.isPresent()) {
             Media media = optionalMedia.get();
 
-            if (isMediaUsedInMedia(media)) {
-                throw new AssociationException("Cannot delete media as it is associated with media.");
-            }
-
             media.setStatus(0);
             mediaRepository.save(media);
+
+            Set<MediaDetail> mediaDetails = media.getMediaDetails();
+            if (mediaDetails != null && !mediaDetails.isEmpty()) {
+                for (MediaDetail mediaDetail : mediaDetails) {
+                    mediaDetail.setStatus(0);
+                    mediaDetailRepository.save(mediaDetail);
+                }
+            }
         } else {
             throw new EntityNotFoundException("Entity with id " + id + " not found.");
         }
     }
+
 
     private boolean isMediaUsedInMedia(Media media) {
         int mediaCount = mediaRepository.countMediaDetailByMediaId(media.getId());

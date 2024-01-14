@@ -20,13 +20,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,10 +54,43 @@ public class MediaDetailService {
         return modelToDtoConverter.convertToDto(mediaDetails, MediaDetailDTO.class);
     }
 
-    public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) throws IOException {
+    public MediaDetail createMediaDetail(MediaDetailDTO mediaDetailDTO) {
         MediaDetail mediaDetail = dtoToModelConverter.convertToModel(mediaDetailDTO, MediaDetail.class);
         mediaDetail.setStatus(1);
         return mediaDetailRepository.save(mediaDetail);
+    }
+
+    public void createListMediaDetail(MediaDetailDTO mediaDetailDTO, HttpServletRequest request) {
+        int maxEpisode = getMaxEpisodeByMediaId(mediaDetailDTO.getMedia().getId());
+
+        String[] sourceUrls = request.getParameterValues("sourceUrl");
+        String[] durations = request.getParameterValues("duration");
+        String[] rates = request.getParameterValues("rate");
+        String[] qualities = request.getParameterValues("quality");
+
+        Set<MediaDetail> mediaDetails = new LinkedHashSet<>();
+
+        for (int i = 0; i < sourceUrls.length; i++) {
+            MediaDetail mediaDetail = dtoToModelConverter.convertToModel(mediaDetailDTO, MediaDetail.class);
+
+            mediaDetail.setSourceUrl(sourceUrls[i]);
+            mediaDetail.setEpisode(maxEpisode + 1 + i);
+            mediaDetail.setDuration(durations[i]);
+            mediaDetail.setRate(Integer.parseInt(rates[i]));
+            mediaDetail.setQuality(qualities[i]);
+            mediaDetail.setStatus(1);
+            mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMedia().getId()).orElse(null));
+
+            mediaDetails.add(mediaDetail);
+        }
+
+        mediaDetailRepository.saveAll(mediaDetails);
+    }
+
+    //Episode ascending
+    public int getMaxEpisodeByMediaId(Long mediaId) {
+        Integer maxEpisode = mediaDetailRepository.findMaxEpisodeByMediaId(mediaId);
+        return (maxEpisode != null) ? maxEpisode : 0;
     }
 
     public MediaDetail updateMediaDetail(Long id, MediaDetailDTO mediaDetailDTO){
@@ -87,6 +118,8 @@ public class MediaDetailService {
         }
     }
 
+
+    //user homepage
     public List<MediaDetail> getNewRelease() {
         Pageable pageable = PageRequest.of(0, 15, Sort.by("createdAt").descending());
         return mediaDetailRepository.findNewRelease(pageable);
@@ -97,32 +130,11 @@ public class MediaDetailService {
         return mediaDetailRepository.findTopRated(pageable);
     }
 
-
-    // get theo categoy name
-    public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
-        try {
-            return mediaDetailRepository.getMediaDetailsByCategoryName(categoryName);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-
     // phan trang
     public Page<MediaDetail> findPaginated(int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaDetailRepository.findAll(pageable);
-    }
-    // loc
-
-    public void createListMediaDetail(List<MediaDetail> mediaDetails) {
-        mediaDetailRepository.saveAll(mediaDetails);
-    }
-
-    public int getMaxEpisodeByMediaId(Long mediaId) {
-        Integer maxEpisode = mediaDetailRepository.findMaxEpisodeByMediaId(mediaId);
-        return (maxEpisode != null) ? maxEpisode : 0;
     }
 
     public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
@@ -139,6 +151,15 @@ public class MediaDetailService {
         return categories.stream()
                 .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    // get theo categoy name
+    public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
+        try {
+            return mediaDetailRepository.getMediaDetailsByCategoryName(categoryName);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     //service details (le-cuong)

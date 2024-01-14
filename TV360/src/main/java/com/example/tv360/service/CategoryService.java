@@ -110,7 +110,7 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getAllCategoriesWithMedia() {
-        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL ORDER BY m.createdAt DESC";
+        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND m.status = 1 ORDER BY m.createdAt DESC";
 
         TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
         query.setMaxResults(15);
@@ -121,8 +121,6 @@ public class CategoryService {
                 .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
                 .collect(Collectors.toList());
     }
-
-
 
     //phan trang
 

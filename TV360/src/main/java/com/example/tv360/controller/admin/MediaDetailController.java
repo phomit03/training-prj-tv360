@@ -68,14 +68,26 @@ public class MediaDetailController {
         }
     }
 
-    @PostMapping("/media/source/save")
+    @PostMapping("/source/save")
     public String createOrUpdateMediaSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
-                                    RedirectAttributes redirectAttributes) {
+                                            HttpServletRequest request,
+                                            RedirectAttributes redirectAttributes) {
         try {
+            //Create
             if (mediaDetailDTO.getId() == null) {
-                mediaDetailService.createMediaDetail(mediaDetailDTO);
-                redirectAttributes.addFlashAttribute("success", "Add source media successfully!");
-            } else {
+                //source media-series
+                if (mediaDetailDTO.getMedia().getType() == 2) {
+                    mediaDetailService.createListMediaDetail(mediaDetailDTO, request);
+                    redirectAttributes.addFlashAttribute("success", "Add source media series successfully!");
+                }
+                //source media
+                else {
+                    mediaDetailService.createMediaDetail(mediaDetailDTO);
+                    redirectAttributes.addFlashAttribute("success", "Add source media successfully!");
+                }
+            }
+            //Update
+            else {
                 mediaDetailService.updateMediaDetail(mediaDetailDTO.getId(), mediaDetailDTO);
                 redirectAttributes.addFlashAttribute("success", "Update Successfully!");
             }
@@ -85,71 +97,18 @@ public class MediaDetailController {
         }
 
         if (mediaDetailDTO.getId() == null) {
-            if (mediaDetailDTO.getMedia().getType() == 1){
-                return "redirect:/admin/movies";
-            } else {
+            if (mediaDetailDTO.getMedia().getType() == 3){
                 return "redirect:/admin/videos";
-            }
-        } else {
-            return "redirect:/admin/media-details";
-        }
-    }
-
-    @PostMapping("/media-series/source/save")
-    public String createOrUpdateMediaSeriesSource(@ModelAttribute MediaDetailDTO mediaDetailDTO,
-                                          RedirectAttributes redirectAttributes,
-                                          HttpServletRequest request) {
-        try {
-            if (mediaDetailDTO.getId() == null) {
-                int maxEpisode = mediaDetailService.getMaxEpisodeByMediaId(mediaDetailDTO.getMedia().getId());
-
-                String[] sourceUrls = request.getParameterValues("sourceUrl");
-                String[] durations = request.getParameterValues("duration");
-                String[] rates = request.getParameterValues("rate");
-                String[] qualities = request.getParameterValues("quality");
-
-                List<MediaDetail> mediaDetails = new ArrayList<>();
-
-                for (int i = 0; i < sourceUrls.length; i++) {
-                    MediaDetail mediaDetail = new MediaDetail();
-
-                    mediaDetail.setSourceUrl(sourceUrls[i]);
-
-                    if (maxEpisode < 1) {
-                        mediaDetail.setEpisode(1);
-                    } else {
-                        mediaDetail.setEpisode(maxEpisode + 1 + i);
-                    }
-
-                    mediaDetail.setDuration(durations[i]);
-                    mediaDetail.setRate(Integer.parseInt(rates[i]));
-                    mediaDetail.setQuality(qualities[i]);
-                    mediaDetail.setStatus(1);
-                    mediaDetail.setMedia(mediaRepository.findById(mediaDetailDTO.getMedia().getId()).orElse(null));
-
-                    mediaDetails.add(mediaDetail);
-                }
-
-                mediaDetailService.createListMediaDetail(mediaDetails);
-                redirectAttributes.addFlashAttribute("success", "Add source media series successfully!");
             } else {
-                mediaDetailService.updateMediaDetail(mediaDetailDTO.getId(), mediaDetailDTO);
-                redirectAttributes.addFlashAttribute("success", "Update Successfully!");
+                return "redirect:/admin/movies";
             }
-        } catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed!");
-        }
-
-        if (mediaDetailDTO.getId() == null) {
-            return "redirect:/admin/movies";
         } else {
             return "redirect:/admin/media-details";
         }
     }
 
     @GetMapping("/media-detail/delete/{id}")
-    public ResponseEntity<String> deleteMediaDetail(@PathVariable Long id){
+    public ResponseEntity<String> softDeleteMediaDetail(@PathVariable Long id){
         try {
             mediaDetailService.softDeleteMediaDetail(id);
             return ResponseEntity.ok("Delete media detail successfully");
