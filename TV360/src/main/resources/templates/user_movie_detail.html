@@ -14,7 +14,7 @@
         <section class="movie-detail">
             <div class="container">
                 <figure class="movie-detail-banner">
-                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="@{${firstMediaDetail.thumbnail}}">
+                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="@{${selectedMediaDetail.thumbnail}}">
 
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
@@ -24,18 +24,18 @@
 
                 <div class="movie-detail-content">
                     <div class="badge-wrapper">
-                        <p class="badge badge-outline" style="margin: 0 10px 10px 0" th:text="${firstMediaDetail.quality}"></p>
+                        <p class="badge badge-outline" style="margin: 0 10px 10px 0" th:text="${selectedMediaDetail.quality}"></p>
                         <p class="detail-subtitle"
-                           th:text="${firstMediaDetail.episode == null ? '' : ('Episode ' + firstMediaDetail.episode)}"></p>
+                           th:text="${selectedMediaDetail.episode == null ? '' : ('Episode ' + selectedMediaDetail.episode)}"></p>
                     </div>
 
-                    <h3 class="h2 detail-title" th:text="${firstMediaDetail.title}"></h3>
+                    <h3 class="h2 detail-title" th:text="${selectedMediaDetail.title}"></h3>
 
 <!--                    chua fix chua lay duoc category id-->
                     <div class="meta-wrapper">
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Category:</h4>
-                                <a th:each="category, iterStat : ${firstMediaDetail.categoryList}"
+                                <a th:each="category, iterStat : ${selectedMediaDetail.categoryList}"
                                 th:text="${category.name + (iterStat.last ? '' : ', ')}"
                                 th:href="@{'/media/by-category/' + ${category.categoryId}}">
                                 </a>
@@ -44,14 +44,14 @@
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Director:</h4>
-                            <a th:each="director, iterStat : ${firstMediaDetail.castList}"
+                            <a th:each="director, iterStat : ${selectedMediaDetail.castList}"
                                th:if="${director.type == 1}"
                                th:text="${director.fullName + (iterStat.last ? '' : ', ')}"></a>
                         </div>
 
                         <div class="ganre-wrapper">
                             <h4 style="color:var(--citrine); font-weight: bold">Actor:</h4>
-                            <a th:each="actor, iterStat : ${firstMediaDetail.castList}"
+                            <a th:each="actor, iterStat : ${selectedMediaDetail.castList}"
                                th:if="${actor.type == 2}"
                                th:text="${actor.fullName + (iterStat.last ? '' : ', ')}"></a>
                         </div>
@@ -68,18 +68,18 @@
                             <div style="font-size: 14px">
                                 <ion-icon name="earth-outline"></ion-icon>
 
-                                <span th:text="${firstMediaDetail.countryName}"/>
+                                <span th:text="${selectedMediaDetail.countryName}"/>
                             </div>
 
                             <div style="font-size: 15px">
                                 <ion-icon name="time-outline"></ion-icon>
 
-                                <time th:text="${firstMediaDetail.duration}"></time>
+                                <time th:text="${selectedMediaDetail.duration}"></time>
                             </div>
                         </div>
                     </div>
 
-                    <p th:text="${firstMediaDetail.mediaDescription}" class="storyline"/>
+                    <p th:text="${selectedMediaDetail.mediaDescription}" class="storyline"/>
 
                     <div class="details-actions">
 
