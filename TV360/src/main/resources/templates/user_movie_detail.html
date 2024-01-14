@@ -188,184 +188,70 @@
 
                 <!--Episodes-->
                 <ul class="movies-list movies-rate-tab">
-                    <li>
+                    <li th:each="listMovie : ${mediaDetails}">
                         <div class="movie-card">
-
-                            <a href="./movie-details.html">
+                            <a th:href="@{'/movie/detail/' + ${listMovie.id} + '?episode=' + ${listMovie.episode}}">
                                 <figure class="card-banner">
-                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                    <img th:src="${listMovie.thumbnail}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
-                                <a href="./movie-details.html">
-                                    <h3 class="card-title">The Northman</h3>
+                                <a href="">
+                                    <h3 class="card-title" th:text="${listMovie.title}"></h3>
                                 </a>
 
-                                <div class="badge badge-outline">HD</div>
+                                <div class="badge badge-outline" th:text="${listMovie.quality}"></div>
                             </div>
 
-                            <div class="card-meta">
+                            <div class="card-meta" style="gap: 5px">
+                                <div class="episode" th:if="${listMovie.episode != null}">
+                                    <ion-icon name="film-outline"></ion-icon>
+
+                                    <data th:text="${'Episode ' + '0' + listMovie.episode}"></data>
+                                </div>
+
                                 <div class="duration">
                                     <ion-icon name="time-outline"></ion-icon>
 
-                                    <time datetime="PT137M">137 min</time>
+                                    <time th:text="${listMovie.duration}"></time>
                                 </div>
 
-                                <div class="rating">
-                                    <ion-icon name="star"></ion-icon>
+<!--                                <div class="rating">-->
+<!--                                    <ion-icon name="star"></ion-icon>-->
 
-                                    <data>8.5</data>
-                                </div>
+<!--                                    <data th:text="${topRatedMedia.getRate()}"></data>-->
+<!--                                </div>-->
                             </div>
-
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="movie-card">
-
-                            <a href="./movie-details.html">
-                                <figure class="card-banner">
-                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
-                                </figure>
-                            </a>
-
-                            <div class="title-wrapper">
-                                <a href="./movie-details.html">
-                                    <h3 class="card-title">The Northman</h3>
-                                </a>
-
-                                <div class="badge badge-outline">HD</div>
-                            </div>
-
-                            <div class="card-meta">
-                                <div class="duration">
-                                    <ion-icon name="time-outline"></ion-icon>
-
-                                    <time datetime="PT137M">137 min</time>
-                                </div>
-
-                                <div class="rating">
-                                    <ion-icon name="star"></ion-icon>
-
-                                    <data>8.5</data>
-                                </div>
-                            </div>
-
                         </div>
                     </li>
 
                 </ul>
 
                 <!--Similar-->
-                <ul class="videos-list videos-rate-tab">
-                    <li>
-                        <div class="movie-card">
 
-                            <a href="./movie-details.html">
+                <ul class="videos-list videos-rate-tab"
+                    th:each="category : ${categoriesWithMovie}"
+                    th:if="${category.getType() == 1}" >
+
+                    <li th:each="media : ${category.media}">
+                        <div class="movie-card">
+                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
                                 <figure class="card-banner">
-                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                    <img th:src="${media.getThumbnail()}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
-                                <a href="./movie-details.html">
-                                    <h3 class="card-title">The Northman</h3>
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+                                    <h3 class="card-title align-content-center" th:text="${media.getTitle()}"></h3>
                                 </a>
-
-                                <div class="badge badge-outline">HD</div>
-                            </div>
-
-                            <div class="card-meta">
-                                <div class="duration">
-                                    <ion-icon name="time-outline"></ion-icon>
-
-                                    <time datetime="PT137M">137 min</time>
-                                </div>
-
-                                <div class="rating">
-                                    <ion-icon name="star"></ion-icon>
-
-                                    <data>8.5</data>
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="movie-card">
-
-                            <a href="./movie-details.html">
-                                <figure class="card-banner">
-                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
-                                </figure>
-                            </a>
-
-                            <div class="title-wrapper">
-                                <a href="./movie-details.html">
-                                    <h3 class="card-title">The Northman</h3>
-                                </a>
-
-                                <div class="badge badge-outline">HD</div>
-                            </div>
-
-                            <div class="card-meta">
-                                <div class="duration">
-                                    <ion-icon name="time-outline"></ion-icon>
-
-                                    <time datetime="PT137M">137 min</time>
-                                </div>
-
-                                <div class="rating">
-                                    <ion-icon name="star"></ion-icon>
-
-                                    <data>8.5</data>
-                                </div>
                             </div>
 
                         </div>
                     </li>
                 </ul>
 
-
-                <section class="upcoming" style="padding: 5vh 0;"
-                         th:each="category : ${categoriesWithMovie}"
-                         th:if="${category.getType() == 1}">
-                    <div class="container">
-                        <div class="flex-wrapper">
-                            <div class="title-wrapper">
-                                <p class="section-subtitle">Online Streaming</p>
-
-                                <h2 class="h2 section-title" th:text="${category.getName()}"></h2>
-                            </div>
-                            <a th:href="@{'/media/by-category/' + ${category.id}}">
-                                <p class="view-all-category">View all > </p>
-                            </a>
-                        </div>
-
-                        <ul class="movies-list has-scrollbar">
-                            <li th:each="media : ${category.media}">
-                                <div class="movie-card">
-
-                                    <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
-                                        <!--                            <a th:href="@{/movie/detail/{mediaId}/{mdId} (mediaId=${media.id}, mdId=${releaseMediaList.media.id})}">-->
-                                        <figure class="card-banner">
-                                            <img th:src="${media.getThumbnail()}">
-                                        </figure>
-                                    </a>
-
-                                    <div class="title-wrapper">
-                                        <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
-                                            <h3 class="card-title align-content-center" th:text="${media.getTitle()}"></h3>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
             </div>
         </section>
         <!-- contact -->

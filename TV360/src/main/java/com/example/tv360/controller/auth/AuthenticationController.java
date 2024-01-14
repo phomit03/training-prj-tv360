@@ -51,6 +51,11 @@ public class AuthenticationController {
 				model.addAttribute("error_admin", "The username already exists.");
 				return "auth_register";
 			}
+			else if (userService.existsByEmail(registrationDto.getEmail()))
+			{
+				model.addAttribute("error_admin", "The email already exists.");
+				return "auth_register";
+			}
 
 			userService.save(registrationDto);
 			redirectAttributes.addFlashAttribute("success", "Account successfully created!");

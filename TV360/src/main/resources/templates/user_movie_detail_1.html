@@ -14,74 +14,633 @@
         <section class="movie-detail">
             <div class="container">
                 <figure class="movie-detail-banner">
-                    <img alt="Free guy movie poster" style="max-width: 450px; max-height: 450px" th:src="${firstMediaDetail.thumbnail}">
+
+                    <img th:src="@{/user/assets/images/movie-4.png}" alt="Free guy movie poster">
+
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
                     </button>
+
                 </figure>
 
                 <div class="movie-detail-content">
-                    <p class="detail-subtitle" th:text="'Episode ' + ${firstMediaDetail.episode}"></p>
-                    <h3 class="h1 detail-title" th:text="${firstMediaDetail.title}"></h3>
+
+                    <p class="detail-subtitle">New Episodes</p>
+
+                    <h1 class="h1 detail-title">
+                        Free <strong>Guy</strong>
+                    </h1>
 
                     <div class="meta-wrapper">
+
                         <div class="badge-wrapper">
-                            <div class="badge badge-fill">12 +</div>
-                            <div class="badge badge-outline" th:text="${firstMediaDetail.quality}">HD</div>
+                            <div class="badge badge-fill">PG 13</div>
+
+                            <div class="badge badge-outline">HD</div>
                         </div>
 
                         <div class="ganre-wrapper">
-                            <h2 style="color:var(--citrine); font-weight: bold">Type</h2>
-                            <a th:each="categoryName : ${firstMediaDetail.listCategoryNames}" th:text="${categoryName}"></a>
-                        </div>
-                        <div class="ganre-wrapper">
-                            <h2 style="color:var(--citrine); font-weight: bold">Cast</h2>
-                            <a th:each="castFullName : ${firstMediaDetail.listCastFullNames}" th:text="${castFullName}"></a>
+                            <a href="#">Comedy,</a>
+
+                            <a href="#">Action,</a>
+
+                            <a href="#">Adventure,</a>
+
+                            <a href="#">Science Fiction</a>
                         </div>
 
                         <div class="date-time">
+
                             <div>
-                                <ion-icon name="earth-outline"></ion-icon>
-                                <span th:text="${firstMediaDetail.countryName}"></span>
+                                <ion-icon name="calendar-outline"></ion-icon>
+
+                                <time datetime="2021">2021</time>
                             </div>
+
                             <div>
                                 <ion-icon name="time-outline"></ion-icon>
-                                <time th:text="${firstMediaDetail.duration}"></time>
+
+                                <time datetime="PT115M">115 min</time>
                             </div>
+
                         </div>
+
                     </div>
 
-                    <p th:text="${firstMediaDetail.mediaDescription}" class="storyline"></p>
+                    <p class="storyline">
+                        A bank teller called Guy realizes he is a background character in an open world video game called Free
+                        City that will
+                        soon go offline.
+                    </p>
 
                     <div class="details-actions">
+
                         <button class="share">
                             <ion-icon name="share-social"></ion-icon>
+
                             <span>Share</span>
                         </button>
 
                         <div class="title-wrapper">
                             <p class="title">Prime Video</p>
+
                             <p class="text">Streaming Channels</p>
                         </div>
 
                         <button class="btn btn-primary">
                             <ion-icon name="play"></ion-icon>
+
                             <span>Watch Now</span>
                         </button>
+
                     </div>
 
                     <a href="./assets/images/movie-4.png" download class="download-btn">
                         <span>Download</span>
+
                         <ion-icon name="download-outline"></ion-icon>
                     </a>
+
                 </div>
             </div>
         </section>
 
-        <!-- end content-->
         <section class="top-rated tv-series" style="padding-top: 50px; padding-bottom: 150px">
-            <!-- Your existing code for top-rated TV series section -->
+            <div class="container">
+
+                <p class="section-subtitle">BEST TV SERIES</p>
+
+                <h2 class="h2 section-title">World Best TV Series</h2>
+
+                <ul class="filter-list">
+
+                    <li>
+                        <button class="filter-btn" onclick="changeTabTopRate('moviesRateTab', this)">Episodes</button>
+                    </li>
+
+                    <li>
+                        <button class="filter-btn" onclick="changeTabTopRate('videosRateTab', this)">Similar</button>
+                    </li>
+
+                </ul>
+
+                <ul class="movies-list movies-rate-tab">
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="videos-list videos-rate-tab">
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="movie-card">
+
+                            <a href="./movie-details.html">
+                                <figure class="card-banner">
+                                    <img src="./assets/images/upcoming-1.png" alt="The Northman movie poster">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a href="./movie-details.html">
+                                    <h3 class="card-title">The Northman</h3>
+                                </a>
+
+                                <div class="badge badge-outline">HD</div>
+                            </div>
+
+                            <div class="card-meta">
+                                <div class="duration">
+                                    <ion-icon name="time-outline"></ion-icon>
+
+                                    <time datetime="PT137M">137 min</time>
+                                </div>
+
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
+
+                                    <data>8.5</data>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
         </section>
+        <!-- end content-->
 
         <!-- contact -->
         <section class="cta" th:replace="user_fragments::contact"></section>
@@ -95,7 +654,47 @@
 <div th:replace="user_fragments::script"></div>
 
 <script>
-    // Your existing script for tab change
+    function changeTabNewRelease(tabId, button) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        var movieList = document.querySelector('.movies-release-tab');
+        var videoList = document.querySelector('.videos-release-tab');
+
+        if (tabId === 'moviesReleaseTab') {
+            movieList.style.display = 'flex';
+            videoList.style.display = 'none';
+        } else if (tabId === 'videosReleaseTab') {
+            movieList.style.display = 'none';
+            videoList.style.display = 'flex';
+        }
+    }
+</script>
+
+<script>
+    function changeTabTopRate(tabId, button) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        var movieList = document.querySelector('.movies-rate-tab');
+        var videoList = document.querySelector('.videos-rate-tab');
+
+        if (tabId === 'moviesRateTab') {
+            movieList.style.display = 'grid';
+            videoList.style.display = 'none';
+        } else if (tabId === 'videosRateTab') {
+            movieList.style.display = 'none';
+            videoList.style.display = 'grid';
+        }
+    }
 </script>
 
 </body>
