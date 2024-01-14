@@ -38,7 +38,8 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c "+
             "LEFT JOIN m.categories ct "+
-            "LEFT JOIN m.country co ")
+            "LEFT JOIN m.country co "+
+            "WHERE m.status =1 and c.status =1 and ct.status =1 and co.status=1")
     List<MediaDetailResponse> getMediaDetails();
 
     // tim theo 1 id media và sắp xếp theo episode (ASC)
@@ -57,7 +58,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.cast c "+
             "LEFT JOIN m.categories ct "+
             "LEFT JOIN m.country co "+
-            "WHERE m.id = :mediaId " +
+            "WHERE m.id = :mediaId and c.status=1 and ct.status=1 and co.status =1 " +
             "ORDER BY md.episode ASC")
     List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(@Param("mediaId") Long mediaId);
 
@@ -65,7 +66,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT DISTINCT ct.name FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.categories ct " +
-            "WHERE m.id = :mediaId")
+            "WHERE m.id = :mediaId and ct.status = 1")
     List<String> getCategoryNamesByMediaDetailId(@Param("mediaId") Long mediaId);
 
     // lay ra cac type va name cua cast
@@ -76,7 +77,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c " +
-            "WHERE m.id = :mediaId")
+            "WHERE m.id = :mediaId and c.status = 1")
     List<CastItem> getCastByMediaDetailId(@Param("mediaId") Long mediaId);
 
     // lay ra cac type va name cua cast
@@ -87,7 +88,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.categories ct " +
-            "WHERE m.id = :mediaId")
+            "WHERE m.id = :mediaId and ct.status = 1")
     List<CategoryItem> getCategoryByMediaDetailId(@Param("mediaId") Long mediaId);
 
     // loc theo categoryname
@@ -108,7 +109,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.country co " +
             "LEFT JOIN m.categories mct " +
             "LEFT JOIN m.cast mcast " +
-            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) AND ct.name = :categoryName")
+            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) AND ct.name = :categoryName and  ct.status = 1")
     List<MediaDetailResponse> getMediaDetailsByCategoryName(@Param("categoryName") String categoryName);
 
 
