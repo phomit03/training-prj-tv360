@@ -110,7 +110,11 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getAllCategoriesWithMedia() {
-        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND m.status = 1 ORDER BY m.createdAt DESC";
+        String jpql = "SELECT DISTINCT c FROM Category c " +
+                "JOIN FETCH c.media m " +
+                "JOIN FETCH m.mediaDetails md " +
+                "WHERE m.status = 1 AND md IS NOT NULL " +
+                "ORDER BY m.createdAt DESC";
 
         TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
         query.setMaxResults(15);
@@ -132,14 +136,22 @@ public class CategoryService {
         return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaList.size());
     }
 
+    //get list Media by categoryId (check media-details)
     public List<MediaDTO> getMediaByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found."));
 
         List<MediaDTO> mediaList = category.getMedia().stream()
+                .filter(media -> hasMediaDetail(media))
                 .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
                 .collect(Collectors.toList());
 
         return mediaList;
     }
+
+    //check media if any media-details
+    private boolean hasMediaDetail(Media media) {
+        return media.getMediaDetails() != null && !media.getMediaDetails().isEmpty();
+    }
+
 }

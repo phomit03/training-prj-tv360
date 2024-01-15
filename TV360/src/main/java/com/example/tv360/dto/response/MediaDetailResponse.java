@@ -1,7 +1,5 @@
 package com.example.tv360.dto.response;
 
-import com.example.tv360.dto.CastDTO;
-import com.example.tv360.entity.Media;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +16,11 @@ public class MediaDetailResponse {
     private String mediaDescription;
     private List<CastItem> castList;
     private List<CategoryItem> categoryList;
-    private List<String> listCategoryNames;
     private String countryName;
     private String sourceUrl;
     private String duration;
     private String quality;
+    private Integer rating;
 
     public MediaDetailResponse(Long id,
                                String title,
@@ -33,7 +31,8 @@ public class MediaDetailResponse {
                                String countryName,
                                String sourceUrl,
                                String duration,
-                               String quality
+                               String quality,
+                               Integer rating
     ) {
         this.id = id;
         this.title = title;
@@ -45,5 +44,27 @@ public class MediaDetailResponse {
         this.sourceUrl = sourceUrl;
         this.duration = duration;
         this.quality = quality;
+        this.rating = rating;
+    }
+
+    public MediaDetailResponse(Long id,
+                               String title,
+                               Integer mediaType,
+                               String thumbnail,
+                               String mediaDescription,
+                               String sourceUrl,
+                               String duration,
+                               String quality,
+                               Integer rating
+    ) {
+        this.id = id;
+        this.title = title;
+        this.mediaType = mediaType;
+        this.thumbnail = thumbnail;
+        this.mediaDescription = mediaDescription;
+        this.sourceUrl = sourceUrl;
+        this.duration = duration;
+        this.quality = quality;
+        this.rating = rating;
     }
 }

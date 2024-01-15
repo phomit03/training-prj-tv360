@@ -1,10 +1,7 @@
 package com.example.tv360.controller.admin;
 
-import com.example.tv360.dto.CategoryDTO;
-import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
-import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -24,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

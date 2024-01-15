@@ -1,11 +1,6 @@
 package com.example.tv360.controller.user;
 
-import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
-import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.dto.MediaDetailDTO;
-import com.example.tv360.dto.response.CastItem;
-import com.example.tv360.dto.response.CategoryItem;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
@@ -14,27 +9,20 @@ import com.example.tv360.repository.MediaRepository;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Controller
-@RequestMapping("/movie/detail")
+@RequestMapping()
 public class UserMediaDetailController {
 
     @Value("${page.size}")
@@ -56,12 +44,12 @@ public class UserMediaDetailController {
 
 
     // media detail
-    @GetMapping("/{mediaId}")
-    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId,
-                                @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
-                                Model model) {
+    @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
+    public String getMediaDetail(@PathVariable Long mediaId,
+                                 @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
+                                 Model model) {
         try {
-            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
+            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
 
             if (!listMediaDetails.isEmpty()) {
                 int selectedEpisodeIndex = episode - 1;
@@ -70,18 +58,18 @@ public class UserMediaDetailController {
             } else {
                 return "error404";
             }
+
             model.addAttribute("listMediaDetails", listMediaDetails);
 
-            List<Media> relatedMedia = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
-            model.addAttribute("relatedMedia", relatedMedia);
+            //related-media-by-category
+            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
+            model.addAttribute("relatedMediaList", relatedMediaList);
 
-            return "user_movie_detail";
+            return "user_media_detail";
         } catch (Exception e) {
-            // Xử lý lỗi nếu cần
-            return "error404"; // Trả về trang lỗi
+            return "error404";
         }
     }
-
 
     @GetMapping("/media/{mediaId}")
     public ResponseEntity<List<CategoryDTO>> getCategoriesByMediaDetailId(@PathVariable Long mediaId) {
@@ -92,13 +80,6 @@ public class UserMediaDetailController {
             // Handle exceptions or return an appropriate response
             return ResponseEntity.status(500).body(null);
         }
-    }
-
-
-    @GetMapping()
-    public String movieDetail(Model model) {
-        model.addAttribute("title", "Movie Detail");
-        return "user_movie_detail";
     }
 
     @GetMapping("/by-category/{categoryName}")

@@ -1,6 +1,5 @@
 package com.example.tv360.repository;
 
-import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.response.CastItem;
 import com.example.tv360.dto.response.CategoryItem;
 import com.example.tv360.dto.response.MediaDetailResponse;
@@ -11,9 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> {
@@ -22,26 +19,6 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
 
     @Query("SELECT md FROM MediaDetail md JOIN FETCH md.media WHERE md.rate = 5 AND md.media.status = 1 AND md.status = 1 ORDER BY md.createdAt DESC")
     List<MediaDetail> findTopRated(Pageable pageable);
-
-    // getall
-    @Query("SELECT DISTINCT  new com.example.tv360.dto.response.MediaDetailResponse(" +
-            "m.id, "+
-            "m.title, " +
-            "m.type, " +
-            "md.episode, " +
-            "m.thumbnail, " +
-            "m.description, " +
-            "co.name, " +
-            "md.sourceUrl, " +
-            "md.duration, " +
-            "md.quality) " +
-            "FROM MediaDetail md " +
-            "LEFT JOIN md.media m " +
-            "LEFT JOIN m.cast c "+
-            "LEFT JOIN m.categories ct "+
-            "LEFT JOIN m.country co "+
-            "WHERE m.status =1 and c.status =1 and ct.status =1 and co.status=1")
-    List<MediaDetailResponse> getMediaDetails();
 
     // tim theo 1 id media và sắp xếp theo episode (ASC)
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
@@ -54,7 +31,8 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "co.name, " +
             "md.sourceUrl, " +
             "md.duration, " +
-            "md.quality) " +
+            "md.quality, " +
+            "md.rate) " +
             "FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c "+
@@ -62,9 +40,27 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.country co "+
             "WHERE m.id = :mediaId and c.status=1 and ct.status=1 and co.status =1 " +
             "ORDER BY md.episode ASC")
-    List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(@Param("mediaId") Long mediaId);
+    List<MediaDetailResponse> getMovieDetailByIdASCEpisodes(@Param("mediaId") Long mediaId);
 
-    // lay ra tat ca categoryname theo mediaDetailID
+    @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
+            "m.id, "+
+            "m.title, " +
+            "m.type, " +
+            "m.thumbnail, " +
+            "m.description, " +
+            "md.sourceUrl, " +
+            "md.duration, " +
+            "md.quality," +
+            "md.rate) " +
+            "FROM MediaDetail md " +
+            "LEFT JOIN md.media m " +
+            "LEFT JOIN m.categories ct "+
+            "WHERE m.id = :mediaId and ct.status=1")
+    List<MediaDetailResponse> getVideoDetail(@Param("mediaId") Long mediaId);
+
+
+
+    // lay ra all category name theo mediaDetailID
     @Query("SELECT DISTINCT ct.name FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.categories ct " +
@@ -93,7 +89,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "WHERE m.id = :mediaId and ct.status = 1")
     List<CategoryItem> getCategoryByMediaDetailId(@Param("mediaId") Long mediaId);
 
-    // loc theo categoryname
+    // loc theo category name
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
@@ -104,7 +100,8 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "co.name, " +
             "md.sourceUrl, " +
             "md.duration, " +
-            "md.quality) " +
+            "md.quality," +
+            "md.rate) " +
             "FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c " +

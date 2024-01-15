@@ -74,7 +74,6 @@ public class UserHomePageController {
 
         List<MediaDTO> mediaByCategory = categoryService.getMediaByCategoryId(categoryId);
 
-        // Sử dụng trang cụ thể và kích thước trang để lấy ra dữ liệu phân trang
         Page<MediaDTO> page = categoryService.findPaginated(pageNo, pageSize, mediaByCategory);
 
         List<MediaDTO> mediaList = page.getContent();

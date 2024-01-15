@@ -1,7 +1,6 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CategoryDTO;
-import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Category;
@@ -23,7 +22,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -164,7 +162,7 @@ public class MediaDetailService {
     }
 
 
-    // get theo categoy name
+    // get theo category name
     public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
         try {
             return mediaDetailRepository.getMediaDetailsByCategoryName(categoryName);
@@ -174,25 +172,31 @@ public class MediaDetailService {
     }
 
     //service details (le-cuong)
-    public List<MediaDetailResponse> getMediaDetailByIdASCEpisodes(Long mediaId) {
+    public List<MediaDetailResponse> getMediaDetailByMediaId(Long mediaId) {
         try {
-            List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMediaDetailByIdASCEpisodes(mediaId);
+            Media media = mediaRepository.findById(mediaId).orElse(null);
 
-            for (MediaDetailResponse mediaDetailResponse : mediaDetailResponseList) {
-                updateMediaDetailResponse(mediaDetailResponse, mediaId);
+            if (media != null && media.getType() == 3) {
+                List<MediaDetailResponse> videoDetailResponseList = mediaDetailRepository.getVideoDetail(mediaId);
+
+                for (MediaDetailResponse videoDetailResponse : videoDetailResponseList) {
+                    videoDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+                }
+
+                return videoDetailResponseList;
+            } else {
+                List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMovieDetailByIdASCEpisodes(mediaId);
+
+                for (MediaDetailResponse mediaDetailResponse : mediaDetailResponseList) {
+                    mediaDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+                    mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
+                }
+
+                return mediaDetailResponseList;
             }
-
-            return mediaDetailResponseList;
         } catch (Exception e) {
-            // Log lỗi hoặc xử lý lỗi theo nhu cầu của bạn
             return Collections.emptyList();
         }
-    }
-
-    private void updateMediaDetailResponse(MediaDetailResponse mediaDetailResponse, Long mediaId) {
-        mediaDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
-        mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
-        mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
     }
 
     public List<Media> getRelatedMediaWithoutCurrent(Media media) {
@@ -203,7 +207,7 @@ public class MediaDetailService {
         List<Media> relatedMedia = mediaDetails.stream()
                 .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
                 .flatMap(category -> category.getMedia().stream())
-                .filter(relatedMediaItem -> !relatedMediaItem.equals(media)) // Loại bỏ media đang được chọn
+                .filter(relatedMediaItem -> !relatedMediaItem.equals(media))
                 .distinct()
                 .collect(Collectors.toList());
 

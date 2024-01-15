@@ -39,8 +39,7 @@
         height: 100%;
     }
 
-    /* Active class to show the overlay */
-    .active {
+    .activeVideo {
         display: flex;
     }
 </style>
@@ -55,8 +54,9 @@
         <!-- content-->
         <section class="movie-detail">
             <div class="container">
-                <figure class="movie-detail-banner" onclick="showVideoPopup()">
-                    <img style="max-width: 450px; max-height: 450px" th:src="@{${selectedMediaDetail.thumbnail}}">
+                <figure class="movie-detail-banner" onclick="showVideoPopup()"
+                        th:style="${(selectedMediaDetail.mediaType == 3) ? 'height: 33vh;' : ''}">
+                    <img style="width: 100%" th:src="@{${selectedMediaDetail.thumbnail}}">
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
                     </button>
@@ -79,46 +79,55 @@
 
                 <div class="movie-detail-content">
                     <div class="badge-wrapper">
-                        <p class="badge badge-outline" style="margin: 0 10px 10px 0" th:text="${selectedMediaDetail.quality}"></p>
+                        <p class="badge badge-outline" style="margin: 0 10px 10px 0"
+                           th:text="${selectedMediaDetail.quality}"
+                           th:unless="${selectedMediaDetail.mediaType == 3}"></p>
                         <p class="detail-subtitle"
                            th:text="${selectedMediaDetail.episode == null ? '' : ('Episode ' + selectedMediaDetail.episode)}"></p>
                     </div>
 
                     <h3 class="h2 detail-title" th:text="${selectedMediaDetail.title}"></h3>
 
-                    <!-- chua fix chua lay duoc category id-->
                     <div class="meta-wrapper">
-                        <div class="ganre-wrapper">
-                            <h4 style="color:var(--citrine); font-weight: bold">Category:</h4>
+                        <div class="genre-wrapper" >
+                            <h4 style="color:var(--citrine); font-weight: bold">Categories:</h4>
                             <a th:each="category, iterStat : ${selectedMediaDetail.categoryList}"
                                 th:text="${category.name + (iterStat.last ? '' : ', ')}"
                                 th:href="@{'/media/by-category/' + ${category.categoryId}}"></a>
                         </div>
 
-                        <div class="ganre-wrapper">
-                            <h4 style="color:var(--citrine); font-weight: bold">Director:</h4>
-                            <a th:each="director, iterStat : ${selectedMediaDetail.castList}"
-                               th:if="${director.type == 1}"
-                               th:text="${director.fullName + (iterStat.last ? '' : ', ')}"></a>
+                        <th:block class="info-video" th:if="${selectedMediaDetail.mediaType == 3}">
+                            <div class="badge-wrapper">
+                                <p class="badge badge-outline" th:text="${selectedMediaDetail.quality}"></p>
+                            </div>
+
+                            <div class="date-time">
+                                <div style="font-size: 15px">
+                                    <ion-icon name="time-outline"></ion-icon>
+                                    <time th:text="${selectedMediaDetail.duration}"></time>
+                                </div>
+                            </div>
+
+                            <span class="rating-detail"
+                                  th:utext="${'&#9733;'.repeat(selectedMediaDetail.rating)}"></span>
+                        </th:block>
+
+                        <div class="genre-wrapper" th:unless="${selectedMediaDetail.mediaType == 3}">
+                            <h4 style="color:var(--citrine); font-weight: bold">Directors:</h4>
+                            <a th:each="cast, iterStat : ${selectedMediaDetail.castList}"
+                               th:if="${cast.type == 1}"
+                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"></a>
                         </div>
 
-                        <div class="ganre-wrapper" th:if="${selectedMediaDetail.getMediaDescription() == 2}">
-                            <h4 style="color:var(--citrine); font-weight: bold">Actor:</h4>
-                            <a th:each="actor, iterStat : ${selectedMediaDetail.castList}"
-                               th:if="${actor.type == 2}"
-                               th:text="${actor.fullName + (iterStat.last ? '' : ', ')}"></a>
+                        <div class="genre-wrapper" th:unless="${selectedMediaDetail.mediaType == 3}">
+                            <h4 style="color:var(--citrine); font-weight: bold">Actors:</h4>
+                            <a th:each="cast, iterStat : ${selectedMediaDetail.castList}"
+                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"
+                               th:if="${cast.type == 2}"></a>
                         </div>
 
-<!--                        <div class="ganre-wrapper">-->
-<!--                            <h4 style="color:var(&#45;&#45;citrine); font-weight: bold">Actor:</h4>-->
-<!--                            <a th:each="actor, iterStat : ${firstMediaDetail.listCastFullNames}"-->
-<!--                               th:if="${firstMediaDetail.listCastTypes.contains(2)}"-->
-<!--                               th:text="${actor + (iterStat.last ? '' : ', ')}"></a>-->
-<!--                        </div>-->
-
-
-                        <div class="date-time">
-                            <div style="font-size: 14px">
+                        <div class="date-time" th:unless="${selectedMediaDetail.mediaType == 3}">
+                            <div style="font-size: 15px">
                                 <ion-icon name="earth-outline"></ion-icon>
 
                                 <span th:text="${selectedMediaDetail.countryName}"/>
@@ -126,13 +135,13 @@
 
                             <div style="font-size: 15px">
                                 <ion-icon name="time-outline"></ion-icon>
-
                                 <time th:text="${selectedMediaDetail.duration}"></time>
                             </div>
                         </div>
                     </div>
 
-                    <p th:text="${selectedMediaDetail.mediaDescription}" class="storyline"/>
+                    <p th:text="${selectedMediaDetail.mediaDescription}" class="storyline"
+                       th:style="${(selectedMediaDetail.mediaType == 3) ? 'line-height: 1; margin-bottom: 30px;' : ''}">/>
 
                     <div class="details-actions">
 
@@ -186,40 +195,40 @@
 
                 <!--Episodes-->
                 <ul class="movies-list movies-rate-tab" th:if="${#lists.size(listMediaDetails) > 1}">
-                    <li th:each="listMovie : ${listMediaDetails}">
+                    <li th:each="mediaDetail : ${listMediaDetails}">
                         <div class="movie-card">
-                            <a th:href="@{'/movie/detail/' + ${listMovie.id} + '?episode=' + ${listMovie.episode}}">
+                            <a th:href="@{'/movie/detail/' + ${mediaDetail.id} + '?episode=' + ${mediaDetail.episode}}">
                                 <figure class="card-banner">
-                                    <img th:src="${listMovie.thumbnail}">
+                                    <img th:src="@{${mediaDetail.thumbnail}}">
                                 </figure>
                             </a>
 
                             <div class="title-wrapper">
                                 <a href="">
-                                    <h3 class="card-title" th:text="${listMovie.title}"></h3>
+                                    <h3 class="card-title" th:text="${mediaDetail.title}"></h3>
                                 </a>
 
-                                <div class="badge badge-outline" th:text="${listMovie.quality}"></div>
+                                <div class="badge badge-outline" th:text="${mediaDetail.quality}"></div>
                             </div>
 
                             <div class="card-meta" style="gap: 5px">
-                                <div class="episode" th:if="${listMovie.episode != null}">
+                                <div class="episode" th:if="${mediaDetail.episode != null}">
                                     <ion-icon name="film-outline"></ion-icon>
 
-                                    <data th:text="${'Episode ' + '0' + listMovie.episode}"></data>
+                                    <data th:text="${'Episode ' + '0' + mediaDetail.episode}"></data>
                                 </div>
 
                                 <div class="duration">
                                     <ion-icon name="time-outline"></ion-icon>
 
-                                    <time th:text="${listMovie.duration}"></time>
+                                    <time th:text="${mediaDetail.duration}"></time>
                                 </div>
 
-<!--                                <div class="rating">-->
-<!--                                    <ion-icon name="star"></ion-icon>-->
+                                <div class="rating">
+                                    <ion-icon name="star"></ion-icon>
 
-<!--                                    <data th:text="${topRatedMedia.getRate()}"></data>-->
-<!--                                </div>-->
+                                    <data th:text="${mediaDetail.rating}"></data>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -229,19 +238,37 @@
                 <!--Similar-->
                 <ul class="videos-list videos-rate-tab"
                     th:style="${(#lists.size(listMediaDetails) > 1) ? '' : 'display: flex;'}">
-                    <li th:each="media : ${relatedMedia}">
-                        <div class="movie-card">
-                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
-                                <figure class="card-banner">
-                                    <img th:src="${media.getThumbnail()}">
-                                </figure>
-                            </a>
 
-                            <div class="title-wrapper">
-                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
-                                    <h3 class="card-title align-content-center" th:text="${media.getTitle()}"></h3>
+                    <li th:each="relatedMedia : ${relatedMediaList}">
+                        <div class="movie-card">
+
+                            <th:block th:if="${selectedMediaDetail.mediaType == 3}">
+                                <a th:href="@{/video/detail/{mediaId} (mediaId=${relatedMedia.id})}">
+                                    <figure class="card-banner" style="aspect-ratio: 5 / 3;">
+                                        <img th:src="@{${relatedMedia.thumbnail}}">
+                                    </figure>
                                 </a>
-                            </div>
+
+                                <div class="title-wrapper">
+                                    <a th:href="@{/video/detail/{mediaId} (mediaId=${relatedMedia.id})}">
+                                        <h3 class="card-title align-content-center" th:text="${relatedMedia.title}"></h3>
+                                    </a>
+                                </div>
+                            </th:block>
+
+                            <th:block th:unless="${selectedMediaDetail.mediaType == 3}">
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${relatedMedia.id})}">
+                                    <figure class="card-banner">
+                                        <img th:src="@{${relatedMedia.thumbnail}}">
+                                    </figure>
+                                </a>
+
+                                <div class="title-wrapper">
+                                    <a th:href="@{/movie/detail/{mediaId} (mediaId=${relatedMedia.id})}">
+                                        <h3 class="card-title align-content-center" th:text="${relatedMedia.title}"></h3>
+                                    </a>
+                                </div>
+                            </th:block>
                         </div>
                     </li>
                 </ul>
@@ -305,12 +332,12 @@
 <script>
     function showVideoPopup() {
         var videoOverlay = document.getElementById("videoOverlay");
-        videoOverlay.classList.add("active");
+        videoOverlay.classList.add("activeVideo");
     }
 
     function closeVideoPopup() {
         var videoOverlay = document.getElementById("videoOverlay");
-        videoOverlay.classList.remove("active");
+        videoOverlay.classList.remove("activeVideo");
     }
 
     // Prevent closing when clicking inside the popup
