@@ -1,6 +1,7 @@
 package com.example.tv360.dto.response;
 
 import com.example.tv360.dto.CastDTO;
+import com.example.tv360.entity.Media;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

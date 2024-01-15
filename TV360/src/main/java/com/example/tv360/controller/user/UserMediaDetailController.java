@@ -54,113 +54,27 @@ public class UserMediaDetailController {
         this.mediaRepository = mediaRepository;
     }
 
-    @GetMapping("/media-detail/create")
-    public String showCreateMediaDetail(Model model){
-        List<MediaDTO> mediaList = mediaService.getAllMedias();
-        model.addAttribute("mediaList", mediaList);
-
-        model.addAttribute("mediaDetailDTO", new MediaDetailDTO());
-        return "admin_media_detail_form";
-    }
-
-    @PostMapping("/media-detail/create/save")
-    public String createMediaDetail(@ModelAttribute MediaDetailDTO mediaDetailDTO, RedirectAttributes redirectAttributes) {
-        try {
-            mediaDetailService.createMediaDetail(mediaDetailDTO);
-            redirectAttributes.addFlashAttribute("success", "Create successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to create!");
-        }
-        return "redirect:/admin/media-details";
-    }
-
-    @GetMapping("/media-detail/update/{id}")
-    public String showUpdateMediaDetail(@PathVariable Long id, Model model){
-        MediaDetailDTO mediaDetailDTO = mediaDetailService.getMediaDetailById(id);
-        model.addAttribute("mediaDetailDTO", mediaDetailDTO);
-
-        List<MediaDTO> mediaList = mediaService.getAllMedias();
-        model.addAttribute("mediaList", mediaList);
-
-        if (mediaDetailDTO == null){
-            return "redirect:/admin/media-details";
-        }
-
-        return "admin_media_detail_form";
-    }
-
-    @PostMapping("/media-detail/update/{id}")
-    public String updateMediaDetail(@PathVariable Long id, @ModelAttribute("mediaDetailDTO") MediaDetailDTO mediaDetailDTO, RedirectAttributes attributes){
-        try {
-            mediaDetailService.updateMediaDetail(id, mediaDetailDTO);
-            attributes.addFlashAttribute("success", "Update Successfully!");
-        }catch (Exception e){
-            e.printStackTrace();
-            attributes.addFlashAttribute("error", "Failed to update");
-        }
-        return "redirect:/admin/media-details";
-    }
-
-    @GetMapping("/media-detail/delete/{id}")
-    public ResponseEntity<String> deleteMediaDetail(@PathVariable Long id){
-        try {
-            mediaDetailService.softDeleteMediaDetail(id);
-            return ResponseEntity.ok("Delete media detail successfully");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error!");
-        }
-    }
-
-    // media detail
-//    @GetMapping("/{mediaId}")
-//    public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId,
-//                                                @RequestParam(name = "episode", required = false) Integer episode,
-//                                                Model model) {
-//        List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
-//        model.addAttribute("categoriesWithMovie", categories);
-//        try {
-//            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
-//
-//            if (!mediaDetails.isEmpty()) {
-//                // Lấy record đầu tiên của MediaDetail
-//                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
-//
-//                model.addAttribute("firstMediaDetail", firstMediaDetail);
-//                model.addAttribute("mediaDetails", mediaDetails);
-//            } else {
-//                return null;
-//            }
-//            return "user_movie_detail";
-//        } catch (Exception e) {
-//            // Xử lý lỗi nếu cần
-//            return "error404"; // Trả về trang lỗi
-//        }
-//    }
 
     // media detail
     @GetMapping("/{mediaId}")
     public String getMediaDetailByIdASCEpisodes(@PathVariable Long mediaId,
-                                                @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
-                                                Model model) {
-        List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
-        model.addAttribute("categoriesWithMovie", categories);
-
+                                @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
+                                Model model) {
         try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
-                if (!mediaDetails.isEmpty()) {
-                    int selectedEpisodeIndex = episode - 1;
-//                MediaDetailResponse firstMediaDetail = mediaDetails.get(0);
-//                model.addAttribute("firstMediaDetail", firstMediaDetail);
-                MediaDetailResponse selectedMediaDetail = mediaDetails.get(selectedEpisodeIndex);
+            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByIdASCEpisodes(mediaId);
+
+            if (!listMediaDetails.isEmpty()) {
+                int selectedEpisodeIndex = episode - 1;
+                MediaDetailResponse selectedMediaDetail = listMediaDetails.get(selectedEpisodeIndex);
                 model.addAttribute("selectedMediaDetail", selectedMediaDetail);
             } else {
-                return null;
+                return "error404";
             }
+            model.addAttribute("listMediaDetails", listMediaDetails);
 
-            model.addAttribute("mediaDetails", mediaDetails);
+            List<Media> relatedMedia = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
+            model.addAttribute("relatedMedia", relatedMedia);
+
             return "user_movie_detail";
         } catch (Exception e) {
             // Xử lý lỗi nếu cần

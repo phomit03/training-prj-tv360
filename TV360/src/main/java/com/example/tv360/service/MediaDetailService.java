@@ -1,9 +1,11 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Category;
+import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
@@ -162,40 +164,6 @@ public class MediaDetailService {
     }
 
 
-//    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
-//        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
-//
-//        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
-//
-//        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
-//        query.setParameter("categoryNames", categoryNames);
-//        query.setMaxResults(15);
-//
-//        List<Category> categories = query.getResultList();
-//
-//        // Lọc danh sách để chỉ giữ lại các đối tượng có title duy nhất
-//        List<Category> uniqueCategories = categories.stream()
-//                .collect(Collectors.toMap(Category::getName, Function.identity(), (existing, replacement) -> existing))
-//                .values()
-//                .stream()
-//                .collect(Collectors.toList());
-//
-//        // Kiểm tra và lọc theo mediaId
-//        List<Category> filteredCategories = uniqueCategories.stream()
-//                .filter(category ->
-//                        category.getMedia() != null &&
-//                                category.getMedia().stream()
-//                                        .anyMatch(media -> media.getId() != null && media.getId().equals(mediaId))
-//                )
-//                .collect(Collectors.toList());
-//
-//        return filteredCategories.stream()
-//                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
-//                .collect(Collectors.toList());
-//    }
-
-
-
     // get theo categoy name
     public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
         try {
@@ -226,5 +194,21 @@ public class MediaDetailService {
         mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
         mediaDetailResponse.setListCategoryNames(mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId));
     }
+
+    public List<Media> getRelatedMediaWithoutCurrent(Media media) {
+
+        Set<MediaDetail> mediaDetails = media.getMediaDetails();
+
+        // Tìm ra media liên quan từ danh sách media-details
+        List<Media> relatedMedia = mediaDetails.stream()
+                .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
+                .flatMap(category -> category.getMedia().stream())
+                .filter(relatedMediaItem -> !relatedMediaItem.equals(media)) // Loại bỏ media đang được chọn
+                .distinct()
+                .collect(Collectors.toList());
+
+        return relatedMedia;
+    }
+
 
 }
