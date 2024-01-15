@@ -27,6 +27,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT DISTINCT  new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
+            "m.type, " +
             "md.episode, " +
             "m.thumbnail, " +
             "m.description, " +
@@ -46,6 +47,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
+            "m.type, " +
             "md.episode, " +
             "m.thumbnail, " +
             "m.description, " +
@@ -95,6 +97,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
+            "m.type, " +
             "md.episode, " +
             "m.thumbnail, " +
             "m.description, " +

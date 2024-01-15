@@ -12,6 +12,7 @@ import java.util.List;
 public class MediaDetailResponse {
     private Long id;
     private String title;
+    private Integer mediaType;
     private Integer episode;
     private String thumbnail;
     private String mediaDescription;
@@ -25,6 +26,7 @@ public class MediaDetailResponse {
 
     public MediaDetailResponse(Long id,
                                String title,
+                               Integer mediaType,
                                Integer episode,
                                String thumbnail,
                                String mediaDescription,
@@ -35,6 +37,7 @@ public class MediaDetailResponse {
     ) {
         this.id = id;
         this.title = title;
+        this.mediaType = mediaType;
         this.episode = episode;
         this.thumbnail = thumbnail;
         this.mediaDescription = mediaDescription;
