@@ -82,6 +82,19 @@ public class UserMediaDetailController {
         }
     }
 
+
+    @GetMapping("/media/{mediaId}")
+    public ResponseEntity<List<CategoryDTO>> getCategoriesByMediaDetailId(@PathVariable Long mediaId) {
+        try {
+            List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
+            return ResponseEntity.ok(categories );
+        } catch (Exception e) {
+            // Handle exceptions or return an appropriate response
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
     @GetMapping()
     public String movieDetail(Model model) {
         model.addAttribute("title", "Movie Detail");
