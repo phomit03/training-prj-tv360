@@ -55,7 +55,7 @@
         <section class="movie-detail">
             <div class="container">
                 <figure class="movie-detail-banner" onclick="showVideoPopup()"
-                        th:style="${(selectedMediaDetail.mediaType == 3) ? 'height: 33vh;' : ''}">
+                        th:style="${(selectedMediaDetail.mediaType == 3) ? 'height: 33vh; max-width: 400px;' : ''}">
                     <img style="width: 100%" th:src="@{${selectedMediaDetail.thumbnail}}">
                     <button class="play-btn">
                         <ion-icon name="play-circle-outline"></ion-icon>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                <div class="movie-detail-content">
+                <div class="movie-detail-content" th:style="${(selectedMediaDetail.mediaType == 3) ? 'max-width: 700px;' : ''}">
                     <div class="badge-wrapper">
                         <p class="badge badge-outline" style="margin: 0 10px 10px 0"
                            th:text="${selectedMediaDetail.quality}"
@@ -123,8 +123,8 @@
                         <div class="genre-wrapper" th:unless="${selectedMediaDetail.mediaType == 3}">
                             <h4 style="color:var(--citrine); font-weight: bold">Actors:</h4>
                             <a th:each="cast, iterStat : ${selectedMediaDetail.castList}"
-                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"
                                th:if="${cast.type == 2}"
+                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"
                                th:href="@{'/media/by-cast/' + ${cast.castId}}"></a>
                         </div>
 
@@ -132,7 +132,8 @@
                             <div style="font-size: 15px">
                                 <ion-icon name="earth-outline"></ion-icon>
 
-                                <span th:text="${selectedMediaDetail.countryName}"/>
+                                <a th:text="${selectedMediaDetail.countryName}"
+                                   th:href="@{'/media/by-country/' + ${selectedMediaDetail.countryId}}"/>
                             </div>
 
                             <div style="font-size: 15px">

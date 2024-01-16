@@ -16,6 +16,7 @@ public class MediaDetailResponse {
     private String mediaDescription;
     private List<CastItem> castList;
     private List<CategoryItem> categoryList;
+    private Long countryId;
     private String countryName;
     private String sourceUrl;
     private String duration;
@@ -28,6 +29,7 @@ public class MediaDetailResponse {
                                Integer episode,
                                String thumbnail,
                                String mediaDescription,
+                               Long countryId,
                                String countryName,
                                String sourceUrl,
                                String duration,
@@ -40,6 +42,7 @@ public class MediaDetailResponse {
         this.episode = episode;
         this.thumbnail = thumbnail;
         this.mediaDescription = mediaDescription;
+        this.countryId = countryId;
         this.countryName = countryName;
         this.sourceUrl = sourceUrl;
         this.duration = duration;

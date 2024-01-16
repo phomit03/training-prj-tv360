@@ -1,15 +1,18 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CountryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.Cast;
 import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Country;
+import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.service.exception.AssociationException;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -91,5 +94,31 @@ public class CountryService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.countryRepository.findAll(pageable);
+    }
+
+    public Page<MediaDTO> findPaginatedListMediaByCountry(int pageNo, int pageSize, List<MediaDTO> mediaList) {
+        int startIndex = (pageNo - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, mediaList.size());
+
+        List<MediaDTO> pagedMediaList = mediaList.subList(startIndex, endIndex);
+        return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaList.size());
+    }
+
+    //get list Media by countryId (check media-details)
+    public List<MediaDTO> getMediaByCountryId(Long countryId) {
+        Country country = countryRepository.findById(countryId)
+                .orElseThrow(() -> new EntityNotFoundException("Country with id " + countryId + " not found."));
+
+        List<MediaDTO> mediaList = country.getMedia().stream()
+                .filter(media -> hasMediaDetail(media))
+                .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
+                .collect(Collectors.toList());
+
+        return mediaList;
+    }
+
+    //check media if any media-details
+    private boolean hasMediaDetail(Media media) {
+        return media.getMediaDetails() != null && !media.getMediaDetails().isEmpty();
     }
 }

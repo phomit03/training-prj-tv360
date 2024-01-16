@@ -102,7 +102,7 @@ public class UserMediaDetailController {
 
     //phan trang
     @GetMapping("/media-details")
-    public String getAllPlayers(Model model,
+    public String getAllMediaDetails(Model model,
                                 @RequestParam(name = "title", required = false) String title,
                                 @RequestParam(name = "quality", required = false) String quality,
                                 @RequestParam(name = "episode", required = false) Integer episode,

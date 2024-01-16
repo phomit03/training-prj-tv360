@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="user_fragments::head"></head>
+
+<body>
+<!-- header Start -->
+<header th:replace="user_fragments::header" class="header" data-header></header>
+<!-- header End -->
+
+<main>
+    <article>
+        <!-- content-->
+        <section class="top-rated" style="padding: 20vh 0;">
+            <div class="container">
+                <div>
+                    <p class="section-subtitle">List media by country</p>
+                    <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;"
+                        th:text="${countryName}">
+                    </h2>
+                </div>
+
+                <div>
+                <ul class="movies-list">
+                    <li th:each="media : ${mediaList}">
+                        <div class="movie-card">
+                            <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+
+                            <figure class="card-banner"
+                                        th:style="${media.getType() == 3 ? 'aspect-ratio: 8/5;' : 'aspect-ratio: 2/3;'}"
+                                >
+                                    <img th:src="${media.getThumbnail()}">
+                                </figure>
+                            </a>
+
+                            <div class="title-wrapper">
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${media.id})}">
+
+                                <h3 class="card-title" th:text="${media.getTitle()}"></h3>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                </div>
+
+                <div class="justify-content-center">
+                    <div class="col-lg-7 text-center">
+                        <div class="custom-pagination">
+                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <a class="color-red" th:if="${currentPage != i}"
+                           th:href="@{'/media/by-country/' + ${countryId} + '/' + ${i}}" th:text="${i}"
+                           style="background-color: white; color: #ca0f33"></a>
+                        <span th:unless="${currentPage != i}" th:text="${i}"
+                              style="background-color: #ca0f33; color: white"></span>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- ... -->
+
+        </section>
+        <!-- end content-->
+
+        <!-- contact -->
+        <section class="cta" th:replace="user_fragments::contact"></section>
+    </article>
+</main>
+
+<footer class="footer" th:replace="user_fragments::footer"></footer>
+
+<a th:replace="user_fragments::back-to-top"></a>
+
+<div th:replace="user_fragments::script"></div>
+
+</body>
+
+</html>

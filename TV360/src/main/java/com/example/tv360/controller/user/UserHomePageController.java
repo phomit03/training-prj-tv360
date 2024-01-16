@@ -2,14 +2,12 @@ package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.CountryDTO;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.MediaDetailRepository;
-import com.example.tv360.service.CastService;
-import com.example.tv360.service.CategoryService;
-import com.example.tv360.service.MediaDetailService;
-import com.example.tv360.service.MediaService;
+import com.example.tv360.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -30,17 +28,19 @@ public class UserHomePageController {
     private final MediaDetailRepository mediaDetailRepository;
     private final CategoryService categoryService;
     private final CastService castService;
+    private final CountryService countryService;
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
 
     public UserHomePageController(MediaDetailService mediaDetailService,
                                   MediaDetailRepository mediaDetailRepository,
-                                  CategoryService categoryService, CastService castService, MediaService mediaService,
+                                  CategoryService categoryService, CastService castService, CountryService countryService, MediaService mediaService,
                                   CategoryRepository categoryRepository) {
         this.mediaDetailService = mediaDetailService;
         this.mediaDetailRepository = mediaDetailRepository;
         this.categoryService = categoryService;
         this.castService = castService;
+        this.countryService = countryService;
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
     }
@@ -114,6 +114,35 @@ public class UserHomePageController {
         model.addAttribute("mediaList", mediaList);
 
         return "user_media_by_cast";
+    }
+
+
+    @GetMapping("/media/by-country/{countryId}")
+    public String getMediaByCountryId(@PathVariable Long countryId, Model model) {
+        return findPaginatedCountry(1, countryId, model);
+    }
+
+    @GetMapping("/media/by-country/{countryId}/{pageNo}")
+    public String findPaginatedCountry(@PathVariable(value = "pageNo") int pageNo,
+                                    @PathVariable Long countryId, Model model) {
+
+        CountryDTO country = countryService.getCountryById(countryId);
+        model.addAttribute("countryName", country.getName());
+        model.addAttribute("title", "Media by " + country.getName());
+
+        List<MediaDTO> mediaByCountry = countryService.getMediaByCountryId(countryId);
+
+        Page<MediaDTO> page = countryService.findPaginatedListMediaByCountry(pageNo, pageSize, mediaByCountry);
+
+        List<MediaDTO> mediaList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("mediaList", mediaList);
+
+        return "user_media_by_country";
     }
 
 

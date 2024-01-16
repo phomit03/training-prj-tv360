@@ -28,6 +28,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "md.episode, " +
             "m.thumbnail, " +
             "m.description, " +
+            "co.id, " +
             "co.name, " +
             "md.sourceUrl, " +
             "md.duration, " +
@@ -98,6 +99,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "md.episode, " +
             "m.thumbnail, " +
             "m.description, " +
+            "co.id, " +
             "co.name, " +
             "md.sourceUrl, " +
             "md.duration, " +
