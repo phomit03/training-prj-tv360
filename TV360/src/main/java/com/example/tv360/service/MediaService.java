@@ -75,10 +75,11 @@ public class MediaService {
                 categories.add(category);
             }
         }
+
         media.setCategories(categories);
 
         if (selectedCast == null) {
-            media.setCast(null);
+            media.setCast(media.getCast());
         } else {
             //create multiple select
             Set<Cast> listCast = new LinkedHashSet<>();
@@ -90,10 +91,8 @@ public class MediaService {
             }
             media.setCast(listCast);
         }
-
         media.setType(type);
-        media.setStatus(0);     //No source yet so status in-active
-
+        media.setStatus(1);
         return mediaRepository.save(media);
     }
 

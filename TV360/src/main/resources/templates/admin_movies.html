@@ -46,278 +46,287 @@
     <!-- menu End -->
 
     <div id="layoutSidenav_content">
-      <!-- Content Start -->
-      <main>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4 title-admin">Movie</h1>
+        <!-- Content Start -->
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4 title-admin">Movie</h1>
 
-            <!--search-->
-            <div class="row g-4 align-items-center">
-                <div class="col-12">
-                    <div class="input-group">
-                        <form th:action="@{/admin/movies}" method="get">
-                            <label><input placeholder="Title movie" class="form-control" type="text" name="title" th:value="${title}" /></label>
-                            <label>
-                                <select class="form-control" name="type">
-                                    <option value="" selected>Choose Type</option>
-                                    <option value="1">Movie</option>
-                                    <option value="2">Movie Series</option>
-                                </select>
-                            </label>
-                            <label>
-                                <select class="form-control" name="status">
-                                    <option value="" selected>Choose Status</option>
-                                    <option value="1">Active</option>
-                                    <option value="0">In-active</option>
-                                </select>
-                            </label>
-                            <button class="btn btn-primary" type="submit" style="z-index: 1">Search</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                List of movie
-
-              <a th:href="@{/admin/movie/form}">
-                <button type="button" class="btn btn-primary" style="float: right">+ movie</button>
-              </a>
-
-            </div>
-            <div class="card-body">
-              <table class="datatable-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Thumbnail</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Source</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody th:if="${movies != null and #lists.size(movies) > 0}">
-                  <tr th:each="movie, iterStat : ${movies}" th:class="'movie-' + ${movie.id}"
-                      th:data-movie-id="${movie.id}">
-                      <th:block th:if="${movie.type == 1 || movie.type == 2}">
-                          <td th:text="${iterStat.index + 1}"></td>
-                          <td>
-                            <img alt="images" style="max-width: 80px; max-height: 100px" th:src="@{${movie.thumbnail}}">
-                          </td>
-                          <td th:text="${movie.title}"></td>
-                          <td th:text="${movie.description}"></td>
-                          <td th:text="${#strings.equalsIgnoreCase(movie.type, '1') ? 'Movie' : (#strings.equalsIgnoreCase(movie.type, '2') ? 'Movie Series' : 'Other')}"></td>
-
-                          <td style="width: 10%;">
-                              <th:block th:if="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0}">
-                                  <div th:each="movieDetail, iterStat : ${movieDetailMap[movie.id]}">
-                                      <span th:if="${movie.type == 1}">
-                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'sourceUrl'}" target="_blank"></a>
-                                      </span>
-                                      <span th:if="${movie.type == 2}">
-                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'Episode ' + (iterStat.index + 1)}" target="_blank"></a>
-                                      </span>
-                                  </div>
-                              </th:block>
-
-                              <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0
-                                      and (movie.type == 1 or movie.type == 3)}">
-                                  <!--pop-up movie-->
-                                  <div th:if="${movie.type == 1 and movie.status == 1}">
-                                      <button class="btn openPopupMovie" id="openPopupMovie">
-                                          <a href="#">
-                                              <i class="fas fa-circle-plus"></i>
-                                          </a>
-                                      </button>
-
-                                      <div class="popup" id="popupFormMovie">
-                                          <div class="popup-content">
-                                              <div class="modal-header" style="padding: 0.5rem 0;">
-                                                  <h2 class="font-weight-bold" style="color: black;">Source movie</h2>
-                                                  <span class="close" id="closePopupMovie">&times;</span>
-                                              </div>
-                                              <div>
-                                                  <form th:action="@{/admin/source/save}" th:object="${mediaDetailDTO}"
-                                                        method="post">
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
-                                                                 placeholder="Link Film" required/>
-                                                          <label for="sourceUrl">Media Url</label>
-                                                      </div>
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" id="duration" name="duration" type="text" value="00:00:00" required/>
-                                                          <label for="duration">Duration</label>
-                                                      </div>
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" id="rate" name="rate" min="1" max="5" value="1" type="number" required/>
-                                                          <label for="rate">Rate</label>
-                                                      </div>
-                                                      <div class="form-floating mb-3">
-                                                          <select class="form-control" name="quality" required>
-                                                              <option value="" selected>-- choose type --</option>
-                                                              <option value="SD">SD</option>
-                                                              <option value="HD">HD</option>
-                                                              <option value="2K">2K</option>
-                                                              <option value="4K">4K</option>
-                                                              <option value="8K">8K</option>
-                                                          </select>
-                                                          <label>Quality</label>
-                                                      </div>
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" name="media" th:value="${movie.id}" type="hidden" readonly/>
-                                                      </div>
-                                                      <div class="d-flex align-items-center justify-content-between mt-4 mb-0" style="float: right">
-                                                          <button type="submit" class="btn btn-success">Create</button>
-                                                      </div>
-                                                  </form>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-
-                                  <!--pop-up movie-series-->
-                                  <div th:if="${movie.type == 2 and movie.status == 1}">
-                                      <button class="btn openPopupMovieSeries" id="openPopupMovieSeries">
-                                          <a href="#">
-                                              <i class="fas fa-circle-plus"></i>
-                                          </a>
-                                      </button>
-
-                                      <div class="popup" id="popupFormMovieSeries">
-                                          <div class="popup-content">
-                                              <div class="modal-header mb-3" style="padding: 0.5rem 0;">
-                                                  <h2 class="font-weight-bold" style="color: black;">Source Movie Series</h2>
-                                                  <span class="close" id="closePopupMovieSeries">&times;</span>
-                                              </div>
-                                              <div>
-                                                  <form th:action="@{/admin/source/save}"
-                                                        th:object="${mediaDetailDTO}" method="post" id="movieForm">
-                                                      <!-- Existing fields -->
-                                                      <div class="form-floating mb-3" th:with="sourceByMedia=${movieDetailMap[movie.id]}">
-                                                          <h5 th:text="${'Episode ' + (#lists.size(sourceByMedia) + 1)}"></h5>
-                                                      </div>
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" name="sourceUrl" type="text" required/>
-                                                          <label>Media Url</label>
-                                                      </div>
-                                                      <div class="row">
-                                                          <div class="col-md-6 mb-3">
-                                                              <div class="form-floating" style="width: 100%">
-                                                                  <input class="form-control" name="duration" type="text" value="00:00:00" required/>
-                                                                  <label>Duration</label>
-                                                              </div>
-                                                          </div>
-                                                          <div class="col-md-6 mb-3">
-                                                              <div class="form-floating" style="width: 100%">
-                                                                  <input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>
-                                                                  <label>Rate</label>
-                                                              </div>
-                                                          </div>
-                                                          <div class="col-md-12 mb-3">
-                                                              <div class="form-floating" style="width: 100%">
-                                                                  <select class="form-control" name="quality" required>
-                                                                      <option value="" selected>-- choose type --</option>
-                                                                      <option value="SD">SD</option>
-                                                                      <option value="HD">HD</option>
-                                                                      <option value="2K">2K</option>
-                                                                      <option value="4K">4K</option>
-                                                                      <option value="8K">8K</option>
-                                                                  </select>
-                                                                  <label>Quality</label>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-
-                                                      <div class="form-floating mb-3">
-                                                          <input class="form-control" id="movieId" name="media" th:value="${movie.id}" type="hidden" readonly/>
-                                                      </div>
-
-                                                      <!-- Add a wrapper for dynamically added fields -->
-                                                      <div id="dynamicFieldsWrapper"></div>
-
-                                                      <!-- Add and remove buttons for dynamic fields -->
-                                                      <button type="button" id="addFieldBtn" class="btn">
-                                                          Add episode <i class="fa fa-circle-plus"></i>
-                                                      </button>
-                                                      <button type="button" id="removeFieldBtn" class="btn">
-                                                          Remove episode <i class="fa fa-minus-circle"></i>
-                                                      </button>
-
-                                                      <button type="submit" class="btn btn-success" style="float: right">Create</button>
-                                                  </form>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </th:block>
-                          </td>
-
-                          <td>
-                            <span style="color: green">
-                              <th:block th:if="${movie.status == 1}">
-                                active
-                              </th:block>
-                            </span>
-                              <span style="color: red">
-                              <th:block th:if="${movie.status == 0}">
-                                in-active
-                              </th:block>
-                            </span>
-                          </td>
-
-                          <td>
-                            <button class="btn">
-                              <a th:href="@{/admin/movie/form/{id} (id=${movie.id})}">
-                                <i class="fas fa-pencil-alt"></i>
-                              </a>
-                            </button>
-                            <button class="btn" th:if="${movie.status == 1}">
-                              <a th:data-id="${movie.id}" class="delete-btn">
-                                <i class="fas fa-trash"></i>
-                              </a>
-                            </button>
-                          </td>
-                      </th:block>
-                  </tr>
-                </tbody>
-              </table>
-                <!--phan trang-->
-                <div th:if = "${totalPages > 1}">
-                    <div class = "row col-sm-12">
-                        <div class = "col-sm-2">
-                            Total Rows: [[${totalItems}]]
-                        </div>
-                        <!--danh sach cac trang-->
-                        <div class = "col-sm-10">
-                      <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                          <a th:if="${currentPage != i}"
-                             th:href="@{'/admin/movies/' + ${i}(title=${title}, type=${type} ,status=${status})}"
-                             style="color: #666666; text-decoration: none">[[${i}]]</a>
-                          <span th:unless="${currentPage != i}"
-                                style="color: #ca0f33; text-decoration: underline">[[${i}]]</span> &nbsp;
-                      </span>
+                <!--search-->
+                <div class="row g-4 align-items-center">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <form th:action="@{/admin/movies}" method="get">
+                                <label><input placeholder="Title movie" class="form-control" type="text" name="title" th:value="${title}" /></label>
+                                <label>
+                                    <select class="form-control" name="type">
+                                        <option value="" selected>Choose Type</option>
+                                        <option value="1">Movie</option>
+                                        <option value="2">Movie Series</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <select class="form-control" name="status">
+                                        <option value="" selected>Choose Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">In-active</option>
+                                    </select>
+                                </label>
+                                <button class="btn btn-primary" type="submit" style="z-index: 1">Search</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-          </div>
-        </div>
-      </main>
-      <!-- Content End -->
 
-      <!-- footer Start -->
-      <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
-      <!-- footer End -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        List of movie
+
+                        <a th:href="@{/admin/movie/form}">
+                            <button type="button" class="btn btn-primary" style="float: right">+ movie</button>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <table class="datatable-table">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>#</th>
+                                <th>Thumbnail</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody th:if="${movies != null and #lists.size(movies) > 0}">
+                                  <tr th:each="movie, iterStat : ${movies}" th:class="'movie-' + ${movie.id}"
+                                      th:data-movie-id="${movie.id}">
+                                      <th:block th:if="${movie.type == 1 || movie.type == 2}">
+                                          <td th:text="${iterStat.index + 1}"></td>
+                                          <td th:text="${movie.id}"></td>
+                                          <td>
+                                            <img alt="images" style="max-width: 80px; max-height: 100px" th:src="@{${movie.thumbnail}}">
+                                          </td>
+                                          <td th:text="${movie.title}"></td>
+                                          <td th:text="${movie.description}"></td>
+                                          <td th:text="${#strings.equalsIgnoreCase(movie.type, '1') ? 'Movie' : (#strings.equalsIgnoreCase(movie.type, '2') ? 'Movie Series' : 'Other')}"></td>
+
+                                          <td style="width: 10%;">
+                                              <th:block th:if="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0}">
+                                                  <div th:each="movieDetail, iterStat : ${movieDetailMap[movie.id]}">
+                                                      <span th:if="${movie.type == 1}">
+                                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'sourceUrl'}" target="_blank"></a>
+                                                      </span>
+                                                      <span th:if="${movie.type == 2}">
+                                                          <a th:href="${movieDetail.sourceUrl}" th:text="${'Episode ' + (iterStat.index + 1)}"
+                                                             target="_blank"></a>
+                                                      </span>
+                                                  </div>
+                                              </th:block>
+
+                                              <th:block th:unless="${movie.mediaDetails != null and #lists.size(movie.mediaDetails) > 0
+                                                      and (movie.type == 1 or movie.type == 3)}">
+                                                  <!--pop-up movie-->
+                                                  <div th:if="${movie.type == 1 and movie.status == 1}">
+                                                      <button class="btn openPopupMovie" id="openPopupMovie">
+                                                          <a href="#">
+                                                              <i class="fas fa-circle-plus"></i>
+                                                          </a>
+                                                      </button>
+
+                                                      <div class="popup" id="popupFormMovie">
+                                                          <div class="popup-content">
+                                                              <div class="modal-header" style="padding: 0.5rem 0;">
+                                                                  <h2 class="font-weight-bold" style="color: black;">Source movie</h2>
+                                                                  <span class="close" id="closePopupMovie">&times;</span>
+                                                              </div>
+                                                              <div>
+                                                                  <form th:action="@{/admin/source/save}" th:object="${mediaDetailDTO}"
+                                                                        method="post">
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" id="sourceUrl" name="sourceUrl" type="text"
+                                                                                 placeholder="Link Film" required/>
+                                                                          <label for="sourceUrl">Media Url</label>
+                                                                      </div>
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" id="duration" name="duration"
+                                                                                 type="text" value="00:00:00" required/>
+                                                                          <label for="duration">Duration</label>
+                                                                      </div>
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" id="rate" name="rate" min="1" max="5"
+                                                                                 value="1" type="number" required/>
+                                                                          <label for="rate">Rate</label>
+                                                                      </div>
+                                                                      <div class="form-floating mb-3">
+                                                                          <select class="form-control" name="quality" required>
+                                                                              <option value="" selected>-- choose type --</option>
+                                                                              <option value="SD">SD</option>
+                                                                              <option value="HD">HD</option>
+                                                                              <option value="2K">2K</option>
+                                                                              <option value="4K">4K</option>
+                                                                              <option value="8K">8K</option>
+                                                                          </select>
+                                                                          <label>Quality</label>
+                                                                      </div>
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" name="media" th:value="${movie.id}"
+                                                                                 type="hidden" readonly/>
+                                                                      </div>
+                                                                      <div class="d-flex align-items-center justify-content-between mt-4 mb-0" style="float: right">
+                                                                          <button type="submit" class="btn btn-success">Create</button>
+                                                                      </div>
+                                                                  </form>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                                  <!--pop-up movie-series-->
+                                                  <div th:if="${movie.type == 2 and movie.status == 1}">
+                                                      <button class="btn openPopupMovieSeries"
+                                                              th:onclick="'openPopupMovieSeries(\'' + ${movie.id} + '\')'"
+                                                              id="openPopupMovieSeries">
+                                                          <a href="#">
+                                                              <i class="fas fa-circle-plus"></i>
+                                                          </a>
+                                                      </button>
+
+                                                      <div class="popup" th:id="'popupFormMovieSeries-' + ${movie.id}">
+                                                          <div class="popup-content">
+                                                              <div class="modal-header mb-3" style="padding: 0.5rem 0;">
+                                                                  <h2 class="font-weight-bold" style="color: black;">Source Movie Series</h2>
+                                                                  <span class="close" id="closePopupMovieSeries">&times;</span>
+                                                              </div>
+                                                              <div>
+                                                                  <form th:action="@{/admin/source/save}" th:object="${mediaDetailDTO}"
+                                                                        method="post" th:attr="data-movieid=${movie.id}" id="movieForm">
+                                                                  <!-- Existing fields -->
+                                                                      <div class="form-floating mb-3" th:with="sourceByMedia=${movieDetailMap[movie.id]}">
+                                                                          <h5 th:text="${'Episode ' + (#lists.size(sourceByMedia) + 1)}"></h5>
+                                                                      </div>
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" name="sourceUrl" type="text" required/>
+                                                                          <label>Media Url</label>
+                                                                      </div>
+                                                                      <div class="row">
+                                                                          <div class="col-md-6 mb-3">
+                                                                              <div class="form-floating" style="width: 100%">
+                                                                                  <input class="form-control" name="duration" type="text" value="00:00:00" required/>
+                                                                                  <label>Duration</label>
+                                                                              </div>
+                                                                          </div>
+                                                                          <div class="col-md-6 mb-3">
+                                                                              <div class="form-floating" style="width: 100%">
+                                                                                  <input class="form-control" name="rate" min="1" max="5" value="1" type="number" required/>
+                                                                                  <label>Rate</label>
+                                                                              </div>
+                                                                          </div>
+                                                                          <div class="col-md-12 mb-3">
+                                                                              <div class="form-floating" style="width: 100%">
+                                                                                  <select class="form-control" name="quality" required>
+                                                                                      <option value="" selected>-- choose type --</option>
+                                                                                      <option value="SD">SD</option>
+                                                                                      <option value="HD">HD</option>
+                                                                                      <option value="2K">2K</option>
+                                                                                      <option value="4K">4K</option>
+                                                                                      <option value="8K">8K</option>
+                                                                                  </select>
+                                                                                  <label>Quality</label>
+                                                                              </div>
+                                                                          </div>
+                                                                      </div>
+
+                                                                      <div class="form-floating mb-3">
+                                                                          <input class="form-control" id="movieId" name="media"
+                                                                                 th:value="${movie.id}" type="hidden" readonly/>
+                                                                      </div>
+
+                                                                      <!-- Add a wrapper for dynamically added fields -->
+                                                                      <div id="dynamicFieldsWrapper"></div>
+
+                                                                      <!-- Add and remove buttons for dynamic fields -->
+                                                                      <button type="button" id="addFieldBtn" class="btn">
+                                                                          Add episode <i class="fa fa-circle-plus"></i>
+                                                                      </button>
+                                                                      <button type="button" id="removeFieldBtn" class="btn">
+                                                                          Remove episode <i class="fa fa-minus-circle"></i>
+                                                                      </button>
+
+                                                                      <button type="submit" class="btn btn-success" style="float: right">Create</button>
+                                                                  </form>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </th:block>
+                                          </td>
+
+                                          <td>
+                                            <span style="color: green">
+                                              <th:block th:if="${movie.status == 1}">
+                                                active
+                                              </th:block>
+                                            </span>
+                                              <span style="color: red">
+                                              <th:block th:if="${movie.status == 0}">
+                                                in-active
+                                              </th:block>
+                                            </span>
+                                          </td>
+
+                                          <td>
+                                            <button class="btn">
+                                              <a th:href="@{/admin/movie/form/{id} (id=${movie.id})}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                              </a>
+                                            </button>
+                                            <button class="btn" th:if="${movie.status == 1}">
+                                              <a th:data-id="${movie.id}" class="delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                              </a>
+                                            </button>
+                                          </td>
+                                      </th:block>
+                                  </tr>
+                            </tbody>
+                        </table>
+
+                        <!--phan trang-->
+                        <div th:if = "${totalPages > 1}">
+                        <div class = "row col-sm-12">
+                            <div class = "col-sm-2">
+                                Total Rows: [[${totalItems}]]
+                            </div>
+                            <!--danh sach cac trang-->
+                            <div class = "col-sm-10">
+                                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                    <a th:if="${currentPage != i}"
+                                         th:href="@{'/admin/movies/' + ${i}(title=${title}, type=${type} ,status=${status})}"
+                                         style="color: #666666; text-decoration: none">[[${i}]]</a>
+                                    <span th:unless="${currentPage != i}"
+                                            style="color: #ca0f33; text-decoration: underline">[[${i}]]</span> &nbsp;
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Content End -->
+
+        <!-- footer Start -->
+        <footer th:replace="admin_fragments::footer" class="py-4 bg-light mt-auto"></footer>
+        <!-- footer End -->
     </div>
 </div>
 
-<div th:replace="admin_fragments::script"></div>
 
+<!--script pop-up sweet-alert-->
 <script>
     $(document).ready(function () {
         $('.delete-btn').click(function () {
@@ -359,6 +368,7 @@
     });
 </script>
 
+<!--script show-close movie-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const openPopupButtonMovie = document.querySelectorAll(".openPopupMovie");
@@ -383,33 +393,22 @@
             }
         });
     });
+</script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const openPopupButtonMovieSeries = document.querySelectorAll(".openPopupMovieSeries");
-        const closePopupButtonMovieSeries = document.getElementById("closePopupMovieSeries");
-        const popupFormMovieSeries = document.getElementById("popupFormMovieSeries");
+<!--script show-close movie-series-->
+<script>
+    function openPopupMovieSeries(movieId) {
+        $('#popupFormMovieSeries-' + movieId).show();
+    }
 
-        const openPopupMovieSeries = () => {
-            popupFormMovieSeries.style.display = "block";
-        };
-
-        const closePopupMovieSeries = () => {
-            popupFormMovieSeries.style.display = "none";
-        };
-
-        openPopupButtonMovieSeries.forEach(buttonMovieSeries => {
-            buttonMovieSeries.addEventListener("click", openPopupMovieSeries);
-        });
-        closePopupButtonMovieSeries.addEventListener("click", closePopupMovieSeries);
-
-        window.addEventListener("click", function(event) {
-            if (event.target === popupFormMovieSeries) {
-                closePopupMovieSeries();
-            }
+    $(document).ready(function () {
+        $('.close').click(function () {
+            $(this).closest('.popup').hide();
         });
     });
 </script>
 
+<!--script dynamic field-->
 <script>
     $(document).ready(function () {
         var formField = 1;
@@ -486,6 +485,7 @@
 </script>
 
 
+<div th:replace="admin_fragments::script"></div>
 
 
 </body>

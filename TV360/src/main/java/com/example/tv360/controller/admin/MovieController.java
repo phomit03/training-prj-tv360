@@ -61,7 +61,7 @@ public class MovieController {
     public String createOrUpdateMovie(@ModelAttribute("movieDTO") MediaDTO movieDTO,
                                       @RequestParam("logo") MultipartFile logo,
                                       @RequestParam("categories") HashSet<Long> categories,
-                                      @RequestParam("cast") HashSet<Long> cast,
+                                      @RequestParam(value = "cast", required = false) HashSet<Long> cast,
                                       @RequestParam("type") Integer type,
                                       RedirectAttributes redirectAttributes) {
         try {
