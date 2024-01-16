@@ -1,11 +1,12 @@
 package com.example.tv360.controller.user;
 
+import com.example.tv360.dto.CastDTO;
 import com.example.tv360.dto.CategoryDTO;
 import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.entity.Category;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.CategoryRepository;
 import com.example.tv360.repository.MediaDetailRepository;
+import com.example.tv360.service.CastService;
 import com.example.tv360.service.CategoryService;
 import com.example.tv360.service.MediaDetailService;
 import com.example.tv360.service.MediaService;
@@ -17,9 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping()
@@ -30,20 +29,21 @@ public class UserHomePageController {
     private final MediaDetailService mediaDetailService;
     private final MediaDetailRepository mediaDetailRepository;
     private final CategoryService categoryService;
+    private final CastService castService;
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
 
     public UserHomePageController(MediaDetailService mediaDetailService,
                                   MediaDetailRepository mediaDetailRepository,
-                                  CategoryService categoryService, MediaService mediaService,
+                                  CategoryService categoryService, CastService castService, MediaService mediaService,
                                   CategoryRepository categoryRepository) {
         this.mediaDetailService = mediaDetailService;
         this.mediaDetailRepository = mediaDetailRepository;
         this.categoryService = categoryService;
+        this.castService = castService;
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
     }
-
 
     @RequestMapping({"/", "home"})
     public String home(Model model) {
@@ -61,11 +61,11 @@ public class UserHomePageController {
 
     @GetMapping("/media/by-category/{categoryId}")
     public String getMediaByCategoryId(@PathVariable Long categoryId, Model model) {
-        return findPaginated(1, categoryId,model);
+        return findPaginatedCategory(1, categoryId,model);
     }
 
     @GetMapping("/media/by-category/{categoryId}/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+    public String findPaginatedCategory(@PathVariable(value = "pageNo") int pageNo,
                                 @PathVariable Long categoryId, Model model) {
 
         CategoryDTO category = categoryService.getCategoryById(categoryId);
@@ -80,11 +80,40 @@ public class UserHomePageController {
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements()); // Cập nhật giá trị totalItems
+        model.addAttribute("totalItems", page.getTotalElements());
 
         model.addAttribute("mediaList", mediaList);
 
         return "user_media_by_category";
+    }
+
+
+    @GetMapping("/media/by-cast/{castId}")
+    public String getMediaByCastId(@PathVariable Long castId, Model model) {
+        return findPaginatedCast(1, castId, model);
+    }
+
+    @GetMapping("/media/by-cast/{castId}/{pageNo}")
+    public String findPaginatedCast(@PathVariable(value = "pageNo") int pageNo,
+                                @PathVariable Long castId, Model model) {
+
+        CastDTO cast = castService.getCastById(castId);
+        model.addAttribute("castName", cast.getFullName());
+        model.addAttribute("title", "Media by " + cast.getFullName());
+
+        List<MediaDTO> mediaByCast = castService.getMediaByCastId(castId);
+
+        Page<MediaDTO> page = castService.findPaginated(pageNo, pageSize, mediaByCast);
+
+        List<MediaDTO> mediaList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("mediaList", mediaList);
+
+        return "user_media_by_cast";
     }
 
 
@@ -94,8 +123,5 @@ public class UserHomePageController {
 
         return "user_search";
     }
-
-
-
 
 }

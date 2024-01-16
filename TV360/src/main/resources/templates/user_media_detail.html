@@ -116,14 +116,16 @@
                             <h4 style="color:var(--citrine); font-weight: bold">Directors:</h4>
                             <a th:each="cast, iterStat : ${selectedMediaDetail.castList}"
                                th:if="${cast.type == 1}"
-                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"></a>
+                               th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"
+                               th:href="@{'/media/by-cast/' + ${cast.castId}}"></a>
                         </div>
 
                         <div class="genre-wrapper" th:unless="${selectedMediaDetail.mediaType == 3}">
                             <h4 style="color:var(--citrine); font-weight: bold">Actors:</h4>
                             <a th:each="cast, iterStat : ${selectedMediaDetail.castList}"
                                th:text="${cast.fullName + (iterStat.last ? '' : ', ')}"
-                               th:if="${cast.type == 2}"></a>
+                               th:if="${cast.type == 2}"
+                               th:href="@{'/media/by-cast/' + ${cast.castId}}"></a>
                         </div>
 
                         <div class="date-time" th:unless="${selectedMediaDetail.mediaType == 3}">

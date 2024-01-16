@@ -70,8 +70,9 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     // lay ra cac type va name cua cast
     @Query("SELECT distinct new com.example.tv360.dto.response.CastItem(" +
             "m.id, " +
-            "c.type, " +
-            "c.fullName) " +
+            "c.id, " +
+            "c.fullName, " +
+            "c.type) " +
             "FROM MediaDetail md " +
             "LEFT JOIN md.media m " +
             "LEFT JOIN m.cast c " +

@@ -8,13 +8,15 @@ import java.util.List;
 @NoArgsConstructor
 public class CastItem {
     private Long id;
+    private Long castId;
     private Integer type;
     private String fullName;
 
-    public CastItem(Long id,Integer type, String fullName) {
+    public CastItem(Long id, Long castId, String fullName, Integer type) {
         this.id = id;
-        this.type = type;
+        this.castId = castId;
         this.fullName = fullName;
+        this.type = type;
     }
 
 }
