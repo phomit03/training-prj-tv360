@@ -154,39 +154,6 @@ public class MediaDetailService {
         return new PageImpl<>(paginatedMedia, PageRequest.of(pageNo - 1, pageSize), media.size());
     }
 
-    public List<CategoryDTO> getCategoriesByMediaDetailId(Long mediaId) {
-        List<String> categoryNames = mediaDetailRepository.getCategoryNamesByMediaDetailId(mediaId);
-
-        String jpql = "SELECT c FROM Category c LEFT JOIN FETCH c.media m WHERE m IS NOT NULL AND c.name IN :categoryNames ORDER BY m.createdAt DESC";
-
-        TypedQuery<Category> query = entityManager.createQuery(jpql, Category.class);
-        query.setParameter("categoryNames", categoryNames);
-        query.setMaxResults(15);
-
-        List<Category> categories = query.getResultList();
-
-        // Lọc danh sách để chỉ giữ lại các đối tượng có title duy nhất
-        List<Category> uniqueCategories = categories.stream()
-                .collect(Collectors.toMap(Category::getName, Function.identity(), (existing, replacement) -> existing))
-                .values()
-                .stream()
-                .collect(Collectors.toList());
-
-        return uniqueCategories.stream()
-                .map(category -> modelToDtoConverter.convertToDto(category, CategoryDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-    // get theo category name
-    public List<MediaDetailResponse> getMediaDetailsByCategoryName(String categoryName) {
-        try {
-            return mediaDetailRepository.getMediaDetailsByCategoryName(categoryName);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     //service details (le-cuong)
     public List<MediaDetailResponse> getMediaDetailByMediaId(Long mediaId) {
         try {
@@ -224,11 +191,11 @@ public class MediaDetailService {
                 .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
                 .flatMap(category -> category.getMedia().stream())
                 .filter(relatedMediaItem -> !relatedMediaItem.equals(media))
+                .filter(relatedMediaItem -> relatedMediaItem.getStatus() == 1)
                 .distinct()
                 .collect(Collectors.toList());
 
         return relatedMedia;
     }
-
 
 }

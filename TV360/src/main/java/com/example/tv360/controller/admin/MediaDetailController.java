@@ -115,24 +115,6 @@ public class MediaDetailController {
         }
     }
 
-    @GetMapping("/by-category/{categoryName}")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsByCategoryName(categoryName);
-
-            if (mediaDetails != null && !mediaDetails.isEmpty()) {
-                return ResponseEntity.ok(mediaDetails);
-            } else {
-                // Trả về 404 Not Found nếu không có kết quả nào được tìm thấy
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            // Xử lý ngoại lệ hoặc trả về một giá trị mặc định
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-
     //phan trang
     @GetMapping("/media-details")
     public String getAllMediaDetails(Model model,

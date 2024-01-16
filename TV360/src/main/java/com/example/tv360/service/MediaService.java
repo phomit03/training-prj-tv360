@@ -169,14 +169,7 @@ public class MediaService {
         }
     }
 
-
-    private boolean isMediaUsedInMedia(Media media) {
-        int mediaCount = mediaRepository.countMediaDetailByMediaId(media.getId());
-        return mediaCount > 0;
-    }
-
-
-    //phan trang
+    //paginate
     public Page<Media> findPaginated(int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);

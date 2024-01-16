@@ -142,7 +142,7 @@ public class CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found."));
 
         List<MediaDTO> mediaList = category.getMedia().stream()
-                .filter(media -> hasMediaDetail(media))
+                .filter(media -> hasMediaDetail(media) && media.getStatus() == 1)
                 .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
                 .collect(Collectors.toList());
 

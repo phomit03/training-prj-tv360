@@ -100,7 +100,7 @@ public class CastService {
                 .orElseThrow(() -> new EntityNotFoundException("Cast with id " + castId + " not found."));
 
         List<MediaDTO> mediaList = cast.getMedia().stream()
-                .filter(media -> hasMediaDetail(media))
+                .filter(media -> hasMediaDetail(media) && media.getStatus() == 1)
                 .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
                 .collect(Collectors.toList());
 

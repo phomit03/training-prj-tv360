@@ -110,7 +110,7 @@ public class CountryService {
                 .orElseThrow(() -> new EntityNotFoundException("Country with id " + countryId + " not found."));
 
         List<MediaDTO> mediaList = country.getMedia().stream()
-                .filter(media -> hasMediaDetail(media))
+                .filter(media -> hasMediaDetail(media) && media.getStatus() == 1)
                 .map(media -> modelToDtoConverter.convertToDto(media, MediaDTO.class))
                 .collect(Collectors.toList());
 

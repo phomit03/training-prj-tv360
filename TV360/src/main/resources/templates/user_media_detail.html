@@ -132,14 +132,17 @@
                             <div style="font-size: 15px">
                                 <ion-icon name="earth-outline"></ion-icon>
 
-                                <a th:text="${selectedMediaDetail.countryName}"
+                                <a class="country-detail" th:text="${selectedMediaDetail.countryName}" style="color: #e3dede"
                                    th:href="@{'/media/by-country/' + ${selectedMediaDetail.countryId}}"/>
                             </div>
 
                             <div style="font-size: 15px">
                                 <ion-icon name="time-outline"></ion-icon>
-                                <time th:text="${selectedMediaDetail.duration}"></time>
+                                <time style="color: var(--gainsboro);" th:text="${selectedMediaDetail.duration}"></time>
                             </div>
+
+                            <span class="rating-detail"
+                                  th:utext="${'&#9733;'.repeat(selectedMediaDetail.rating)}"></span>
                         </div>
                     </div>
 

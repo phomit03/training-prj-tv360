@@ -65,12 +65,15 @@
 
     <div class="header-actions">
       <div class="search-container">
-        <div class="search-wrapper">
-          <input type="text" class="search-input" placeholder="search...">
-          <button class="search-btn" type="submit">
-            <ion-icon name="search-outline"></ion-icon>
-          </button>
-        </div>
+        <form th:action="@{/search}" method="get">
+          <div class="search-wrapper">
+            <input type="text" name="title" class="search-input" placeholder="search...">
+
+            <button class="search-btn" type="submit">
+              <ion-icon name="search-outline"></ion-icon>
+            </button>
+          </div>
+        </form>
       </div>
 
       <div class="lang-wrapper">

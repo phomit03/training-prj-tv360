@@ -64,31 +64,12 @@ public class UserMediaDetailController {
 //            //related-media-by-category
 //            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
 //            model.addAttribute("relatedMediaList", relatedMediaList);
-//            model.addAttribute("title", listMediaDetails.get(0).getTitle());
 //
 //            return "user_media_detail";
 //        } catch (Exception e) {
 //            return "error404";
 //        }
 //    }
-
-    @GetMapping("/by-category/{categoryName}")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsByCategoryName(categoryName);
-
-            if (mediaDetails != null && !mediaDetails.isEmpty()) {
-                return ResponseEntity.ok(mediaDetails);
-            } else {
-                // Trả về 404 Not Found nếu không có kết quả nào được tìm thấy
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            // Xử lý ngoại lệ hoặc trả về một giá trị mặc định
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
 
     //phan trang
     @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
