@@ -20,7 +20,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     @Query("SELECT md FROM MediaDetail md JOIN FETCH md.media WHERE md.rate = 5 AND md.media.status = 1 AND md.status = 1 ORDER BY md.createdAt DESC")
     List<MediaDetail> findTopRated(Pageable pageable);
 
-    // tim theo 1 id media và sắp xếp theo episode (ASC)
+    //movie-detail: tim theo 1 id media và sắp xếp theo episode (ASC)
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
@@ -43,6 +43,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "ORDER BY md.episode ASC")
     List<MediaDetailResponse> getMovieDetailByIdASCEpisodes(@Param("mediaId") Long mediaId);
 
+    //video-detail
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
             "m.title, " +
@@ -58,15 +59,6 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.categories ct "+
             "WHERE m.id = :mediaId and ct.status=1")
     List<MediaDetailResponse> getVideoDetail(@Param("mediaId") Long mediaId);
-
-
-
-    // lay ra all category name theo mediaDetailID
-    @Query("SELECT DISTINCT ct.name FROM MediaDetail md " +
-            "LEFT JOIN md.media m " +
-            "LEFT JOIN m.categories ct " +
-            "WHERE m.id = :mediaId and ct.status = 1")
-    List<String> getCategoryNamesByMediaDetailId(@Param("mediaId") Long mediaId);
 
     // lay ra cac type va name cua cast
     @Query("SELECT distinct new com.example.tv360.dto.response.CastItem(" +
@@ -90,32 +82,6 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
             "LEFT JOIN m.categories ct " +
             "WHERE m.id = :mediaId and ct.status = 1")
     List<CategoryItem> getCategoryByMediaDetailId(@Param("mediaId") Long mediaId);
-
-    // loc theo category name
-    @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
-            "m.id, "+
-            "m.title, " +
-            "m.type, " +
-            "md.episode, " +
-            "m.thumbnail, " +
-            "m.description, " +
-            "co.id, " +
-            "co.name, " +
-            "md.sourceUrl, " +
-            "md.duration, " +
-            "md.quality," +
-            "md.rate) " +
-            "FROM MediaDetail md " +
-            "LEFT JOIN md.media m " +
-            "LEFT JOIN m.cast c " +
-            "LEFT JOIN m.categories ct " +
-            "LEFT JOIN m.country co " +
-            "LEFT JOIN m.categories mct " +
-            "LEFT JOIN m.cast mcast " +
-            "WHERE ((mct IS NOT NULL AND mct.id = ct.id) OR (mcast IS NOT NULL AND mcast.id = c.id)) AND ct.name = :categoryName and  ct.status = 1")
-    List<MediaDetailResponse> getMediaDetailsByCategoryName(@Param("categoryName") String categoryName);
-
-
 
     // phan trang
     @Query(value = "SELECT md.* FROM media_detail md " +

@@ -28,20 +28,17 @@ public class UserMediaDetailController {
     @Value("${page.size}")
     private int pageSize;
 
-    private final CategoryService categoryService;
     private final MediaDetailService mediaDetailService;
-    private final MediaService mediaService;
     private final MediaRepository mediaRepository;
     private final MediaDetailRepository mediaDetailRepository;
 
-    public UserMediaDetailController(CategoryService categoryService, MediaDetailRepository mediaDetailRepository , MediaDetailService mediaDetailService, MediaService mediaService, MediaRepository mediaRepository) {
-        this.categoryService = categoryService;
+    public UserMediaDetailController(MediaDetailRepository mediaDetailRepository,
+                                     MediaDetailService mediaDetailService,
+                                     MediaRepository mediaRepository) {
         this.mediaDetailRepository = mediaDetailRepository;
         this.mediaDetailService = mediaDetailService;
-        this.mediaService = mediaService;
         this.mediaRepository = mediaRepository;
     }
-
 
     // media detail
     @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
@@ -70,35 +67,6 @@ public class UserMediaDetailController {
             return "error404";
         }
     }
-
-    @GetMapping("/media/{mediaId}")
-    public ResponseEntity<List<CategoryDTO>> getCategoriesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(categories );
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @GetMapping("/by-category/{categoryName}")
-    public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
-        try {
-            List<MediaDetailResponse> mediaDetails = mediaDetailService.getMediaDetailsByCategoryName(categoryName);
-
-            if (mediaDetails != null && !mediaDetails.isEmpty()) {
-                return ResponseEntity.ok(mediaDetails);
-            } else {
-                // Trả về 404 Not Found nếu không có kết quả nào được tìm thấy
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            // Xử lý ngoại lệ hoặc trả về một giá trị mặc định
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
 
     //phan trang
     @GetMapping("/media-details")

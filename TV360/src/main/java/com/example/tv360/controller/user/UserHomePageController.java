@@ -29,20 +29,16 @@ public class UserHomePageController {
     private final CategoryService categoryService;
     private final CastService castService;
     private final CountryService countryService;
-    private final MediaService mediaService;
-    private final CategoryRepository categoryRepository;
 
     public UserHomePageController(MediaDetailService mediaDetailService,
                                   MediaDetailRepository mediaDetailRepository,
-                                  CategoryService categoryService, CastService castService, CountryService countryService, MediaService mediaService,
-                                  CategoryRepository categoryRepository) {
+                                  CategoryService categoryService, CastService castService,
+                                  CountryService countryService) {
         this.mediaDetailService = mediaDetailService;
         this.mediaDetailRepository = mediaDetailRepository;
         this.categoryService = categoryService;
         this.castService = castService;
         this.countryService = countryService;
-        this.mediaService = mediaService;
-        this.categoryRepository = categoryRepository;
     }
 
     @RequestMapping({"/", "home"})
