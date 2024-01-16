@@ -207,7 +207,7 @@ body.active { overflow: hidden; }
 
 .genre-wrapper > a {
   color: var(--gainsboro);
-  font-size: var(--fs-9);
+  font-size: 15px;
   font-weight: var(--fw-500);
   transition: var(--transition-1);
 }
@@ -1783,4 +1783,11 @@ body.active { overflow: hidden; }
   justify-content: flex-start;
   align-items: center;
   gap: 15px 25px;
+}
+
+.country-detail {
+  color: var(--gainsboro);
+}
+.country-detail:is(:hover, :focus) {
+  color: var(--citrine) !important;
 }

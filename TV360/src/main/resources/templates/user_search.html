@@ -14,131 +14,35 @@
         <div class="fix-bg-search">
             <section class="upcoming">
                 <div class="container">
-                    <h2 class="h2 search-result">
+                    <h2 class="h2 search-result" th:if="${searchTitle != null}">
                         Search results for
-                        <span style="display: inline-flex; font-weight: bold; color: rgb(226, 215, 3)">
-                            "Fart & Furious"
-                        </span>
+                        <span style="display: inline-flex; font-weight: bold; color: rgb(226, 215, 3)"
+                                                 th:text="'&quot;' + ${searchTitle} + '&quot;'"></span>
                     </h2>
                 </div>
 
+                <!--movies-->
                 <div class="container">
                     <div class="align-content-center">
                         <p class="section-subtitle">Online Streaming</p>
 
                         <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;">
-                            Movies Type
+                            Movies
                         </h2>
                     </div>
 
                     <ul class="movies-list has-scrollbar">
-                        <li>
+                        <li th:each="searchResult : ${searchResults}" th:if="${searchResult.type == 1 or searchResult.type == 2}">
                             <div class="movie-card">
-                                <a href="./movie-details.html">
+                                <a th:href="@{/movie/detail/{mediaId} (mediaId=${searchResult.id})}">
                                     <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
+                                        <img th:src="@{${searchResult.getThumbnail()}}">
                                     </figure>
                                 </a>
 
                                 <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
+                                    <a th:href="@{/movie/detail/{mediaId} (mediaId=${searchResult.id})}">
+                                        <h3 class="card-title" th:text="${searchResult.getTitle()}"></h3>
                                     </a>
                                 </div>
                             </div>
@@ -146,60 +50,28 @@
                     </ul>
                 </div>
 
-                <!--nếu có-->
+                <!--videos-->
                 <div class="container">
                     <div class="align-content-center">
                         <p class="section-subtitle">Online Streaming</p>
 
                         <h2 class="h2 section-title" style="margin-bottom: 7vh; font-size: 40px;">
-                            Videos Type
+                            Videos
                         </h2>
                     </div>
 
                     <ul class="movies-list has-scrollbar">
-                        <li>
+                        <li th:each="searchResult : ${searchResults}" th:if="${searchResult.type == 3}">
                             <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
+                                <a th:href="@{/video/detail/{mediaId} (mediaId=${searchResult.id})}">
+                                    <figure class="card-banner" style="aspect-ratio: 5/3">
+                                        <img th:src="@{${searchResult.getThumbnail()}}">
                                     </figure>
                                 </a>
 
                                 <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="movie-card">
-                                <a href="./movie-details.html">
-                                    <figure class="card-banner">
-                                        <img src="./assets/images/movie-1.png" alt="Sonic the Hedgehog 2 movie poster">
-                                    </figure>
-                                </a>
-
-                                <div class="title-wrapper">
-                                    <a href="./movie-details.html">
-                                        <h3 class="card-title">Sonic the Hedgehog 2</h3>
+                                    <a th:href="@{/video/detail/{mediaId} (mediaId=${searchResult.id})}">
+                                        <h3 class="card-title" th:text="${searchResult.getTitle()}"></h3>
                                     </a>
                                 </div>
                             </div>

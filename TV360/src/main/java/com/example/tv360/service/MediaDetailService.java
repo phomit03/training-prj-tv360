@@ -208,6 +208,7 @@ public class MediaDetailService {
                 .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
                 .flatMap(category -> category.getMedia().stream())
                 .filter(relatedMediaItem -> !relatedMediaItem.equals(media))
+                .filter(relatedMediaItem -> relatedMediaItem.getStatus() == 1)
                 .distinct()
                 .collect(Collectors.toList());
 

@@ -47,4 +47,15 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Media> findByIdAndStatus(Long id, String status);
     @Query("SELECT COUNT(m) FROM MediaDetail m JOIN m.media c WHERE c.id = :mediaId")
     int countMediaDetailByMediaId(@Param("mediaId") Long mediaId);
+
+    //search user
+    @Query(value = "SELECT DISTINCT m.* " +
+            "FROM media m " +
+            "JOIN media_detail md ON m.id = md.media_id " +
+            "WHERE (:title IS NULL OR m.title LIKE CONCAT('%',:title,'%')) " +
+            "AND m.status = 1",
+            nativeQuery = true)
+    List<Media> searchUserRepository(@Param("title") String title);
+
+
 }
