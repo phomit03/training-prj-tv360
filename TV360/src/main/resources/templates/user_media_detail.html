@@ -197,47 +197,61 @@
                 </ul>
 
                 <!--Episodes-->
-                <ul class="movies-list movies-rate-tab" th:if="${#lists.size(listMediaDetails) > 1}">
-                    <li th:each="mediaDetail : ${listMediaDetails}">
-                        <div class="movie-card">
-                            <a th:href="@{'/movie/detail/' + ${mediaDetail.id} + '?episode=' + ${mediaDetail.episode}}">
-                                <figure class="card-banner">
-                                    <img th:src="@{${mediaDetail.thumbnail}}">
-                                </figure>
-                            </a>
-
-                            <div class="title-wrapper">
-                                <a href="">
-                                    <h3 class="card-title" th:text="${mediaDetail.title}"></h3>
+                <div>
+                    <ul class="movies-list movies-rate-tab" th:if="${#lists.size(listMediaDetails) > 1}">
+                        <li th:each="mediaDetail : ${listMediaDetails}">
+                            <div class="movie-card">
+                                <a th:href="@{'/movie/detail/' + ${mediaDetail.id} + '?episode=' + ${mediaDetail.episode}}">
+                                    <figure class="card-banner">
+                                        <img th:src="@{${mediaDetail.thumbnail}}">
+                                    </figure>
                                 </a>
 
-                                <div class="badge badge-outline" th:text="${mediaDetail.quality}"></div>
+                                <div class="title-wrapper">
+                                    <a href="">
+                                        <h3 class="card-title" th:text="${mediaDetail.title}"></h3>
+                                    </a>
+
+                                    <div class="badge badge-outline" th:text="${mediaDetail.quality}"></div>
+                                </div>
+
+                                <div class="card-meta" style="gap: 5px">
+                                    <div class="episode" th:if="${mediaDetail.episode != null}">
+                                        <ion-icon name="film-outline"></ion-icon>
+
+                                        <data th:text="${'Episode ' + '0' + mediaDetail.episode}"></data>
+                                    </div>
+
+                                    <div class="duration">
+                                        <ion-icon name="time-outline"></ion-icon>
+
+                                        <time th:text="${mediaDetail.duration}"></time>
+                                    </div>
+
+                                    <div class="rating">
+                                        <ion-icon name="star"></ion-icon>
+
+                                        <data th:text="${mediaDetail.rating}"></data>
+                                    </div>
+                                </div>
                             </div>
+                        </li>
 
-                            <div class="card-meta" style="gap: 5px">
-                                <div class="episode" th:if="${mediaDetail.episode != null}">
-                                    <ion-icon name="film-outline"></ion-icon>
+                    </ul>
 
-                                    <data th:text="${'Episode ' + '0' + mediaDetail.episode}"></data>
-                                </div>
-
-                                <div class="duration">
-                                    <ion-icon name="time-outline"></ion-icon>
-
-                                    <time th:text="${mediaDetail.duration}"></time>
-                                </div>
-
-                                <div class="rating">
-                                    <ion-icon name="star"></ion-icon>
-
-                                    <data th:text="${mediaDetail.rating}"></data>
-                                </div>
-                            </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-7 text-center">
+                        <div class="custom-pagination">
+                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <a class="color-red" th:if="${currentPage != i}" th:href="@{'/movie/detail/' + ${mediaId} + ${i} (mediaId=${selectedMediaDetail.mediaID})}"  th:text="${i}"
+                           style="background-color: white; color: #ca0f33"></a>
+                        <span th:unless="${currentPage != i}" th:text="${i}"
+                              style="background-color: #ca0f33; color: white"></span>
+                    </span>
                         </div>
-                    </li>
-
-                </ul>
-
+                    </div>
+                </div>
                 <!--Similar-->
                 <ul class="videos-list videos-rate-tab"
                     th:style="${(#lists.size(listMediaDetails) > 1) ? '' : 'display: flex;'}">

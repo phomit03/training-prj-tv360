@@ -23,6 +23,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     // tim theo 1 id media và sắp xếp theo episode (ASC)
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
+            "md.id, "+
             "m.title, " +
             "m.type, " +
             "md.episode, " +
@@ -94,6 +95,7 @@ public interface MediaDetailRepository extends JpaRepository<MediaDetail, Long> 
     // loc theo category name
     @Query("SELECT DISTINCT new com.example.tv360.dto.response.MediaDetailResponse(" +
             "m.id, "+
+            "md.id, "+
             "m.title, " +
             "m.type, " +
             "md.episode, " +

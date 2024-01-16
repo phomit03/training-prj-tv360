@@ -9,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MediaDetailResponse {
     private Long id;
+    private Long mediaID;
     private String title;
     private Integer mediaType;
     private Integer episode;
@@ -24,6 +25,7 @@ public class MediaDetailResponse {
     private Integer rating;
 
     public MediaDetailResponse(Long id,
+                               Long mediaID,
                                String title,
                                Integer mediaType,
                                Integer episode,
@@ -37,6 +39,7 @@ public class MediaDetailResponse {
                                Integer rating
     ) {
         this.id = id;
+        this.mediaID = mediaID;
         this.title = title;
         this.mediaType = mediaType;
         this.episode = episode;

@@ -43,44 +43,34 @@ public class UserMediaDetailController {
     }
 
 
-    // media detail
-    @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
-    public String getMediaDetail(@PathVariable Long mediaId,
-                                 @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
-                                 Model model) {
-        try {
-            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
-
-            if (!listMediaDetails.isEmpty()) {
-                int selectedEpisodeIndex = episode - 1;
-                MediaDetailResponse selectedMediaDetail = listMediaDetails.get(selectedEpisodeIndex);
-                model.addAttribute("selectedMediaDetail", selectedMediaDetail);
-            } else {
-                return "error404";
-            }
-
-            model.addAttribute("listMediaDetails", listMediaDetails);
-
-            //related-media-by-category
-            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
-            model.addAttribute("relatedMediaList", relatedMediaList);
-
-            return "user_media_detail";
-        } catch (Exception e) {
-            return "error404";
-        }
-    }
-
-    @GetMapping("/media/{mediaId}")
-    public ResponseEntity<List<CategoryDTO>> getCategoriesByMediaDetailId(@PathVariable Long mediaId) {
-        try {
-            List<CategoryDTO> categories = mediaDetailService.getCategoriesByMediaDetailId(mediaId);
-            return ResponseEntity.ok(categories );
-        } catch (Exception e) {
-            // Handle exceptions or return an appropriate response
-            return ResponseEntity.status(500).body(null);
-        }
-    }
+//    // media detail
+//    @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
+//    public String getMediaDetail(@PathVariable Long mediaId,
+//                                 @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
+//                                 Model model) {
+//        try {
+//            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
+//
+//            if (!listMediaDetails.isEmpty()) {
+//                int selectedEpisodeIndex = episode - 1;
+//                MediaDetailResponse selectedMediaDetail = listMediaDetails.get(selectedEpisodeIndex);
+//                model.addAttribute("selectedMediaDetail", selectedMediaDetail);
+//            } else {
+//                return "error404";
+//            }
+//
+//            model.addAttribute("listMediaDetails", listMediaDetails);
+//
+//            //related-media-by-category
+//            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
+//            model.addAttribute("relatedMediaList", relatedMediaList);
+//            model.addAttribute("title", listMediaDetails.get(0).getTitle());
+//
+//            return "user_media_detail";
+//        } catch (Exception e) {
+//            return "error404";
+//        }
+//    }
 
     @GetMapping("/by-category/{categoryName}")
     public ResponseEntity<List<MediaDetailResponse>> getMediaDetailsByCategoryName(@PathVariable String categoryName) {
@@ -101,40 +91,51 @@ public class UserMediaDetailController {
 
 
     //phan trang
-    @GetMapping("/media-details")
-    public String getAllMediaDetails(Model model,
-                                @RequestParam(name = "title", required = false) String title,
-                                @RequestParam(name = "quality", required = false) String quality,
-                                @RequestParam(name = "episode", required = false) Integer episode,
-                                @RequestParam(name = "status", required = false) Integer  status
-    ) {
-        model.addAttribute("title", "Media Details");
-        return findPaginated(1, model, title, quality,episode,status);
+    @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
+    public String getMediaDetails1(@PathVariable Long mediaId,Model model){
+        List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
+        model.addAttribute("title", listMediaDetails.get(0).getTitle());
+        model.addAttribute("description", "Always update the hottest and latest football news");
+        return findPaginated(mediaId,1, 1, model);
     }
+    @GetMapping({"movie/detail/{mediaId}/{pageNo}", "video/detail/{mediaId}/{pageNo}"})
+    public String findPaginated(@PathVariable Long mediaId,
+                                @PathVariable(value = "pageNo") int pageNo,
+                                 @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
+                                 Model model) {
+        try {
+            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
 
-    @GetMapping("/media-details/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
-                                Model model,
-                                @RequestParam(name = "title", required = false) String title,
-                                @RequestParam(name = "quality", required = false) String quality,
-                                @RequestParam(name = "episode", required = false) Integer episode,
-                                @RequestParam(name = "status", required = false) Integer  status
-    ) {
+            if (!listMediaDetails.isEmpty()) {
+                int selectedEpisodeIndex = episode - 1;
+                MediaDetailResponse selectedMediaDetail = listMediaDetails.get(selectedEpisodeIndex);
+                model.addAttribute("selectedMediaDetail", selectedMediaDetail);
+            } else {
+                return "error404";
+            }
 
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        List<MediaDetail> result = mediaDetailRepository.searchMediaDetails(title, quality,episode,status, pageable);
-        Page<MediaDetail> page = new PageImpl<>(result, pageable,mediaDetailRepository.searchMediaDetails1(title, quality,episode,status).size());
-        List<MediaDetail> mediaDetails = page.getContent();
+            //related-media-by-category
+            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
+            // can phan trang
+            Page<MediaDetailResponse> pageEpisodes = mediaDetailService.findPaginated1(pageNo, pageSize,listMediaDetails);
+            Page<Media> pageRelated = mediaDetailService.findPaginated2(pageNo, pageSize,relatedMediaList);
+            List<MediaDetailResponse> episodeList = pageEpisodes.getContent();
+            List<Media> relatedList = pageRelated.getContent();
 
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("mediaDetails", mediaDetails);
-        model.addAttribute("title", title);
-        model.addAttribute("quality", quality);
-        model.addAttribute("episode", episode);
-        model.addAttribute("status", status);
-        return "admin_media_details";
+            model.addAttribute("listMediaDetails", listMediaDetails);
+            model.addAttribute("relatedMediaList", relatedMediaList);
+            model.addAttribute("title", listMediaDetails.get(0).getTitle());
+            model.addAttribute("currentPage", pageNo);
+            model.addAttribute("totalPages", pageEpisodes.getTotalPages());
+            model.addAttribute("totalItems", pageEpisodes.getTotalElements());
+            model.addAttribute("totalPages", pageRelated.getTotalPages());
+            model.addAttribute("totalItems", pageRelated.getTotalElements());
+            model.addAttribute("episodeList", episodeList);
+            model.addAttribute("relatedList", relatedList);
+            return "user_media_detail";
+        } catch (Exception e) {
+            return "error404";
+        }
     }
 
 }
