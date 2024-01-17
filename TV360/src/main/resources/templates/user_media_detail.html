@@ -304,6 +304,45 @@
 <a th:replace="user_fragments::back-to-top"></a>
 
 <div th:replace="user_fragments::script"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var pagination = document.querySelector('.custom-pagination');
+        var activeButton = document.querySelector('.filter-btn.active');
+
+        // Ẩn phân trang nếu không chọn video hoặc movie
+        if (!activeButton) {
+            pagination.style.display = 'none';
+        }
+    });
+
+    function changeTabTopRate(tabId, button) {
+        var buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        var movieList = document.querySelector('.movies-rate-tab');
+        var videoList = document.querySelector('.videos-rate-tab');
+        var pagination = document.querySelector('.custom-pagination');
+
+        if (tabId === 'moviesRateTab') {
+            movieList.style.display = 'grid';
+            videoList.style.display = 'none';
+            pagination.style.display = 'none'; // Ẩn phân trang
+        } else if (tabId === 'videosRateTab') {
+            movieList.style.display = 'none';
+            videoList.style.display = 'grid';
+            pagination.style.display = 'grid'; // Hiển thị phân trang
+        }
+
+        // Ẩn phân trang nếu không có nút nào được chọn
+        if (!document.querySelector('.filter-btn.active')) {
+            pagination.style.display = 'none';
+        }
+    }
+</script>
 
 <script>
     function changeTabNewRelease(tabId, button) {
@@ -317,6 +356,7 @@
         var movieList = document.querySelector('.movies-release-tab');
         var videoList = document.querySelector('.videos-release-tab');
 
+
         if (tabId === 'moviesReleaseTab') {
             movieList.style.display = 'flex';
             videoList.style.display = 'none';
@@ -327,27 +367,7 @@
     }
 </script>
 
-<script>
-    function changeTabTopRate(tabId, button) {
-        var buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(function(btn) {
-            btn.classList.remove('active');
-        });
 
-        button.classList.add('active');
-
-        var movieList = document.querySelector('.movies-rate-tab');
-        var videoList = document.querySelector('.videos-rate-tab');
-
-        if (tabId === 'moviesRateTab') {
-            movieList.style.display = 'grid';
-            videoList.style.display = 'none';
-        } else if (tabId === 'videosRateTab') {
-            movieList.style.display = 'none';
-            videoList.style.display = 'grid';
-        }
-    }
-</script>
 
 <script>
     function showVideoPopup() {
