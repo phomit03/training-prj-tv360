@@ -282,16 +282,16 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-7 text-center">
                         <div class="custom-pagination">
-                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                        <a class="color-red" th:if="${currentPage != i}" th:href="@{'/movie/detail/' + ${mediaId} + '/' + ${i} (mediaId=${selectedMediaDetail.mediaID})}"  th:text="${i}"
-                           style="background-color: white; color: #ca0f33"></a>
-                        <span th:unless="${currentPage != i}" th:text="${i}"
-                              style="background-color: #ca0f33; color: white"></span>
-                    </span>
+                            <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                <a class="color-yellow" th:if="${currentPage != i}"
+                                   th:href="@{'/movie/detail/' + ${mediaId} + '/' + ${i} (mediaId=${selectedMediaDetail.mediaID})}"
+                                   th:text="${i}"></a>
+                                <span th:unless="${currentPage != i}" th:text="${i}"
+                                      class="paginate-active"></span>
+                            </span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
         <!-- contact -->

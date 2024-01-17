@@ -1791,3 +1791,44 @@ body.active { overflow: hidden; }
 .country-detail:is(:hover, :focus) {
   color: var(--citrine) !important;
 }
+
+
+.custom-pagination {
+  display: flex !important;
+  justify-content: center;
+}
+
+.paginate-active {
+  background-color: var(--citrine);
+  color: #110f1a;
+  display: inline-block;
+  padding: 4px 14px;
+  margin: 0 4px;
+  text-decoration: none;
+  border: 1px solid var(--citrine);
+  border-radius: 6px;
+  max-width: 38px;
+}
+
+.color-yellow {
+  display: inline-block;
+  padding: 4px 14px;
+  margin: 0 4px;
+  text-decoration: none;
+  border: 1px solid var(--citrine);
+  background-color: white;
+  color: #110f1a;
+  border-radius: 6px;
+  max-width: 38px;
+}
+
+.custom-pagination a:is(:hover, :focus) {
+  background-color: var(--citrine);
+  color: #110f1a;
+  border-radius: 6px;
+  padding: 4px 14px;
+  margin: 0 4px;
+  text-decoration: none;
+  display: inline-block;
+  max-width: 38px;
+}
