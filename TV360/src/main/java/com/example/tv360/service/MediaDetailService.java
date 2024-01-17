@@ -1,6 +1,7 @@
 package com.example.tv360.service;
 
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Category;
@@ -134,17 +135,7 @@ public class MediaDetailService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaDetailRepository.findAll(pageable);
     }
-
-    public Page<MediaDetailResponse> findPaginated1(int pageNo, int pageSize, List<MediaDetailResponse> mediaDetails) {
-        // Tạo một danh sách Pageable từ danh sách các trận đấu
-        List<MediaDetailResponse> paginatedMDResponse = mediaDetails.stream()
-                .skip((long) (pageNo - 1) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(paginatedMDResponse, PageRequest.of(pageNo - 1, pageSize), mediaDetails.size());
-    }
-    public Page<Media> findPaginated2(int pageNo, int pageSize, List<Media> media) {
+    public Page<Media> findPaginated1(int pageNo, int pageSize, List<Media> media) {
         // Tạo một danh sách Pageable từ danh sách các trận đấu
         List<Media> paginatedMedia = media.stream()
                 .skip((long) (pageNo - 1) * pageSize)

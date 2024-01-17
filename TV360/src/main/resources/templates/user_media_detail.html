@@ -200,8 +200,8 @@
                 </ul>
 
                 <!--Episodes-->
-                <div>
-                    <ul class="movies-list movies-rate-tab" th:if="${#lists.size(listMediaDetails) > 1}">
+
+                <ul class="movies-list movies-rate-tab" th:if="${#lists.size(listMediaDetails) > 1}">
                         <li th:each="mediaDetail : ${listMediaDetails}">
                             <div class="movie-card">
                                 <a th:href="@{'/movie/detail/' + ${mediaDetail.id} + '?episode=' + ${mediaDetail.episode}}">
@@ -242,24 +242,11 @@
 
                     </ul>
 
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-7 text-center">
-                        <div class="custom-pagination">
-                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                        <a class="color-red" th:if="${currentPage != i}" th:href="@{'/movie/detail/' + ${mediaId} + ${i} (mediaId=${selectedMediaDetail.mediaID})}"  th:text="${i}"
-                           style="background-color: white; color: #ca0f33"></a>
-                        <span th:unless="${currentPage != i}" th:text="${i}"
-                              style="background-color: #ca0f33; color: white"></span>
-                    </span>
-                        </div>
-                    </div>
-                </div>
                 <!--Similar-->
                 <ul class="videos-list videos-rate-tab"
                     th:style="${(#lists.size(listMediaDetails) > 1) ? '' : 'display: flex;'}">
 
-                    <li th:each="relatedMedia : ${relatedMediaList}">
+                    <li th:each="relatedMedia : ${relatedList}">
                         <div class="movie-card">
 
                             <th:block th:if="${selectedMediaDetail.mediaType == 3}">
@@ -292,6 +279,19 @@
                         </div>
                     </li>
                 </ul>
+                <div class="row justify-content-center">
+                    <div class="col-lg-7 text-center">
+                        <div class="custom-pagination">
+                    <span class="ml-2" th:if="${totalPages > 1}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <a class="color-red" th:if="${currentPage != i}" th:href="@{'/movie/detail/' + ${mediaId} + '/' + ${i} (mediaId=${selectedMediaDetail.mediaID})}"  th:text="${i}"
+                           style="background-color: white; color: #ca0f33"></a>
+                        <span th:unless="${currentPage != i}" th:text="${i}"
+                              style="background-color: #ca0f33; color: white"></span>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
         <!-- contact -->

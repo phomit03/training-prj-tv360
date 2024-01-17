@@ -127,15 +127,15 @@ public class CategoryService {
     }
 
     //phan trang
+    public Page<MediaDTO> findPaginated(int pageNo, int pageSize, List<MediaDTO> media) {
+        // Tạo một danh sách Pageable từ danh sách các trận đấu
+        List<MediaDTO> paginatedMedia = media.stream()
+                .skip((long) (pageNo - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
 
-    public Page<MediaDTO> findPaginated(int pageNo, int pageSize, List<MediaDTO> mediaList) {
-        int startIndex = (pageNo - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, mediaList.size());
-
-        List<MediaDTO> pagedMediaList = mediaList.subList(startIndex, endIndex);
-        return new PageImpl<>(pagedMediaList, PageRequest.of(pageNo - 1, pageSize), mediaList.size());
+        return new PageImpl<>(paginatedMedia, PageRequest.of(pageNo - 1, pageSize), media.size());
     }
-
     //get list Media by categoryId (check media-details)
     public List<MediaDTO> getMediaByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)

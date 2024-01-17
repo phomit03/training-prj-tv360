@@ -1,6 +1,7 @@
 package com.example.tv360.controller.user;
 
 import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
 import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
@@ -76,7 +77,6 @@ public class UserMediaDetailController {
     public String getMediaDetails1(@PathVariable Long mediaId,Model model){
         List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
         model.addAttribute("title", listMediaDetails.get(0).getTitle());
-        model.addAttribute("description", "Always update the hottest and latest football news");
         return findPaginated(mediaId,1, 1, model);
     }
     @GetMapping({"movie/detail/{mediaId}/{pageNo}", "video/detail/{mediaId}/{pageNo}"})
@@ -98,20 +98,16 @@ public class UserMediaDetailController {
             //related-media-by-category
             List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
             // can phan trang
-            Page<MediaDetailResponse> pageEpisodes = mediaDetailService.findPaginated1(pageNo, pageSize,listMediaDetails);
-            Page<Media> pageRelated = mediaDetailService.findPaginated2(pageNo, pageSize,relatedMediaList);
-            List<MediaDetailResponse> episodeList = pageEpisodes.getContent();
-            List<Media> relatedList = pageRelated.getContent();
+            Page<Media> page = mediaDetailService.findPaginated1(pageNo, pageSize,relatedMediaList);
+            List<Media> relatedList = page.getContent();
 
             model.addAttribute("listMediaDetails", listMediaDetails);
             model.addAttribute("relatedMediaList", relatedMediaList);
             model.addAttribute("title", listMediaDetails.get(0).getTitle());
+
             model.addAttribute("currentPage", pageNo);
-            model.addAttribute("totalPages", pageEpisodes.getTotalPages());
-            model.addAttribute("totalItems", pageEpisodes.getTotalElements());
-            model.addAttribute("totalPages", pageRelated.getTotalPages());
-            model.addAttribute("totalItems", pageRelated.getTotalElements());
-            model.addAttribute("episodeList", episodeList);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
             model.addAttribute("relatedList", relatedList);
             return "user_media_detail";
         } catch (Exception e) {
