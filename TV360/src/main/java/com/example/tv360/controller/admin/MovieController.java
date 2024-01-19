@@ -98,7 +98,7 @@ public class MovieController {
                               @RequestParam(name = "status", required = false) Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title, 2, status);
+        return findPaginated(1, model, title, type, status);
     }
 
     @GetMapping("/movies/{pageNo}")
@@ -111,8 +111,8 @@ public class MovieController {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-        List<Media> result = mediaRepository.searchMovie(title, 2, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, 2, status).size());
+        List<Media> result = mediaRepository.searchMovie(title, type, status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, type, status).size());
 
         List<Media> movies = page.getContent();
 
