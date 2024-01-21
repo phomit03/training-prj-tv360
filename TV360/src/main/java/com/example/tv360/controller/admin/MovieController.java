@@ -94,25 +94,25 @@ public class MovieController {
     @GetMapping("/movies")
     public String getAllMovies(Model model,
                               @RequestParam(name = "title", required = false) String title,
-                              @RequestParam(name = "type", required = false) Integer type,
-                              @RequestParam(name = "status", required = false) Integer status
+                              @RequestParam(name = "type", required = false) List<Integer> type,
+                              @RequestParam(name = "status", required = false, defaultValue = "1") Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title, 2, status);
+        return findPaginated(1, model, title, Arrays.asList(1,2), status);
     }
 
     @GetMapping("/movies/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
                                 @RequestParam(name = "title", required = false) String title,
-                                @RequestParam(name = "type", required = false) Integer type,
-                                @RequestParam(name = "status", required = false) Integer status
+                                @RequestParam(name = "type", required = false) List<Integer> type,
+                                @RequestParam(name = "status", required = false, defaultValue = "1") Integer status
     ) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-        List<Media> result = mediaRepository.searchMovie(title, 2, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, 2, status).size());
+        List<Media> result = mediaRepository.searchMovie(title, Arrays.asList(1,2), status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, Arrays.asList(1,2), status).size());
 
         List<Media> movies = page.getContent();
 
