@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping()
 public class UserHomePageController {
 
-    @Value("${page.size}")
+    @Value("${page.size.user}")
     private int pageSize;
     private final MediaDetailService mediaDetailService;
     private final MediaDetailRepository mediaDetailRepository;

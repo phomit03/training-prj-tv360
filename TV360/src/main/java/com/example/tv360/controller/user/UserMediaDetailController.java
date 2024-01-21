@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping()
 public class UserMediaDetailController {
 
-    @Value("${page.size}")
+    @Value("${page.size.user}")
     private int pageSize;
 
     private final CategoryService categoryService;
@@ -44,37 +44,9 @@ public class UserMediaDetailController {
     }
 
 
-//    // media detail
-//    @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
-//    public String getMediaDetail(@PathVariable Long mediaId,
-//                                 @RequestParam(name = "episode", required = false, defaultValue = "1") Integer episode,
-//                                 Model model) {
-//        try {
-//            List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
-//
-//            if (!listMediaDetails.isEmpty()) {
-//                int selectedEpisodeIndex = episode - 1;
-//                MediaDetailResponse selectedMediaDetail = listMediaDetails.get(selectedEpisodeIndex);
-//                model.addAttribute("selectedMediaDetail", selectedMediaDetail);
-//            } else {
-//                return "error404";
-//            }
-//
-//            model.addAttribute("listMediaDetails", listMediaDetails);
-//
-//            //related-media-by-category
-//            List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
-//            model.addAttribute("relatedMediaList", relatedMediaList);
-//
-//            return "user_media_detail";
-//        } catch (Exception e) {
-//            return "error404";
-//        }
-//    }
-
     //phan trang
     @GetMapping({"movie/detail/{mediaId}", "video/detail/{mediaId}"})
-    public String getMediaDetails1(@PathVariable Long mediaId,Model model){
+    public String getMediaDetails(@PathVariable Long mediaId,Model model){
         List<MediaDetailResponse> listMediaDetails = mediaDetailService.getMediaDetailByMediaId(mediaId);
         model.addAttribute("title", listMediaDetails.get(0).getTitle());
         return findPaginated(mediaId,1, 1, model);
@@ -97,6 +69,7 @@ public class UserMediaDetailController {
 
             //related-media-by-category
             List<Media> relatedMediaList = mediaDetailService.getRelatedMediaWithoutCurrent(mediaRepository.findById(mediaId).get());
+
             // can phan trang
             Page<Media> page = mediaDetailService.findPaginated1(pageNo, pageSize,relatedMediaList);
             List<Media> relatedList = page.getContent();
