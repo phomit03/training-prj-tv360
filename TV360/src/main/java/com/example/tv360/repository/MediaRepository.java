@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MediaRepository extends JpaRepository<Media, Long> {
-    @Query(value = "SELECT * FROM media WHERE (title is null or title like CONCAT('%',:title,'%')) "+
+    @Query(value = "SELECT * FROM media WHERE (:title is null or title like CONCAT('%',:title,'%')) "+
             "AND (type is null or type in (:type)) " +
             " AND (status is null or status = :status) ", nativeQuery = true)
     List<Media> searchMovie(@Param("title") String title,

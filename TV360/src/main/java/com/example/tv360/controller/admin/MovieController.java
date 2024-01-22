@@ -94,11 +94,11 @@ public class MovieController {
     @GetMapping("/movies")
     public String getAllMovies(Model model,
                               @RequestParam(name = "title", required = false) String title,
-                              @RequestParam(name = "type", required = false) List<Integer> type,
+                              @RequestParam(name = "type", required = false) Integer type,
                               @RequestParam(name = "status", required = false, defaultValue = "1") Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title, Arrays.asList(1,2), status);
+        return findPaginated(1, model, title, Arrays.asList(type), status);
     }
 
     @GetMapping("/movies/{pageNo}")
