@@ -93,26 +93,26 @@ public class MovieController {
 
     @GetMapping("/movies")
     public String getAllMovies(Model model,
-                              @RequestParam(name = "title", required = false, defaultValue = "") String title,
-                              @RequestParam(name = "type", required = false, defaultValue = "1,2") List<Integer> type,
+                              @RequestParam(name = "title", required = false) String title,
+                              @RequestParam(name = "type", required = false) Integer type,
                               @RequestParam(name = "status", required = false, defaultValue = "1") Integer status
     ) {
         model.addAttribute("title", "Movies");
-        return findPaginated(1, model, title, type, status);
+        return findPaginated(1, model, title, Arrays.asList(type), status);
     }
 
     @GetMapping("/movies/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 Model model,
-                                @RequestParam(name = "title", required = false, defaultValue = "") String title,
+                                @RequestParam(name = "title", required = false) String title,
                                 @RequestParam(name = "type", required = false) List<Integer> type,
                                 @RequestParam(name = "status", required = false, defaultValue = "1") Integer status
     ) {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
-        List<Media> result = mediaRepository.searchMovie(title, type, status, pageable);
-        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, type, status).size());
+        List<Media> result = mediaRepository.searchMovie(title, Arrays.asList(1,2), status, pageable);
+        Page<Media> page = new PageImpl<>(result, pageable,mediaRepository.searchMovie1(title, Arrays.asList(1,2), status).size());
 
         List<Media> movies = page.getContent();
 
