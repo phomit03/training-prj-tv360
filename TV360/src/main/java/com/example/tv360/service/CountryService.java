@@ -1,13 +1,13 @@
 package com.example.tv360.service;
 
+import com.example.tv360.config.CacheConfig;
 import com.example.tv360.dto.CountryDTO;
 import com.example.tv360.dto.MediaDTO;
-import com.example.tv360.entity.Cast;
-import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Country;
 import com.example.tv360.entity.Media;
 import com.example.tv360.repository.CountryRepository;
 import com.example.tv360.service.exception.AssociationException;
+import com.example.tv360.service.redis.RedisCacheService;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,17 @@ public class CountryService {
     private final CountryRepository countryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
+    private final RedisCacheService redisCacheService;
+    private final CacheConfig cacheConfig;
 
     @Autowired
-    public CountryService(CountryRepository countryRepository, ModelToDtoConverter modelToDtoConverter ,DtoToModelConverter dtoToModelConverter ) {
+    public CountryService(CountryRepository countryRepository, ModelToDtoConverter modelToDtoConverter , DtoToModelConverter dtoToModelConverter, RedisCacheService redisCacheService, CacheConfig cacheConfig) {
         this.countryRepository = countryRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.dtoToModelConverter = dtoToModelConverter;
 
+        this.redisCacheService = redisCacheService;
+        this.cacheConfig = cacheConfig;
     }
 
     public List<CountryDTO> getAllCountries(){
@@ -45,8 +49,18 @@ public class CountryService {
     }
 
     public CountryDTO getCountryById(Long id) {
-        Country countries = countryRepository.findById(id).orElse(null);
-        return modelToDtoConverter.convertToDto(countries, CountryDTO.class);
+        if (redisCacheService.checkExistsKey(cacheConfig.keyCountryPrefix+id)) {
+            // data redis
+            return (CountryDTO) redisCacheService.getValue(cacheConfig.keyCountryPrefix+id);
+        } else {
+            // data in database
+            Country country = countryRepository.findById(id).orElse(null);
+            // save data for cache
+            if (country != null) {
+                redisCacheService.setValue(cacheConfig.keyCountryPrefix+id, country);
+            }
+            return modelToDtoConverter.convertToDto(country, CountryDTO.class);
+        }
     }
 
     public Country createCountry(CountryDTO countryDTO) throws IOException {

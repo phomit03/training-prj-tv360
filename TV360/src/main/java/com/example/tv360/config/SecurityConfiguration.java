@@ -2,7 +2,7 @@ package com.example.tv360.config;
 
 import com.example.tv360.repository.UserRepository;
 import com.example.tv360.service.UserService;
-import com.example.tv360.sesstion.CustomAuthenticationSuccessHandler;
+import com.example.tv360.session.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

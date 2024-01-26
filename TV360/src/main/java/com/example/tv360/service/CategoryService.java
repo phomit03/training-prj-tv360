@@ -136,6 +136,7 @@ public class CategoryService {
 
         return new PageImpl<>(paginatedMedia, PageRequest.of(pageNo - 1, pageSize), media.size());
     }
+
     //get list Media by categoryId (check media-details)
     public List<MediaDTO> getMediaByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)

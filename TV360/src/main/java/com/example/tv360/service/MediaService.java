@@ -1,8 +1,10 @@
 package com.example.tv360.service;
 
+import com.example.tv360.config.CacheConfig;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.entity.*;
 import com.example.tv360.repository.*;
+import com.example.tv360.service.redis.RedisCacheService;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.Helper;
 import com.example.tv360.utils.ModelToDtoConverter;
@@ -31,11 +33,13 @@ public class MediaService {
     private final CategoryRepository categoryRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
+    private final RedisCacheService redisCacheService;
+    private final CacheConfig cacheConfig;
 
     @Autowired
     public MediaService(MediaRepository mediaRepository, MediaDetailRepository mediaDetailRepository, ModelToDtoConverter modelToDtoConverter, Helper helper,
                         CastRepository castRepository, CategoryRepository categoryRepository,
-                        DtoToModelConverter dtoToModelConverter) {
+                        DtoToModelConverter dtoToModelConverter, RedisCacheService redisCacheService, CacheConfig cacheConfig) {
         this.mediaRepository = mediaRepository;
         this.mediaDetailRepository = mediaDetailRepository;
         this.modelToDtoConverter = modelToDtoConverter;
@@ -43,16 +47,29 @@ public class MediaService {
         this.castRepository = castRepository;
         this.categoryRepository = categoryRepository;
         this.dtoToModelConverter = dtoToModelConverter;
+        this.redisCacheService = redisCacheService;
+        this.cacheConfig = cacheConfig;
     }
 
-    public List<MediaDTO> getAllMedias(){
+    public List<MediaDTO> getAllMedias(int limit, int page){
         List<Media> media = mediaRepository.findAll();
         return media.stream().map(media1 -> modelToDtoConverter.convertToDto(media1, MediaDTO.class)).collect(Collectors.toList());
     }
 
     public MediaDTO getMediaById(Long id) {
-        Media media = mediaRepository.findById(id).orElse(null);
-        return modelToDtoConverter.convertToDto(media, MediaDTO.class);
+        if (redisCacheService.checkExistsKey(cacheConfig.keyMediaPrefix+id)) {
+            // data redis
+            return (MediaDTO) redisCacheService.getValue(cacheConfig.keyMediaPrefix+id);
+        } else {
+            // data in database
+            Media media = mediaRepository.findById(id).orElse(null);
+            // save data for cache
+            if (media != null) {
+                redisCacheService.setValue(cacheConfig.keyMediaPrefix+id, media);
+                // redisCacheService.setTTL(cacheKey, yourTimeout, TimeUnit.SECONDS);
+            }
+            return modelToDtoConverter.convertToDto(media, MediaDTO.class);
+        }
     }
 
     public Media createMedia(MediaDTO mediaDTO, MultipartFile logo,
@@ -170,7 +187,6 @@ public class MediaService {
 
     //paginate
     public Page<Media> findPaginated(int pageNo, int pageSize) {
-
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.mediaRepository.findAll(pageable);
     }

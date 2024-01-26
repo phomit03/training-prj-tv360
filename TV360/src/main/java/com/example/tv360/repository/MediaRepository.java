@@ -2,6 +2,7 @@ package com.example.tv360.repository;
 
 import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -49,6 +50,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     int countMediaDetailByMediaId(@Param("mediaId") Long mediaId);
 
     //search user
+    @Cacheable(value = "searchResults", key = "#title")
     @Query(value = "SELECT DISTINCT m.* " +
             "FROM media m " +
             "JOIN media_detail md ON m.id = md.media_id " +
@@ -56,6 +58,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             "AND m.status = 1",
             nativeQuery = true)
     List<Media> searchUserRepository(@Param("title") String title);
+
 
 
 }

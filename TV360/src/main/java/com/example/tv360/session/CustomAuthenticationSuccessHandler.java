@@ -1,4 +1,4 @@
-package com.example.tv360.sesstion;
+package com.example.tv360.session;
 
 import com.example.tv360.entity.User;
 import com.example.tv360.repository.UserRepository;

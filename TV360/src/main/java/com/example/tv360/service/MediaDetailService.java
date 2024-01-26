@@ -1,14 +1,14 @@
 package com.example.tv360.service;
 
-import com.example.tv360.dto.CategoryDTO;
+import com.example.tv360.config.CacheConfig;
 import com.example.tv360.dto.MediaDTO;
 import com.example.tv360.dto.MediaDetailDTO;
 import com.example.tv360.dto.response.MediaDetailResponse;
-import com.example.tv360.entity.Category;
 import com.example.tv360.entity.Media;
 import com.example.tv360.entity.MediaDetail;
 import com.example.tv360.repository.MediaDetailRepository;
 import com.example.tv360.repository.MediaRepository;
+import com.example.tv360.service.redis.RedisCacheService;
 import com.example.tv360.utils.DtoToModelConverter;
 import com.example.tv360.utils.ModelToDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,10 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,15 +30,19 @@ public class MediaDetailService {
     private final MediaRepository mediaRepository;
     private final ModelToDtoConverter modelToDtoConverter;
     private final DtoToModelConverter dtoToModelConverter;
+    private final RedisCacheService redisCacheService;
+    private final CacheConfig cacheConfig;
     @PersistenceContext
     private EntityManager entityManager;
+
     @Autowired
-    public MediaDetailService(MediaDetailRepository mediaDetailRepository, MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter , DtoToModelConverter dtoToModelConverter ) {
+    public MediaDetailService(MediaDetailRepository mediaDetailRepository, MediaRepository mediaRepository, ModelToDtoConverter modelToDtoConverter , DtoToModelConverter dtoToModelConverter, RedisCacheService redisCacheService, CacheConfig cacheConfig) {
         this.mediaDetailRepository = mediaDetailRepository;
         this.mediaRepository = mediaRepository;
         this.modelToDtoConverter = modelToDtoConverter;
         this.dtoToModelConverter = dtoToModelConverter;
-
+        this.redisCacheService = redisCacheService;
+        this.cacheConfig = cacheConfig;
     }
 
     public List<MediaDetailDTO> getAllMediaDetails(){
@@ -146,47 +148,71 @@ public class MediaDetailService {
     }
 
     //service details (le-cuong)
-    public List<MediaDetailResponse> getMediaDetailByMediaId(Long mediaId) {
+    public List<MediaDetailResponse> getMediaDetailByMediaId(Long mediaId) {    //list <categories, cast, episode>
         try {
-            Media media = mediaRepository.findById(mediaId).orElse(null);
 
-            if (media != null && media.getType() == 3) {
-                List<MediaDetailResponse> videoDetailResponseList = mediaDetailRepository.getVideoDetail(mediaId);
-
-                for (MediaDetailResponse videoDetailResponse : videoDetailResponseList) {
-                    videoDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
-                }
-
-                return videoDetailResponseList;
+            if (redisCacheService.checkExistsKey(cacheConfig.keyMediaEpisodePrefix+mediaId) ||
+                    redisCacheService.checkExistsKey(cacheConfig.keyMediaCategoriesPrefix+mediaId) ||
+                    redisCacheService.checkExistsKey(cacheConfig.keyMediaCastPrefix+mediaId)) {
+                /*return ;*/
+                //chưa biết trả về gì ở đây
             } else {
-                List<MediaDetailResponse> mediaDetailResponseList = mediaDetailRepository.getMovieDetailByIdASCEpisodes(mediaId);
+                Media media = mediaRepository.findById(mediaId).orElse(null);
 
-                for (MediaDetailResponse mediaDetailResponse : mediaDetailResponseList) {
-                    mediaDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
-                    mediaDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
+                if (media != null && media.getType() == 3) {
+                    List<MediaDetailResponse> videoDetailResponseList = mediaDetailRepository.getVideoDetail(mediaId);
+
+                    for (MediaDetailResponse videoDetailResponse : videoDetailResponseList) {
+                        videoDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+                    }
+
+                    redisCacheService.setValue(cacheConfig.keyMediaEpisodePrefix+mediaId, videoDetailResponseList);
+
+                    return videoDetailResponseList;
+                } else {
+                    List<MediaDetailResponse> movieDetailResponseList = mediaDetailRepository.getMovieDetailByIdASCEpisodes(mediaId);
+
+                    for (MediaDetailResponse movieDetailResponse : movieDetailResponseList) {
+                        movieDetailResponse.setCategoryList(mediaDetailRepository.getCategoryByMediaDetailId(mediaId));
+                        movieDetailResponse.setCastList(mediaDetailRepository.getCastByMediaDetailId(mediaId));
+                    }
+
+                    if (media != null) {
+                        redisCacheService.setValue(cacheConfig.keyMediaEpisodePrefix+mediaId, movieDetailResponseList);
+                    }
+
+                    return movieDetailResponseList;
                 }
-
-                return mediaDetailResponseList;
             }
         } catch (Exception e) {
             return Collections.emptyList();
         }
     }
 
-    public List<Media> getRelatedMediaWithoutCurrent(Media media) {
+    public List<Media> getRelatedMediaWithoutCurrent(Media media) {     //list related
+        if (redisCacheService.checkExistsKey(cacheConfig.keyMediaPrefix+media.getId())) {
+            // Nếu tồn tại, lấy dữ liệu từ cache
+            return (List<Media>) redisCacheService.getValue(cacheConfig.keyMediaPrefix+media.getId());
+        } else {
+            // Nếu không tồn tại, lấy từ db
+            Set<MediaDetail> mediaDetails = media.getMediaDetails();
 
-        Set<MediaDetail> mediaDetails = media.getMediaDetails();
+            // Tìm ra media liên quan từ danh sách media-details
+            List<Media> relatedMedia = mediaDetails.stream()
+                    .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
+                    .flatMap(category -> category.getMedia().stream())
+                    .filter(relatedMediaItem -> !relatedMediaItem.equals(media))
+                    .filter(relatedMediaItem -> relatedMediaItem.getStatus() == 1)
+                    .distinct()
+                    .collect(Collectors.toList());
 
-        // Tìm ra media liên quan từ danh sách media-details
-        List<Media> relatedMedia = mediaDetails.stream()
-                .flatMap(mediaDetail -> mediaDetail.getMedia().getCategories().stream())
-                .flatMap(category -> category.getMedia().stream())
-                .filter(relatedMediaItem -> !relatedMediaItem.equals(media))
-                .filter(relatedMediaItem -> relatedMediaItem.getStatus() == 1)
-                .distinct()
-                .collect(Collectors.toList());
+            // Lưu dữ liệu vào cache để sử dụng cho các lần truy vấn sau
+            if (!relatedMedia.isEmpty()) {
+                redisCacheService.setValue(cacheConfig.keyMediaPrefix+media.getId(), relatedMedia);
+            }
 
-        return relatedMedia;
+            return relatedMedia;
+        }
     }
 
 }
